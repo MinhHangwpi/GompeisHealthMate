@@ -29,11 +29,6 @@ class SignInActivity : AppCompatActivity() {
         /* For Firebase sign in */
         auth = FirebaseAuth.getInstance()
 
-        // when initializing activity, check if user is currently signed in
-        val currentUser = auth.currentUser
-        if (currentUser != null){
-            reload()
-        }
 
         // when a user signs in, pass the email and password
         binding.btnSignIn.setOnClickListener {
@@ -44,12 +39,14 @@ class SignInActivity : AppCompatActivity() {
                 this?.let{
                     Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
                 }
+                return@setOnClickListener // return to prevent further execution of code
             }
 
             if (password == null || email.trim().isEmpty()){
                 this?.let{
                     Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
                 }
+                return@setOnClickListener // return to prevent further execution of code
             }
 
             auth.signInWithEmailAndPassword(email, password)
@@ -63,6 +60,7 @@ class SignInActivity : AppCompatActivity() {
 
                         /* After this we can redirect the user to the MainActivity Screen */
                         startActivity(Intent(this, MainActivity::class.java))
+                        finish()
 
                     } else {
                         // If sign in fails, display a message to the user.
@@ -89,7 +87,17 @@ class SignInActivity : AppCompatActivity() {
         binding.toolbarSignInActivity.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
     }
 
-    private fun reload(){
+    public override fun onStart() {
+        super.onStart()
+        // Check if the user is already logged in, then will open the mainActivity
+        val currentUser = auth.currentUser
+        if(currentUser != null){
+            reload()
+        }
+    }
 
+    private fun reload(){
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

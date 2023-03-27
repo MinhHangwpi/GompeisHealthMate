@@ -36,11 +36,17 @@ class SignUpActivity : AppCompatActivity() {
             var password = binding.etPassword.text.toString()
 
             if (email == null || email.trim().isEmpty()){
-                Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
+                this?.let{
+                    Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
+                }
+                return@setOnClickListener // return to prevent further execution of code
             }
 
             if (password == null || email.trim().isEmpty()){
-                Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
+                this?.let{
+                    Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
+                }
+                return@setOnClickListener // return to prevent further execution of code
             }
 
             auth.createUserWithEmailAndPassword(email, password)
@@ -78,5 +84,19 @@ class SignUpActivity : AppCompatActivity() {
 
         /* To go back to the IntroActivity screen */
         binding.toolbarSignUpActivity.setNavigationOnClickListener{ onBackPressedDispatcher.onBackPressed()}
+    }
+
+    public override fun onStart() {
+        super.onStart()
+        // Check if the user is already logged in, then will open the mainActivity
+        val currentUser = auth.currentUser
+        if(currentUser != null){
+            reload()
+        }
+    }
+
+    private fun reload(){
+        startActivity(Intent(this, MainActivity::class.java))
+        finish()
     }
 }

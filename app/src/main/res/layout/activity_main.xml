@@ -23,4 +23,11 @@
         android:text="Log out"
         android:layout_gravity="center_horizontal"/>
 
+    <Button
+        android:id="@+id/btn_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Move to user profile page"
+        android:layout_gravity="center_horizontal"/>
+
 </LinearLayout>

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.cs528finalproject.databinding.ActivityMainBinding
+import com.example.cs528finalproject.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -23,20 +24,27 @@ class MainActivity : AppCompatActivity() {
 
         user = auth.currentUser
 
+        // get the intent from Sign In Activity
+        val userName = intent.getStringExtra("userName")
 
         if (user == null){
             reload()
         } else {
-            binding.tvUser.text = user?.email
+            binding.tvUser.text = "Hello $userName!"
         }
+
         binding.btnLogout.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
             reload()
         }
+
+        binding.btnProfile.setOnClickListener {
+            startActivity(Intent(this, UserProfileActivity::class.java))
+        }
     }
 
     private fun reload(){
-        startActivity(Intent(this, SignInActivity::class.java))
+        startActivity(Intent(this, IntroActivity::class.java))
         finish()
     }
 }

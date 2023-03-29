@@ -7,7 +7,10 @@ import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.cs528finalproject.databinding.ActivitySignUpBinding
+import com.example.cs528finalproject.firebase.FireStoreClass
+import com.example.cs528finalproject.models.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -36,27 +39,29 @@ class SignUpActivity : AppCompatActivity() {
             var password = binding.etPassword.text.toString()
 
             if (email == null || email.trim().isEmpty()){
-                this?.let{
-                    Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener // return to prevent further execution of code
             }
 
             if (password == null || email.trim().isEmpty()){
-                this?.let{
-                    Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener // return to prevent further execution of code
             }
 
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-//                        // Sign in success, update UI with the signed-in user's information
-//                        Log.d("FIREBASE AUTH", "createUserWithEmail:success")
-//                        val user = auth.currentUser
-////                        updateUI(user)
                         Toast.makeText(this, "Account created, directing to log in...", Toast.LENGTH_SHORT).show()
+
+                        /* pushing the new user info to a document in Firestore */
+                        val firebaseUser : FirebaseUser = task.result!!.user!!
+                        val registeredEmail = firebaseUser.email!!
+                        val name = binding.etName.text.toString()
+
+                        val user = User(firebaseUser.uid, name, registeredEmail)
+
+                        // register user to Firebase
+                        FireStoreClass().registerUser(this, user)
 
                         /* After this we can redirect the user back to the sign in Screen */
                         startActivity(Intent(this, SignInActivity::class.java))
@@ -70,6 +75,13 @@ class SignUpActivity : AppCompatActivity() {
                     }
                 }
         }
+    }
+
+    /* Function that pings the Firebase store when the user registers successfully */
+    fun userRegisteredSuccess(){
+        Toast.makeText(this, "You have successfully registered email", Toast.LENGTH_SHORT).show()
+//        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 
     /* Set up an action bar at the top left to go back to the intro activity*/

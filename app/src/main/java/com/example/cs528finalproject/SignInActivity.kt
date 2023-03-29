@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.WindowManager
 import android.widget.Toast
 import com.example.cs528finalproject.databinding.ActivitySignInBinding
+import com.example.cs528finalproject.firebase.FireStoreClass
+import com.example.cs528finalproject.models.User
 import com.google.firebase.auth.FirebaseAuth
 
 class SignInActivity : AppCompatActivity() {
@@ -36,16 +38,12 @@ class SignInActivity : AppCompatActivity() {
             var password = binding.etPassword.text.toString()
 
             if (email == null || email.trim().isEmpty()){
-                this?.let{
-                    Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener // return to prevent further execution of code
             }
 
             if (password == null || email.trim().isEmpty()){
-                this?.let{
-                    Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
-                }
+                Toast.makeText(this, "Enter email", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener // return to prevent further execution of code
             }
 
@@ -54,9 +52,10 @@ class SignInActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
 //                        // Sign in success, update UI with the signed-in user's information
                         Log.d("FIREBASE AUTH", "signInWithEmail:success")
-//                        val user = auth.currentUser
-////                        updateUI(user)
                         Toast.makeText(this, "sign in successful...", Toast.LENGTH_SHORT).show()
+
+                        /* Calling the FirestoreClass signInUser function to get the user data from database */
+                        FireStoreClass().loadUserData(this@SignInActivity)
 
                         /* After this we can redirect the user to the MainActivity Screen */
                         startActivity(Intent(this, MainActivity::class.java))
@@ -71,6 +70,13 @@ class SignInActivity : AppCompatActivity() {
                     }
                 }
         }
+    }
+
+    fun signInSuccess(user: User){
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("userName", user.name)
+        startActivity(intent)
+        finish()
     }
 
     /* Set up an action bar at the top left to go back to the intro activity */

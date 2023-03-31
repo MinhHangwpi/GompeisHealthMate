@@ -30,4 +30,31 @@
         android:text="Move to user profile page"
         android:layout_gravity="center_horizontal"/>
 
+    <Button
+        android:id="@+id/btn_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Move to the Meal page"
+        android:layout_gravity="center_horizontal"/>
+    <Button
+        android:id="@+id/btn_exercise"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Move to the Exercise page"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/btn_all_meals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get all meals by user"
+        android:layout_gravity="center_horizontal"/>
+
+    <Button
+        android:id="@+id/btn_all_exercises"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get all exercises by users"
+        android:layout_gravity="center_horizontal"/>
+
 </LinearLayout>

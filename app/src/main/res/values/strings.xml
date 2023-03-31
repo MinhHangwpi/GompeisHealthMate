@@ -2,7 +2,7 @@
     <string name="app_name">Gompei\'s Health Mate </string>
     <string name="image_contentDescription">image</string>
     <string name="let_s_get_started_text">Let\'s Get Started</string>
-    <string name="intro_text_description">Scan food and track calories all in one</string>
+    <string name="intro_text_description">Track your activities and calories</string>
     <string name="sign_in">SIGN IN</string>
     <string name="sign_up">SIGN UP</string>
     <string name="title_activity_login">LoginActivity</string>

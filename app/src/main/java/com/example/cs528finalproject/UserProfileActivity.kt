@@ -1,10 +1,12 @@
 package com.example.cs528finalproject
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -35,6 +37,11 @@ class UserProfileActivity : AppCompatActivity() {
         binding.btnSave.setOnClickListener {
             updateUserProfileData()
         }
+
+        binding.btnBack.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
 
         /* TODO: To change user profile picture */
 //        binding.ivUserProfilePicture.setOnClickListener {
@@ -67,8 +74,6 @@ class UserProfileActivity : AppCompatActivity() {
     fun setUserDataInUI(user: User){
 
         mUserDetails = user
-
-
         // update user profile picture
         Glide
             .with(this)
@@ -92,16 +97,13 @@ class UserProfileActivity : AppCompatActivity() {
         }
     }
 
-    fun updateUserProfileData(){
+    private fun updateUserProfileData(){
         // create a user hashmap
         val userHashMap = HashMap<String, Any>()
         // keep track of any changes, to call FireBaseStore.update.. if needed
         var anyChangesMade = false
 
-        if (binding.tvUser.text.toString() != mUserDetails.name){
-            userHashMap["name"] = binding.tvUser.text.toString()
-            anyChangesMade = true
-        }
+        /* Note: current business logic assumes that user can't change user name */
 
         if (binding.etWeight.text.toString().toDouble() != mUserDetails.weight){
             userHashMap["weight"] = binding.etWeight.text.toString().toDouble()
@@ -118,6 +120,7 @@ class UserProfileActivity : AppCompatActivity() {
         }
 
         if (anyChangesMade){
+            binding.btnSave.isEnabled = true
             FireStoreClass().updateUserProfileData(this, userHashMap)
         }
     }

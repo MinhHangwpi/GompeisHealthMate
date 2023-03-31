@@ -3,7 +3,10 @@ package com.example.cs528finalproject
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.bumptech.glide.Glide
 import com.example.cs528finalproject.databinding.ActivityMainBinding
+import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -13,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private var user: FirebaseUser? = null
+    private lateinit var mUserDetails: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,23 +28,45 @@ class MainActivity : AppCompatActivity() {
 
         user = auth.currentUser
 
-        // get the intent from Sign In Activity
-        val userName = intent.getStringExtra("userName")
-
         if (user == null){
-            reload()
-        } else {
-            binding.tvUser.text = "Hello $userName!"
+            reload() // if no current user is signed in, direct to the IntroActivity
         }
 
-        binding.btnLogout.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            reload()
-        }
+        /* Calling the FirestoreClass signInUser function to get the user data from database */
+        FireStoreClass().loadUserData(this@MainActivity)
 
-        binding.btnProfile.setOnClickListener {
-            startActivity(Intent(this, UserProfileActivity::class.java))
+        binding.apply{
+
+            btnLogout.setOnClickListener {
+                FirebaseAuth.getInstance().signOut()
+                reload()
+            }
+
+            btnProfile.setOnClickListener {
+                startActivity(Intent(this@MainActivity, UserProfileActivity::class.java))
+            }
+
+            btnExercise.setOnClickListener{
+                startActivity(Intent(this@MainActivity, MockExerciseActivity::class.java))
+            }
+
+            btnMeal.setOnClickListener{
+                startActivity(Intent(this@MainActivity, MockMealActivity::class.java))
+            }
+
+            btnAllExercises.setOnClickListener {
+                FireStoreClass().getExerciseByUserId(this@MainActivity)
+            }
+            btnAllMeals.setOnClickListener {
+                FireStoreClass().getMealByUserId(this@MainActivity)
+            }
         }
+    }
+
+    fun setUserDataInUI(user: User){
+        mUserDetails = user
+        // set user name
+        binding.tvUser.text = "Hello, ${user.name}"
     }
 
     private fun reload(){

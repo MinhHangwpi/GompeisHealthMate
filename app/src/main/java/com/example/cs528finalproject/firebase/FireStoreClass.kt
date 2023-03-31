@@ -3,11 +3,9 @@ package com.example.cs528finalproject.firebase
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cs528finalproject.MainActivity
-import com.example.cs528finalproject.SignInActivity
-import com.example.cs528finalproject.SignUpActivity
-import com.example.cs528finalproject.UserProfileActivity
-import com.example.cs528finalproject.models.Activity
+import com.example.cs528finalproject.*
+import com.example.cs528finalproject.models.Exercise
+import com.example.cs528finalproject.models.Meal
 import com.example.cs528finalproject.models.User
 import com.example.cs528finalproject.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -46,8 +44,6 @@ class FireStoreClass {
             }
     }
 
-
-
     /* load user data */
 
     fun loadUserData(activity: AppCompatActivity){
@@ -59,16 +55,82 @@ class FireStoreClass {
 
                 // behave differently depending on different activities
                 when (activity){
-                    is SignInActivity -> {
-                        activity.signInSuccess(loggedInUser)
-                    }
-                    is UserProfileActivity -> {
-                        activity.setUserDataInUI(loggedInUser)
-                    }
+                    is SignInActivity -> activity.signInSuccess(loggedInUser)
+                    is UserProfileActivity -> activity.setUserDataInUI(loggedInUser)
+                    is MainActivity -> activity.setUserDataInUI(loggedInUser)
+                    is MockMealActivity -> activity.setUserDataInUI(loggedInUser)
+                    is MockExerciseActivity -> activity.setUserDataInUI(loggedInUser)
+                    else -> Log.w("FIRESTORE CLASS", "Unhandled activity type: ${activity.javaClass.simpleName}")
+                    // TODO: If any future activities need to display user data, add them here too
                 }
             }
             .addOnFailureListener{ e ->
                 Log.e("FIRESTORE", "Error fetching user info from Firestore")
+            }
+    }
+
+    /* TODO:  a function to get the meal information */
+
+    fun getMealByUserId(activity: AppCompatActivity){
+        mFireStore.collection(Constants.MEALS)
+            .whereEqualTo("userId", getCurrentUserId())
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                // Loop through the documents in the query snapshot to get the activity data
+                for (document in querySnapshot.documents) {
+                    val mealData = document.data
+                    // Do something with the activity data here
+                    Log.d("MEAL INFO", "$mealData")
+                }
+            }
+    }
+
+    /* a function to post a meal to the database*/
+    /* TODO: to invoke this function after you got the nutrition from NutritionX or WPIEats */
+
+    fun postAMealData(activity: MockMealActivity,
+                              mealObj: Meal){
+        mFireStore.collection(Constants.MEALS)
+            .add(mealObj)
+            .addOnSuccessListener{
+                Log.e("MEAL ACTIVITY", "Added a meal Successfully to Firebase!")
+                Toast.makeText(activity, "Added a meal Successfully to Firebase!", Toast.LENGTH_SHORT).show()
+//               TODO: activity.mealUpdateSuccess()
+            }
+            .addOnFailureListener{e ->
+                Log.e("MEAL ACTIVITY", "Error Uploading a Meal $e")
+            }
+    }
+
+    /* TODO:  a function to get the activity information */
+
+    fun getExerciseByUserId(activity: AppCompatActivity){
+        mFireStore.collection(Constants.EXERCISES)
+            .whereEqualTo("userId", getCurrentUserId())
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                // Loop through the documents in the query snapshot to get the activity data
+                for (document in querySnapshot.documents) {
+                    val activityData = document.data
+                    // Do something with the activity data here
+                    Log.d("EXERCISE INFO", "$activityData")
+                }
+            }
+    }
+
+    /* function to post the activity information to the database*/
+    /* TODO: to invoke this function after you got record an activity/exercise */
+
+    fun postAnExercise(activity: MockExerciseActivity, exerciseObj: Exercise){
+        mFireStore.collection(Constants.EXERCISES)
+            .add(exerciseObj)
+            .addOnSuccessListener{
+                Log.e("POST EXERCISE", "Exercise Posted Successfully!")
+                Toast.makeText(activity, "Exercise Posted Successfully!", Toast.LENGTH_SHORT).show()
+                activity.exerciseUpdateSuccess()
+            }
+            .addOnFailureListener{e ->
+                Log.e("POST EXERCISE", "Error posting exercise $e")
             }
     }
 

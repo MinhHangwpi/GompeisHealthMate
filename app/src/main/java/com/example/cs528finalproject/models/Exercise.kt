@@ -6,7 +6,7 @@ import android.os.Parcelable
 import androidx.annotation.RequiresApi
 import java.util.*
 
-data class Activity @RequiresApi(Build.VERSION_CODES.O) constructor(
+data class Exercise @RequiresApi(Build.VERSION_CODES.O) constructor(
     val id: String = "",
     val userId: String = "",
     val timestamp: Date = Date(),
@@ -35,13 +35,13 @@ data class Activity @RequiresApi(Build.VERSION_CODES.O) constructor(
         writeDouble(value)
     }
 
-    companion object CREATOR : Parcelable.Creator<Activity> {
+    companion object CREATOR : Parcelable.Creator<Exercise> {
         @RequiresApi(Build.VERSION_CODES.O)
-        override fun createFromParcel(parcel: Parcel): Activity {
-            return Activity(parcel)
+        override fun createFromParcel(parcel: Parcel): Exercise {
+            return Exercise(parcel)
         }
 
-        override fun newArray(size: Int): Array<Activity?> {
+        override fun newArray(size: Int): Array<Exercise?> {
             return arrayOfNulls(size)
         }
     }

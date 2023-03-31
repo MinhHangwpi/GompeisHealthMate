@@ -9,7 +9,7 @@ import java.util.*
 
 data class Meal @RequiresApi(Build.VERSION_CODES.O) constructor(
     val id: String = "",
-    val userID: String = "",
+    val userId: String = "",
     val timestamp: Date = Date(),
     val foodName: String = "",
     val totalCalories: Double = 0.0,
@@ -37,7 +37,7 @@ data class Meal @RequiresApi(Build.VERSION_CODES.O) constructor(
 
     override fun writeToParcel(dest: Parcel, flags: Int) = with(dest) {
         writeString(id)
-        writeString(userID)
+        writeString(userId)
         writeLong(timestamp.time)
         writeString(foodName)
         writeDouble(totalCalories)

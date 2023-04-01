@@ -3,12 +3,18 @@ package com.example.cs528finalproject
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.View
+import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
 import com.example.cs528finalproject.databinding.ActivityBarcodeScanBinding
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanning
+import org.json.JSONException
+import org.json.JSONObject
 
 class BarcodeScan : AppCompatActivity() {
     private lateinit var binding: ActivityBarcodeScanBinding
@@ -24,7 +30,9 @@ class BarcodeScan : AppCompatActivity() {
             .build()
         val scanner = GmsBarcodeScanning.getClient(this, options)
 
-        binding.scanButton.setOnClickListener{
+        // TODO: On confirm click, send json data to database
+
+        binding.scanButton.setOnClickListener {
             // Open google code scanner
             scanner.startScan()
                 .addOnSuccessListener { barcode ->
@@ -37,12 +45,12 @@ class BarcodeScan : AppCompatActivity() {
                         Request.Method.GET,
                         "https://trackapi.nutritionix.com/v2/search/item?upc=$upc",
                         { response ->
-                            Log.d("BarcodeScan", "NutritionX API Response: $response")
-                            //TODO: Update UI
+                            Log.d("BarcodeScan", "NutritionX API 200 Response: $response")
+                            updateUI(response)
                         },
                         { error ->
                             Log.d("BarcodeScan", "NutritionX API error: $error")
-                            //TODO: Tell user item not found if 404
+                            Toast.makeText(this, "UPC:$upc not found",Toast.LENGTH_SHORT).show()
                         },
                         applicationContext.getString(R.string.nutritionX_APP_ID),
                         applicationContext.getString(R.string.nutritionX_API_KEY)
@@ -56,6 +64,40 @@ class BarcodeScan : AppCompatActivity() {
                 .addOnFailureListener { e ->
                     Log.d("BarcodeScan", "Scan error: $e")
                 }
+        }
+
+        // Update totalCalories
+        binding.numServings.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                val calPerServing = binding.calPerServing.text.toString().toIntOrNull()
+                val servings = binding.numServings.text.toString().toIntOrNull()
+                if(calPerServing != null && servings != null){
+                    binding.totalCal.text = (calPerServing * servings).toString()
+                }
+                return@OnKeyListener true
+            }
+            false
+        })
+    }
+
+    // Parses response as JSON to update UI
+    private fun updateUI(response: String) {
+        try {
+            val json = JSONObject(response).getJSONArray("foods").getJSONObject(0)
+            val foodName = json.getString("food_name")
+            val calPerServing = json.getInt("nf_calories")
+            val img = json.getJSONObject("photo").getString("thumb")
+
+            binding.foodName.text = foodName
+            binding.calPerServing.text = calPerServing.toString()
+
+            Glide.with(applicationContext)
+                .load(img)
+                .centerInside()
+                .into(binding.foodImage)
+
+        } catch (e: JSONException) {
+            Log.d("BarcodeScan", "JSON Parse error: $e")
         }
     }
 }

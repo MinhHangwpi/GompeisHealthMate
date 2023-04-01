@@ -18,25 +18,25 @@
         <ImageView
             android:id="@+id/foodImage"
             android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:layout_marginBottom="50dp"
-            android:scaleType="centerCrop"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
             android:contentDescription="food image" />
 
         <TextView
             android:id="@+id/foodName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Food name"
-            android:textSize="26sp"
+            android:text=""
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/upc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="UPC:"
-            android:textSize="18sp" />
+            android:text=""
+            android:textSize="16sp" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Calories per serving"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/calPerServing"
@@ -61,8 +61,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="0"
-                    android:textSize="18sp" />
+                    android:text=""
+                    android:textSize="16sp" />
             </TableRow>
 
             <TableRow
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:text="Servings consumed"
-                    android:textSize="18sp" />
+                    android:textSize="16sp" />
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
@@ -85,6 +85,7 @@
                         android:id="@+id/numServings"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:inputType="number"
                         android:hint="servings" />
                 </com.google.android.material.textfield.TextInputLayout>
             </TableRow>
@@ -100,7 +101,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Total Calories"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -109,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="0"
+                    android:text=""
                     android:textSize="18sp" />
             </TableRow>
 

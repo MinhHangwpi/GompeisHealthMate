@@ -16,7 +16,7 @@
 
 <!--        Set src dynamically based on food scanned-->
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/foodImage"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
             android:layout_marginBottom="50dp"
@@ -24,12 +24,19 @@
             android:contentDescription="food image" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/foodName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Food name"
             android:textSize="26sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/upc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="UPC:"
+            android:textSize="18sp" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -49,7 +56,7 @@
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/textView3"
+                    android:id="@+id/calPerServing"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -72,11 +79,10 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:layout_marginTop="10dp">
+                    android:layout_weight="1">
 
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/numServings"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="servings" />
@@ -98,7 +104,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/totalCal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -114,7 +120,7 @@
                 android:weightSum="4">
 
                 <ImageButton
-                    android:id="@+id/imageButton"
+                    android:id="@+id/scanButton"
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:layout_height="100dp"
@@ -128,7 +134,7 @@
                     android:layout_weight="0.75"/>
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/confirmButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"

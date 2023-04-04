@@ -31,12 +31,13 @@ class BarcodeScan : AppCompatActivity() {
             .build()
         val scanner = GmsBarcodeScanning.getClient(this, options)
 
-        // TODO: On confirm click, send json data to database and reset nutritonMap/screen?
+        // TODO: On confirm click, send json data to database and reset/toast?
 //        binding.confirmButton.setOnClickListener{
-//
+//          resetUI()
 //        }
 
         binding.scanButton.setOnClickListener {
+            resetUI()
             // Open google code scanner
             scanner.startScan()
                 .addOnSuccessListener { barcode ->
@@ -118,5 +119,17 @@ class BarcodeScan : AppCompatActivity() {
         } catch (e: JSONException) {
             Log.d("BarcodeScan", "JSON Parse error: $e")
         }
+    }
+
+    // Resets values for when user confirms/rescans
+    private fun resetUI(){
+        nutrition.clear()
+        binding.foodName.text = ""
+        binding.upc.text = ""
+        binding.numServings.text?.clear()
+        binding.foodImage.setImageDrawable(null)
+        binding.servingsLayout.visibility = View.INVISIBLE
+        binding.foodLayout.visibility = View.INVISIBLE
+        binding.confirmButton.visibility = View.GONE
     }
 }

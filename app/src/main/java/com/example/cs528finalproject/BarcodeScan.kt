@@ -18,6 +18,7 @@ import org.json.JSONObject
 
 class BarcodeScan : AppCompatActivity() {
     private lateinit var binding: ActivityBarcodeScanBinding
+    private val nutrition = mutableMapOf<String,Double>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +31,10 @@ class BarcodeScan : AppCompatActivity() {
             .build()
         val scanner = GmsBarcodeScanning.getClient(this, options)
 
-        // TODO: On confirm click, send json data to database
+        // TODO: On confirm click, send json data to database and reset nutritonMap/screen?
+//        binding.confirmButton.setOnClickListener{
+//
+//        }
 
         binding.scanButton.setOnClickListener {
             // Open google code scanner
@@ -66,13 +70,21 @@ class BarcodeScan : AppCompatActivity() {
                 }
         }
 
-        // Update totalCalories
+        // Update nutrition & calories
         binding.numServings.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                val calPerServing = binding.calPerServing.text.toString().toIntOrNull()
-                val servings = binding.numServings.text.toString().toIntOrNull()
-                if(calPerServing != null && servings != null){
-                    binding.totalCal.text = (calPerServing * servings).toString()
+                val servings = binding.numServings.text.toString().toDoubleOrNull()
+                if(servings != null && nutrition.isNotEmpty()){
+                    binding.totalCal.text = (nutrition["calories"]?.times(servings)).toString()
+                    binding.carbs.text = "Carbs:${(nutrition["carbs"]?.times(servings)).toString()}g"
+                    binding.fat.text = "Fat:${(nutrition["fat"]?.times(servings)).toString()}g"
+                    binding.fiber.text = "Fiber:${(nutrition["fiber"]?.times(servings)).toString()}g"
+                    binding.protein.text = "Protein:${(nutrition["protein"]?.times(servings)).toString()}g"
+                    binding.sodium.text = "Sodium:${(nutrition["sodium"]?.times(servings)).toString()}mg"
+                    binding.sugar.text = "Sugar:${(nutrition["sugar"]?.times(servings)).toString()}g"
+
+                    binding.foodLayout.visibility = View.VISIBLE
+                    binding.confirmButton.visibility = View.VISIBLE
                 }
                 return@OnKeyListener true
             }
@@ -85,11 +97,18 @@ class BarcodeScan : AppCompatActivity() {
         try {
             val json = JSONObject(response).getJSONArray("foods").getJSONObject(0)
             val foodName = json.getString("food_name")
-            val calPerServing = json.getInt("nf_calories")
             val img = json.getJSONObject("photo").getString("thumb")
 
+            nutrition["calories"] = json.getDouble("nf_calories")
+            nutrition["carbs"] = json.getDouble("nf_total_carbohydrate")
+            nutrition["fat"] = json.getDouble("nf_total_fat")
+            nutrition["fiber"] = json.getDouble("nf_dietary_fiber")
+            nutrition["protein"] = json.getDouble("nf_protein")
+            nutrition["sodium"] = json.getDouble("nf_sodium")
+            nutrition["sugar"] = json.getDouble("nf_sugars")
+
+            binding.servingsLayout.visibility = View.VISIBLE
             binding.foodName.text = foodName
-            binding.calPerServing.text = calPerServing.toString()
 
             Glide.with(applicationContext)
                 .load(img)

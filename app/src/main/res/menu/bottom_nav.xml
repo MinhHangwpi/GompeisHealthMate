@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Activities"
+        android:id="@+id/activities"
+        android:icon="@drawable/baseline_directions_run_24"/>
+    <item android:title="Food"
+        android:id="@+id/food"
+        android:icon="@drawable/baseline_food_bank_24"/>
+    <item android:title="Scan"
+        android:id="@+id/scan"
+        android:icon="@drawable/baseline_camera_alt_24"/>
+    <item android:title="Profile"
+        android:id="@+id/profile"
+        android:icon="@drawable/baseline_person_24"/>
+</menu>

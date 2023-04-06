@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MockExerciseActivity"
+    android:orientation="vertical">
+
+    <!--    DEMO ONLY -->
+    <!--    Note: this is a demo screen to show that you can post data to firestore,-->
+    <!--    In reality, this data should come from the Calories Calculator from Activity Transition-->
+<!--    NOTE: timestamp and activity ID will be generated using the Date() function and UUID-->
+
+    <TextView
+        android:id="@+id/tv_exercise_tile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="EXERCISE INFORMATION"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="20dp"
+        />
+
+
+    <ImageView
+        android:id="@+id/iv_exercise_icon"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/ic_baseline_directions_run_24" />
+
+    <TextView
+        android:id="@+id/tv_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="User Name: ..."
+        android:layout_margin="10dp"
+        />
+
+    <TextView
+        android:id="@+id/tv_userid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="User ID: ..."
+        android:layout_margin="10dp"
+        />
+
+
+    <EditText
+        android:id="@+id/et_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Activity Type"
+        android:inputType="text" />
+    <EditText
+        android:id="@+id/et_duration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Activity Duration (in minutes)"
+        android:inputType="numberDecimal" />
+
+    <EditText
+        android:id="@+id/et_value"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Activity Value"
+        android:inputType="numberDecimal" />
+
+    <Button
+        android:id="@+id/btn_post"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Post Data To Firestore" />
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Go back to Main" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>

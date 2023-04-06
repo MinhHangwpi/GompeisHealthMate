@@ -71,7 +71,7 @@ class FireStoreClass {
 
     /* TODO:  a function to get the meal information */
 
-    fun getMealByUserId(activity: AppCompatActivity){
+    fun getMealByUserId(){
         mFireStore.collection(Constants.MEALS)
             .whereEqualTo("userId", getCurrentUserId())
             .get()
@@ -93,7 +93,7 @@ class FireStoreClass {
         mFireStore.collection(Constants.MEALS)
             .add(mealObj)
             .addOnSuccessListener{
-                Log.e("MEAL ACTIVITY", "Added a meal Successfully to Firebase!")
+                Log.d("MEAL ACTIVITY", "Added a meal Successfully to Firebase!")
                 Toast.makeText(activity, "Added a meal Successfully to Firebase!", Toast.LENGTH_SHORT).show()
 //               TODO: activity.mealUpdateSuccess()
             }
@@ -104,7 +104,7 @@ class FireStoreClass {
 
     /* TODO:  a function to get the activity information */
 
-    fun getExerciseByUserId(activity: AppCompatActivity){
+    fun getExerciseByUserId(){
         mFireStore.collection(Constants.EXERCISES)
             .whereEqualTo("userId", getCurrentUserId())
             .get()
@@ -125,7 +125,7 @@ class FireStoreClass {
         mFireStore.collection(Constants.EXERCISES)
             .add(exerciseObj)
             .addOnSuccessListener{
-                Log.e("POST EXERCISE", "Exercise Posted Successfully!")
+                Log.d("POST EXERCISE", "Exercise Posted Successfully!")
                 Toast.makeText(activity, "Exercise Posted Successfully!", Toast.LENGTH_SHORT).show()
                 activity.exerciseUpdateSuccess()
             }

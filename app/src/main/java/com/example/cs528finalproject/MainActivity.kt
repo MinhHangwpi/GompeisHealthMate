@@ -3,8 +3,6 @@ package com.example.cs528finalproject
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.bumptech.glide.Glide
 import com.example.cs528finalproject.databinding.ActivityMainBinding
 import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.models.User
@@ -55,10 +53,10 @@ class MainActivity : AppCompatActivity() {
             }
 
             btnAllExercises.setOnClickListener {
-                FireStoreClass().getExerciseByUserId(this@MainActivity)
+                FireStoreClass().getExerciseByUserId()
             }
             btnAllMeals.setOnClickListener {
-                FireStoreClass().getMealByUserId(this@MainActivity)
+                FireStoreClass().getMealByUserId()
             }
         }
     }

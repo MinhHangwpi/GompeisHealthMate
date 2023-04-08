@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/intro_background"
     android:orientation="vertical"
-    tools:context=".SignUpActivity">
+    tools:context=".authactivity.SignUpActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_sign_up_activity"

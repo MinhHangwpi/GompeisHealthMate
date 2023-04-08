@@ -4,6 +4,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cs528finalproject.*
+import com.example.cs528finalproject.fragment.ProfileFragment
 import com.example.cs528finalproject.models.Exercise
 import com.example.cs528finalproject.models.Meal
 import com.example.cs528finalproject.models.User
@@ -29,15 +30,15 @@ class FireStoreClass {
             }
     }
 
-    fun updateUserProfileData(activity: UserProfileActivity,
-                              userHashMap: HashMap<String, Any>){
+    fun updateUserProfileData(
+        activity: UserProfileActivity,
+        userHashMap: HashMap<String, Any>){
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())
             .update(userHashMap)
             .addOnSuccessListener{
                 Log.e("UPDATE PROFILE", "Profile Data Updated Successfully!")
                 Toast.makeText(activity, "Profile Data Updated Successfully!", Toast.LENGTH_SHORT).show()
-                activity.profileUpdateSuccess()
             }
             .addOnFailureListener{e ->
                 Log.e("UPDATE PROFILE", "Profile Data Update error $e")
@@ -60,6 +61,7 @@ class FireStoreClass {
                     is MainActivity -> activity.setUserDataInUI(loggedInUser)
                     is MockMealActivity -> activity.setUserDataInUI(loggedInUser)
                     is MockExerciseActivity -> activity.setUserDataInUI(loggedInUser)
+                    is BarcodeScan -> activity.setUserData(loggedInUser)
                     else -> Log.w("FIRESTORE CLASS", "Unhandled activity type: ${activity.javaClass.simpleName}")
                     // TODO: If any future activities need to display user data, add them here too
                 }
@@ -90,6 +92,24 @@ class FireStoreClass {
 
     fun postAMealData(activity: MockMealActivity,
                               mealObj: Meal){
+        mFireStore.collection(Constants.MEALS)
+            .add(mealObj)
+            .addOnSuccessListener{
+                Log.d("MEAL ACTIVITY", "Added a meal Successfully to Firebase!")
+                Toast.makeText(activity, "Added a meal Successfully to Firebase!", Toast.LENGTH_SHORT).show()
+//               TODO: activity.mealUpdateSuccess()
+            }
+            .addOnFailureListener{e ->
+                Log.e("MEAL ACTIVITY", "Error Uploading a Meal $e")
+            }
+    }
+
+
+    /* a function to post a meal to the database*/
+    /* TODO: to invoke this function after you got the nutrition from NutritionX or WPIEats */
+
+    fun postAMealData(activity: BarcodeScan,
+                      mealObj: Meal){
         mFireStore.collection(Constants.MEALS)
             .add(mealObj)
             .addOnSuccessListener{

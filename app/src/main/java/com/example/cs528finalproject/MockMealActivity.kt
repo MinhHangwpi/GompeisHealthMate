@@ -25,12 +25,25 @@ class MockMealActivity : AppCompatActivity() {
 
         FireStoreClass().loadUserData(this@MockMealActivity)
 
-        binding.btnBack.setOnClickListener{
-            startActivity(Intent(this, MainActivity::class.java))
-        }
+//        binding.btnBack.setOnClickListener{
+//            startActivity(Intent(this, MainActivity::class.java))
+//        }
 
         binding.btnPost.setOnClickListener {
             updateMealInfo()
+        }
+
+        binding.bottomNavigationView.setOnItemReselectedListener {
+            when (it.itemId){
+                R.id.activities -> startActivity(Intent(this@MockMealActivity, MockExerciseActivity::class.java))
+                R.id.food -> startActivity(Intent(this@MockMealActivity, MockMealActivity::class.java))
+                R.id.profile -> startActivity(Intent(this@MockMealActivity, UserProfileActivity::class.java))
+                R.id.scan -> startActivity(Intent(this@MockMealActivity, BarcodeScan::class.java))
+                else -> {
+
+                }
+            }
+            true
         }
     }
 

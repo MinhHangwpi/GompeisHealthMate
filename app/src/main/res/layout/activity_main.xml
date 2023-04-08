@@ -16,55 +16,51 @@
         />
 
 <!--    Temporarily placed the logout button in Main Actiivity for POC but will move to User Profile later-->
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Log out"
-        android:layout_gravity="center_horizontal"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_logout"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Log out"-->
+<!--        android:layout_gravity="center_horizontal"/>-->
 
-    <Button
-        android:id="@+id/btn_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Move to user profile page"
-        android:layout_gravity="center_horizontal"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_profile"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Move to user profile page"-->
+<!--        android:layout_gravity="center_horizontal"/>-->
 
-    <Button
-        android:id="@+id/btn_meal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Move to the Meal page"
-        android:layout_gravity="center_horizontal"/>
-    <Button
-        android:id="@+id/btn_exercise"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Move to the Exercise page"
-        android:layout_gravity="center_horizontal"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_meal"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Move to the Meal page"-->
+<!--        android:layout_gravity="center_horizontal"/>-->
+<!--    <Button-->
+<!--        android:id="@+id/btn_exercise"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Move to the Exercise page"-->
+<!--        android:layout_gravity="center_horizontal"/>-->
 
-    <Button
-        android:id="@+id/btn_all_meals"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get all meals by user"
-        android:layout_gravity="center_horizontal"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_all_meals"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Get all meals by user"-->
+<!--        android:layout_gravity="center_horizontal"/>-->
 
-    <Button
-        android:id="@+id/btn_all_exercises"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get all exercises by users"
-        android:layout_gravity="center_horizontal"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_all_exercises"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Get all exercises by users"-->
+<!--        android:layout_gravity="center_horizontal"/>-->
 
     <FrameLayout
         android:id="@+id/frame_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     </FrameLayout>
 

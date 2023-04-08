@@ -1,4 +1,4 @@
-package com.example.cs528finalproject
+package com.example.cs528finalproject.utils
 
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest

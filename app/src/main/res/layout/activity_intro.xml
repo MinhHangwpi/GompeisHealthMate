@@ -8,7 +8,7 @@
     android:background="@drawable/intro_screen_background"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    tools:context=".IntroActivity">
+    tools:context=".authactivity.IntroActivity">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="0dp"

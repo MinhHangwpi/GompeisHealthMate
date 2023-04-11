@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cs528finalproject.*
 import com.example.cs528finalproject.fragment.ProfileFragment
+import com.example.cs528finalproject.fragment.ScanFragment
 import com.example.cs528finalproject.models.Exercise
 import com.example.cs528finalproject.models.Meal
 import com.example.cs528finalproject.models.User
@@ -12,6 +13,7 @@ import com.example.cs528finalproject.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import java.security.AccessController.getContext
 
 class FireStoreClass {
     /* Fire store related code */
@@ -31,7 +33,7 @@ class FireStoreClass {
     }
 
     fun updateUserProfileData(
-        activity: UserProfileActivity,
+        activity: MainActivity,
         userHashMap: HashMap<String, Any>){
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserId())
@@ -47,27 +49,30 @@ class FireStoreClass {
 
     /* load user data */
 
-    fun loadUserData(activity: AppCompatActivity){
-        mFireStore.collection(Constants.USERS) // this performs the same thing as if we are creating a new collection via Firestore console
-            .document(getCurrentUserId()) // want to create doc for every user we have
+    fun loadUserData(activity: AppCompatActivity, callback: (User?) -> Unit) {
+        mFireStore.collection(Constants.USERS)
+            .document(getCurrentUserId())
             .get()
             .addOnSuccessListener { document ->
-                val loggedInUser = document.toObject(User::class.java)!! // make a user object out of the document
-
-                // behave differently depending on different activities
-                when (activity){
-                    is SignInActivity -> activity.signInSuccess(loggedInUser)
-                    is UserProfileActivity -> activity.setUserDataInUI(loggedInUser)
-                    is MainActivity -> activity.setUserDataInUI(loggedInUser)
-                    is MockMealActivity -> activity.setUserDataInUI(loggedInUser)
-                    is MockExerciseActivity -> activity.setUserDataInUI(loggedInUser)
-                    is BarcodeScan -> activity.setUserData(loggedInUser)
-                    else -> Log.w("FIRESTORE CLASS", "Unhandled activity type: ${activity.javaClass.simpleName}")
-                    // TODO: If any future activities need to display user data, add them here too
+                val loggedInUser = document.toObject(User::class.java)
+                if (loggedInUser != null) {
+                    when (activity) {
+                        is SignInActivity -> activity.signInSuccess(loggedInUser)
+                        is MainActivity -> activity.setUserDataInUI(loggedInUser)
+                        is MockExerciseActivity -> activity.setUserDataInUI(loggedInUser)
+                        else -> Log.w(
+                            "FIRESTORE CLASS",
+                            "Unhandled activity type: ${activity.javaClass.simpleName}"
+                        )
+                    }
+                    callback(loggedInUser)
+                } else {
+                    callback(null)
                 }
             }
-            .addOnFailureListener{ e ->
+            .addOnFailureListener { e ->
                 Log.e("FIRESTORE", "Error fetching user info from Firestore")
+                callback(null)
             }
     }
 
@@ -88,10 +93,8 @@ class FireStoreClass {
     }
 
     /* a function to post a meal to the database*/
-    /* TODO: to invoke this function after you got the nutrition from NutritionX or WPIEats */
 
-    fun postAMealData(activity: MockMealActivity,
-                              mealObj: Meal){
+    fun postAMealData(mealObj: Meal, activity: MainActivity){
         mFireStore.collection(Constants.MEALS)
             .add(mealObj)
             .addOnSuccessListener{
@@ -103,26 +106,6 @@ class FireStoreClass {
                 Log.e("MEAL ACTIVITY", "Error Uploading a Meal $e")
             }
     }
-
-
-    /* a function to post a meal to the database*/
-    /* TODO: to invoke this function after you got the nutrition from NutritionX or WPIEats */
-
-    fun postAMealData(activity: BarcodeScan,
-                      mealObj: Meal){
-        mFireStore.collection(Constants.MEALS)
-            .add(mealObj)
-            .addOnSuccessListener{
-                Log.d("MEAL ACTIVITY", "Added a meal Successfully to Firebase!")
-                Toast.makeText(activity, "Added a meal Successfully to Firebase!", Toast.LENGTH_SHORT).show()
-//               TODO: activity.mealUpdateSuccess()
-            }
-            .addOnFailureListener{e ->
-                Log.e("MEAL ACTIVITY", "Error Uploading a Meal $e")
-            }
-    }
-
-    /* TODO:  a function to get the activity information */
 
     fun getExerciseByUserId(){
         mFireStore.collection(Constants.EXERCISES)
@@ -153,6 +136,28 @@ class FireStoreClass {
                 Log.e("POST EXERCISE", "Error posting exercise $e")
             }
     }
+
+    /* fetch the list of foods from a location, on a specific day within a certain caloric limit */
+    //TODO: To invoke this once the user enters a Geofence zone
+    fun fetchFoodMenus(activity: MainActivity){
+        mFireStore.collection(Constants.MENUS)
+            .whereEqualTo("location", "campus-center")
+            .whereEqualTo("date", "2023-4-1")
+            .whereLessThanOrEqualTo("calories", 500)
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val name = document.getString("name")
+                    val calories = document.getDouble("calories")
+                    // Do something with the name and calories
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.d("FIRESTORE", "Error fetching menu items $e")
+            }
+    }
+
+
 
     fun getCurrentUserId(): String {
         var currentUser = FirebaseAuth.getInstance().currentUser // if this return null, there is no current user

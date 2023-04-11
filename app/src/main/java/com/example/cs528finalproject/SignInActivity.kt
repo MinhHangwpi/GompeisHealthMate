@@ -55,7 +55,12 @@ class SignInActivity : AppCompatActivity() {
                         Toast.makeText(this, "sign in successful...", Toast.LENGTH_SHORT).show()
 
                         /* Calling the FirestoreClass signInUser function to get the user data from database */
-                        FireStoreClass().loadUserData(this@SignInActivity)
+                        FireStoreClass().loadUserData(this@SignInActivity){ loggedInUser ->
+                            if (loggedInUser != null){
+                            } else {
+                                reload()
+                            }
+                        }
 
                         /* After this we can redirect the user to the MainActivity Screen */
                         startActivity(Intent(this, MainActivity::class.java))

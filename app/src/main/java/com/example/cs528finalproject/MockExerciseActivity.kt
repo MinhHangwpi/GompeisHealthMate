@@ -22,26 +22,14 @@ class MockExerciseActivity : AppCompatActivity() {
         binding = ActivityMockExerciseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        FireStoreClass().loadUserData(this@MockExerciseActivity)
+        FireStoreClass().loadUserData(this@MockExerciseActivity){ e ->
 
-//        binding.btnBack.setOnClickListener {
-//            startActivity(Intent(this, MainActivity::class.java))
-//        }
+        }
+
         binding.btnPost.setOnClickListener {
             updateExerciseInfo()
         }
 
-        binding.bottomNavigationView.setOnItemReselectedListener {
-            when (it.itemId){
-                R.id.activities -> startActivity(Intent(this@MockExerciseActivity, MockExerciseActivity::class.java))
-                R.id.food -> startActivity(Intent(this@MockExerciseActivity, MockMealActivity::class.java))
-                R.id.profile -> startActivity(Intent(this@MockExerciseActivity, UserProfileActivity::class.java))
-                R.id.scan -> startActivity(Intent(this@MockExerciseActivity, BarcodeScan::class.java))
-                else -> {
-                }
-            }
-            true
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

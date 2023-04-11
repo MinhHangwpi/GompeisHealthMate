@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     tools:context=".fragment.ActivitiesFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
         <ProgressBar
             android:id="@+id/progress_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:indeterminateOnly="false"
             android:progressDrawable="@drawable/circle"
-            tools:layout_editor_absoluteX="-16dp"
-            tools:layout_editor_absoluteY="-161dp"
-            tools:progress="40" />
+            tools:progress="40"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="30dp"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -50,8 +50,9 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_gravity="center"
             app:cardCornerRadius="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
@@ -111,8 +112,9 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view1"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:layout_gravity="center"
             app:cardCornerRadius="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/card_view"
@@ -214,7 +216,6 @@
 
         </androidx.cardview.widget.CardView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+    </LinearLayout>
 
 </FrameLayout>

@@ -9,7 +9,7 @@ class FoodLocationsViewModel: ViewModel() {
     private val mutableFoodLocations = MutableLiveData<ArrayList<FoodLocation>>()
     private val mutableSelectedFoodLocation = MutableLiveData<FoodLocation>()
 
-    val selectedUser: LiveData<FoodLocation> get() = mutableSelectedFoodLocation
+    val selectedFoodLocation: LiveData<FoodLocation> get() = mutableSelectedFoodLocation
     val foodLocations: LiveData<ArrayList<FoodLocation>> get() = mutableFoodLocations
 
     fun setFoodLocations(foodLocations: ArrayList<FoodLocation>) {

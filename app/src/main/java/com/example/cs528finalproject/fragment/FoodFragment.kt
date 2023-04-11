@@ -2,6 +2,7 @@ package com.example.cs528finalproject.fragment
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ class FoodFragment : Fragment() {
     private lateinit var binding: FragmentFoodBinding
 
     private var foodLocations : ArrayList<FoodLocation> ?= null
-    private var currentView = "FOOD_LOCATION"; // switch between FOOD_LOCATION and MENU screen
+    private var currentView = "FOOD_LOCATION"; // switch between FOOD_LOCATION and FOOD_MENU screen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,11 @@ class FoodFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentFoodBinding.inflate(inflater, container, false)
+
+        binding.btnReplaceMenuFragment.setOnClickListener { //your implementation goes here
+            addFragmentToFragment(FoodMenuList())
+            currentView = "FOOD_MENU"
+        }
         return binding.root
     }
 
@@ -47,5 +53,6 @@ class FoodFragment : Fragment() {
         val transaction = childFragmentManager.beginTransaction()
         transaction.replace(binding.frameFoodAndMenuList.id, fragment).commit()
     }
+
 
 }

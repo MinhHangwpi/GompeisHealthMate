@@ -16,6 +16,11 @@
             android:background="@color/browser_actions_bg_grey"
             android:layout_weight="1"
             android:text="Placeholder for map fragment" />
+        <Button
+            android:id="@+id/btn_replace_menu_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Replace Fragment ->" />
 
         <FrameLayout
             android:id="@+id/frame_food_and_menu_list"

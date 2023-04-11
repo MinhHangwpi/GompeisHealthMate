@@ -64,17 +64,6 @@ class MainActivity : AppCompatActivity() {
 
     fun setUserDataInUI(user: User){
         mUserDetails = user
-<<<<<<< Updated upstream
-//        // set user name
-//        mUserDetails?.let{
-//            binding.tvUser.text = "Hello, ${user.name}"
-//        }
-=======
-        // set user name
-        mUserDetails?.let{
-//            binding.tvUser.text = "Hello, ${user.name}"
-        }
->>>>>>> Stashed changes
     }
 
     private fun reload() {

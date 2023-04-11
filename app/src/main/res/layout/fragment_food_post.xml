@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fragment.FoodPostFragment">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        >
+        <!--    DEMO ONLY -->
+        <!--    Note: this is a demo screen to show that you can post data to firestore,-->
+        <!--    In reality, this data should come from WPIEats call or from NutritionX-->
+        <!--    NOTE: timestamp and meal ID will be generated using the Date() function and UUID-->
+
+
+        <TextView
+            android:id="@+id/tv_meal_tile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MEAL INFORMATION"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            />
+        <ImageView
+            android:id="@+id/iv_meal_icon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background= "@drawable/ic_baseline_food_bank_24"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="User Name: ..."
+            android:layout_margin="10dp"
+            />
+
+        <TextView
+            android:id="@+id/tv_userid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="User ID: ..."
+            android:layout_margin="10dp"
+            />
+
+        <EditText
+            android:id="@+id/et_food_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint = "Food Name"
+
+            />
+        <EditText
+            android:id="@+id/et_total_calories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Total Calories (kcal)"
+            android:inputType="number" />
+        <EditText
+            android:id="@+id/et_protein"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Protein (in grams)"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/et_carbs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Carbs (in grams)"
+            android:inputType="numberDecimal" />
+        <EditText
+            android:id="@+id/et_fat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fat (in grams)"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/et_fibers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fibers (in grams)"
+            android:inputType="numberDecimal" />
+        <EditText
+            android:id="@+id/et_sugar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Sugar (in grams)"
+            android:inputType="numberDecimal" />
+        <Button
+            android:id="@+id/btn_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Post Data To Firestore" />
+
+
+    </LinearLayout>
+</FrameLayout>

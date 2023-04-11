@@ -17,8 +17,6 @@ import com.example.cs528finalproject.viewmodels.UserViewModel
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var auth: FirebaseAuth
-    private var user: FirebaseUser? = null
     private var mUserDetails: User ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,10 +64,6 @@ class MainActivity : AppCompatActivity() {
 
     fun setUserDataInUI(user: User){
         mUserDetails = user
-//        // set user name
-//        mUserDetails?.let{
-//            binding.tvUser.text = "Hello, ${user.name}"
-//        }
     }
 
     private fun reload() {

@@ -7,11 +7,12 @@ import com.example.cs528finalproject.databinding.ActivityMainBinding
 import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.models.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.cs528finalproject.fragment.*
+import com.example.cs528finalproject.models.FoodLocation
+import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
 import com.example.cs528finalproject.viewmodels.UserViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -27,6 +28,12 @@ class MainActivity : AppCompatActivity() {
 
         // share the User object with ViewModel
         val userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        val foodLocationsViewModel = ViewModelProvider(this)[FoodLocationsViewModel::class.java]
+
+        val foodLocations = ArrayList<FoodLocation>()
+        foodLocations.add(FoodLocation("dunkin", "Dunkin", 0.0, 20.0))
+        foodLocations.add(FoodLocation("dunkin2", "Dunkin2", 0.0, 20.0))
+        foodLocationsViewModel.setFoodLocations(foodLocations)
 
         // To log out
         userViewModel.isLoggedIn.observe(this) { logginStatus ->

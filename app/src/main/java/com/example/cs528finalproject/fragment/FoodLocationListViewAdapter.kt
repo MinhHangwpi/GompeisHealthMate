@@ -50,7 +50,7 @@ class FoodLocationListViewAdapter (private val dataset: ArrayList<*>, mContext: 
         val item: FoodLocation = getItem(position)
         viewHolder.txtName.text = item.name
 
-        viewHolder.txtDistance.text = item.distance.toString()
+        viewHolder.txtDistance.text = item.getDistance().toString()
         return result
     }
 }

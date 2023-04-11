@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         FireStoreClass().loadUserData(this@MainActivity){ loggedInUser ->
             if (loggedInUser != null){
                 mUserDetails = loggedInUser
-                binding.tvUser.text = "Hello, ${loggedInUser.name}"
+//                binding.tvUser.text = "Hello, ${loggedInUser.name}"
                 userViewModel.setUser(loggedInUser)
             } else {
                 reload()
@@ -66,10 +66,10 @@ class MainActivity : AppCompatActivity() {
 
     fun setUserDataInUI(user: User){
         mUserDetails = user
-        // set user name
-        mUserDetails?.let{
-            binding.tvUser.text = "Hello, ${user.name}"
-        }
+//        // set user name
+//        mUserDetails?.let{
+//            binding.tvUser.text = "Hello, ${user.name}"
+//        }
     }
 
     private fun reload() {

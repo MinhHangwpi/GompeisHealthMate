@@ -10,13 +10,16 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.example.cs528finalproject.fragment.*
+import com.example.cs528finalproject.viewmodels.UserViewModel
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     private var user: FirebaseUser? = null
-    private lateinit var mUserDetails: User
+    private var mUserDetails: User ?= null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,58 +27,37 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        auth = FirebaseAuth.getInstance()
+        // share the User object with ViewModel
+        val userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
 
-        user = auth.currentUser
-
-        if (user == null){
-            reload() // if no current user is signed in, direct to the IntroActivity
-        }
-
-        /* Calling the FirestoreClass signInUser function to get the user data from database */
-        FireStoreClass().loadUserData(this@MainActivity)
-
-        binding.apply{
-
-            btnLogout.setOnClickListener {
+        // To log out
+        userViewModel.isLoggedIn.observe(this) { logginStatus ->
+            if (!logginStatus) {
                 FirebaseAuth.getInstance().signOut()
                 reload()
             }
+        }
 
-            btnProfile.setOnClickListener {
-                startActivity(Intent(this@MainActivity, UserProfileActivity::class.java))
-            }
-
-            btnExercise.setOnClickListener{
-                startActivity(Intent(this@MainActivity, MockExerciseActivity::class.java))
-            }
-
-            btnMeal.setOnClickListener{
-                startActivity(Intent(this@MainActivity, MockMealActivity::class.java))
-            }
-
-            btnAllExercises.setOnClickListener {
-                FireStoreClass().getExerciseByUserId()
-            }
-            btnAllMeals.setOnClickListener {
-                FireStoreClass().getMealByUserId()
+        /* Calling the FirestoreClass signInUser function to get the user data from database */
+        FireStoreClass().loadUserData(this@MainActivity){ loggedInUser ->
+            if (loggedInUser != null){
+                mUserDetails = loggedInUser
+                binding.tvUser.text = "Hello, ${loggedInUser.name}"
+                userViewModel.setUser(loggedInUser)
+            } else {
+                reload()
             }
         }
 
-        // Amey's fragment code
-        replaceFragment(Activities());
+        replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
 
         binding.bottomNavigationView.setOnItemSelectedListener {
-
             when(it.itemId){
-
-                R.id.activities -> replaceFragment(Activities())
-                R.id.food -> replaceFragment(Food())
-                R.id.profile -> replaceFragment(Profile())
-                R.id.scan -> replaceFragment(Scan())
-
+                R.id.activities -> replaceFragment(ActivitiesFragment())
+                R.id.food -> replaceFragment(FoodFragment())
+                R.id.profile -> replaceFragment(ProfileFragment())
+                R.id.scan -> replaceFragment(ScanFragment())
                 else ->{
-
                 }
             }
             true
@@ -85,7 +67,9 @@ class MainActivity : AppCompatActivity() {
     fun setUserDataInUI(user: User){
         mUserDetails = user
         // set user name
-        binding.tvUser.text = "Hello, ${user.name}"
+        mUserDetails?.let{
+            binding.tvUser.text = "Hello, ${user.name}"
+        }
     }
 
     private fun reload() {
@@ -94,10 +78,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun replaceFragment(fragment: Fragment) {
-
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.frame_layout, fragment)
+        Log.d("BottomNav", "moving to fragment $fragment")
         fragmentTransaction.commit()
     }
 }

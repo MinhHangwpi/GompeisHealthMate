@@ -22,14 +22,14 @@ class MockExerciseActivity : AppCompatActivity() {
         binding = ActivityMockExerciseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        FireStoreClass().loadUserData(this@MockExerciseActivity)
+        FireStoreClass().loadUserData(this@MockExerciseActivity){ e ->
 
-        binding.btnBack.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
         }
+
         binding.btnPost.setOnClickListener {
             updateExerciseInfo()
         }
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

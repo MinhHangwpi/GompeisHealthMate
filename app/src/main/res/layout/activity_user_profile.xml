@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp">
+    >
     <TextView
         android:id="@+id/tv_user"
         android:layout_width="match_parent"
@@ -12,6 +13,7 @@
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="6dp"
         />
     <ImageView
         android:id="@+id/iv_user_profile_picture"
@@ -19,6 +21,7 @@
         android:layout_height="80dp"
         android:background="@drawable/profile_pic"
         android:layout_gravity="center_horizontal"
+        android:layout_margin="6dp"
         />
 
     <EditText
@@ -28,48 +31,66 @@
         android:hint = "Email"
         android:focusableInTouchMode="false"
         android:focusable="false"
+        android:layout_margin="6dp"
         />
     <EditText
         android:id="@+id/et_age"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Age"
-        android:inputType="number" />
+        android:inputType="number"
+        android:layout_margin="6dp"/>
     <EditText
         android:id="@+id/et_height"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Height (in cm)"
-        android:inputType="numberDecimal" />
+        android:inputType="numberDecimal"
+        android:layout_margin="6dp"/>
     <EditText
         android:id="@+id/et_weight"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Weight (in kg)"
-        android:inputType="numberDecimal" />
+        android:inputType="numberDecimal"
+        android:layout_margin="6dp"/>
     <EditText
         android:id="@+id/et_target"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Your daily target calories intake (kcal)"
-        android:inputType="numberDecimal" />
+        android:inputType="numberDecimal"
+        android:layout_margin="6dp"/>
     <Button
         android:id="@+id/btn_save"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save Profile" />
-    <Button
-        android:id="@+id/btn_back"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Go back To Main" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:text="Save Profile"
+        android:layout_margin="6dp"/>
+<!--    <Button-->
+<!--        android:id="@+id/btn_back"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Go back To Main" />-->
     <Button
         android:id="@+id/btn_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Logout" />
+        android:text="Logout"
+        android:layout_margin="6dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav">
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 </LinearLayout>

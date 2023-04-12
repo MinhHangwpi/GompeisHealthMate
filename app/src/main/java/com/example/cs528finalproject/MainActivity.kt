@@ -47,7 +47,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
+        FireStoreClass().getMealByUserId { meals ->
+            if (meals != null) {
+                userViewModel.setMeals(meals)
+                Log.d("MainActivity setMeals", meals.toString())
+                // Show ActivitiesFragment by default
+                replaceFragment(ActivitiesFragment())
+            }
+        }
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){

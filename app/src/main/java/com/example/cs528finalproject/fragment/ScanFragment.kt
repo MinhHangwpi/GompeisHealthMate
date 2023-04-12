@@ -66,6 +66,7 @@ class ScanFragment : Fragment() {
         binding.confirmButton.setOnClickListener {
             saveMealToDB(myMeal, requireActivity() as MainActivity)
             resetUI()
+            userViewModel.addMeal(myMeal)
         }
 
         binding.scanButton.setOnClickListener {

@@ -43,12 +43,13 @@ class FoodPostFragment : Fragment() {
             setUserDataInUI(it)
         }
         binding.btnPost.setOnClickListener {
-            updateMealInfo()
+            val mealObj = updateMealInfo()
+            userViewModel.addMeal(mealObj)
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun updateMealInfo(){
+    private fun updateMealInfo(): Meal {
         val mealObj = Meal(
             id = UUID.randomUUID().toString(),
             timestamp = Date(System.currentTimeMillis()),
@@ -62,6 +63,7 @@ class FoodPostFragment : Fragment() {
             sugar = binding.etSugar.text.toString().toDouble(),
         )
         saveMealToDB(mealObj, requireActivity() as MainActivity)
+        return mealObj
     }
 
     private fun setUserDataInUI(user: User){

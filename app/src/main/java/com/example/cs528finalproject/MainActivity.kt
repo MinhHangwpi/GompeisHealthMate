@@ -16,6 +16,14 @@ import com.example.cs528finalproject.viewmodels.UserViewModel
 
 class MainActivity : AppCompatActivity() {
 
+    // companion object for notification viewPendingIntent
+    companion object {
+        const val ACTIVITIES_FRAGMENT = 0
+        const val FOOD_FRAGMENT = 1
+        const val PROFILE_FRAGMENT = 2
+        const val SCAN_FRAGMENT = 3
+    }
+
     private lateinit var binding: ActivityMainBinding
     private var mUserDetails: User ?= null
 
@@ -48,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
+        retrieveFragmentIdFromNotificationIntent() // if the user clicks view when the geofence menu pops up
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){
@@ -69,6 +78,19 @@ class MainActivity : AppCompatActivity() {
     private fun reload() {
         startActivity(Intent(this, IntroActivity::class.java))
         finish()
+    }
+
+    private fun retrieveFragmentIdFromNotificationIntent(){
+        val fragmentId = intent?.getIntExtra("FRAGMENT_ID", FOOD_FRAGMENT)
+        when (fragmentId) {
+            FOOD_FRAGMENT -> {
+                // Display the FoodFragment
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.frame_layout, FoodFragment())
+                    .commit()
+            }
+        }
+
     }
 
     private fun replaceFragment(fragment: Fragment) {

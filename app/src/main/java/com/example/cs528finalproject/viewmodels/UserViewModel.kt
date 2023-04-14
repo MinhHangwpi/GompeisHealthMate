@@ -32,9 +32,4 @@ class UserViewModel : ViewModel() {
     fun addMeal(meal: Meal){
         mutableMeals.value?.add(meal)
     }
-
-    fun getCalGained(): Int {
-        val calories = mutableMeals.value?.sumOf { it.totalCalories } ?: 0.0
-        return calories.toInt()
-    }
 }

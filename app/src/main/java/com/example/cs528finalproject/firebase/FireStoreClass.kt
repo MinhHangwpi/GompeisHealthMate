@@ -78,17 +78,21 @@ class FireStoreClass {
 
     /* TODO:  a function to get the meal information */
 
-    fun getMealByUserId(){
+    fun getMealByUserId(callback: (ArrayList<Meal>?) -> Unit) {
         mFireStore.collection(Constants.MEALS)
             .whereEqualTo("userId", getCurrentUserId())
             .get()
             .addOnSuccessListener { querySnapshot ->
+                val meals = ArrayList<Meal>()
                 // Loop through the documents in the query snapshot to get the activity data
                 for (document in querySnapshot.documents) {
-                    val mealData = document.data
-                    // Do something with the activity data here
-                    Log.d("MEAL INFO", "$mealData")
+                    val mealData = document.toObject(Meal::class.java)
+                    if (mealData != null) {
+                        Log.d("MEAL INFO", "$mealData")
+                        meals.add(mealData)
+                    }
                 }
+                callback(meals)
             }
     }
 

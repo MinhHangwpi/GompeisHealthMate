@@ -7,7 +7,6 @@ import com.example.cs528finalproject.databinding.ActivityMainBinding
 import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.models.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -57,6 +56,15 @@ class MainActivity : AppCompatActivity() {
 
         replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
         retrieveFragmentIdFromNotificationIntent() // if the user clicks view when the geofence menu pops up
+
+        FireStoreClass().getMealByUserId { meals ->
+            if (meals != null) {
+                userViewModel.setMeals(meals)
+                Log.d("MainActivity setMeals", meals.toString())
+                // Show ActivitiesFragment by default
+                replaceFragment(ActivitiesFragment())
+            }
+        }
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){

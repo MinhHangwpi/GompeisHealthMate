@@ -89,29 +89,40 @@
                     android:rowCount="2"
                     android:useDefaultMargins="true">
 
-                    <TextView
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:text="35 calories"
-                        android:drawableLeft="@drawable/ic_walk"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="35 calories"
+                            android:drawableLeft="@drawable/still"/>
 
-                    <TextView
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:text="390 steps"
-                        android:drawableLeft="@drawable/ic_walk"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="390 calories"
+                            android:drawableLeft="@drawable/walking"/>
 
-                    <TextView
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:text="128 calories"
-                        android:drawableLeft="@drawable/ic_run"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="128 calories"
+                            android:drawableLeft="@drawable/running"/>
 
-                    <TextView
-                        android:layout_rowWeight="1"
-                        android:layout_columnWeight="1"
-                        android:text="980 calories"
-                        android:drawableLeft="@drawable/ic_rest"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="980 calories"
+                            android:drawableLeft="@drawable/on_bicycle"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="980 calories"
+                            android:drawableLeft="@drawable/in_vehicle"/>
 
                 </GridLayout>
             </LinearLayout>

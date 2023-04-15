@@ -10,7 +10,7 @@ import com.example.cs528finalproject.R
 import com.example.cs528finalproject.models.FoodLocation
 
 class FoodLocationListViewAdapter (private val dataset: ArrayList<*>, mContext: Context):
-    ArrayAdapter<Any?>(mContext, R.layout.list_item_food_location, dataset) {
+    ArrayAdapter<Any?>(mContext, R.layout.list_item_food, dataset) {
     private class ViewHolder {
         lateinit var txtName: TextView
         lateinit var txtDistance: TextView
@@ -35,11 +35,11 @@ class FoodLocationListViewAdapter (private val dataset: ArrayList<*>, mContext: 
         if (convertView == null) {
             viewHolder = ViewHolder()
             convertView =
-                LayoutInflater.from(parent.context).inflate(R.layout.list_item_food_location, parent, false)
+                LayoutInflater.from(parent.context).inflate(R.layout.list_item_food, parent, false)
             viewHolder.txtName =
-                convertView.findViewById(R.id.list_item_location_name)
+                convertView.findViewById(R.id.list_item_name)
             viewHolder.txtDistance =
-                convertView.findViewById(R.id.list_item_location_distance)
+                convertView.findViewById(R.id.list_item_value)
             result = convertView
             convertView.tag = viewHolder
         } else {

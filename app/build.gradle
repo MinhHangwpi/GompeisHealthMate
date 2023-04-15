@@ -66,4 +66,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.5.31"
 
     implementation 'androidx.fragment:fragment-ktx:1.3.6'
+
+    // for google maps and location services
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
 }

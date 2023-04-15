@@ -98,7 +98,6 @@ class MainActivity : AppCompatActivity() {
                     .commit()
             }
         }
-
     }
 
     private fun replaceFragment(fragment: Fragment) {

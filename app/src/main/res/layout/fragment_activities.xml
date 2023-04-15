@@ -92,22 +92,26 @@
                     <TextView
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
-                        android:text="35 calories"/>
+                        android:text="35 calories"
+                        android:drawableLeft="@drawable/ic_walk"/>
 
                     <TextView
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
-                        android:text="390 steps"/>
+                        android:text="390 steps"
+                        android:drawableLeft="@drawable/ic_walk"/>
 
                     <TextView
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
-                        android:text="128 calories"/>
+                        android:text="128 calories"
+                        android:drawableLeft="@drawable/ic_run"/>
 
                     <TextView
                         android:layout_rowWeight="1"
                         android:layout_columnWeight="1"
-                        android:text="980 calories"/>
+                        android:text="980 calories"
+                        android:drawableLeft="@drawable/ic_rest"/>
 
                 </GridLayout>
             </LinearLayout>
@@ -305,5 +309,4 @@
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-
 </FrameLayout>

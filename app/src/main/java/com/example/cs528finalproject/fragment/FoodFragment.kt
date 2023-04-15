@@ -55,7 +55,6 @@ class FoodFragment : Fragment() {
         foodLocation!!.add(FoodLocation("Location 4", 500))
         foodLocation!!.add(FoodLocation("Location 5", 600))
         foodLocation!!.add(FoodLocation("Location 6", 700))
-
     }
 
     override fun onCreateView(
@@ -67,6 +66,10 @@ class FoodFragment : Fragment() {
 
         adapter = context?.let { FoodLocationListViewAdapter(foodLocation!!, it) }!!
         binding.foodLocationList.adapter = adapter
+
+        // get the child fragment manager for the mapsfragment
+        val mapsFragment = MapsFragment()
+        childFragmentManager.beginTransaction().add(R.id.maps_fragment_container, mapsFragment).commit()
 
         binding.btnNoti.setOnClickListener {
             //TODO: trigger the notification here

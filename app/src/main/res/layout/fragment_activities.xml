@@ -121,8 +121,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_columnWeight="1"
-                            android:text="980 calories"
-                            android:drawableLeft="@drawable/in_vehicle"/>
+                            android:text="230 steps"
+                            android:drawableLeft="@drawable/ic_foot_steps"/>
 
                 </GridLayout>
             </LinearLayout>

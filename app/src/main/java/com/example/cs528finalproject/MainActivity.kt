@@ -17,14 +17,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.cs528finalproject.fragment.*
 import com.example.cs528finalproject.receiver.GeofenceBroadcastReceiver
-import com.example.cs528finalproject.utils.Constants
+import com.example.cs528finalproject.utils.GeofenceUtil
 import com.example.cs528finalproject.viewmodels.GeoFenceState
 import com.example.cs528finalproject.viewmodels.UserViewModel
-import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingClient
-import com.google.android.gms.location.GeofencingRequest
 import com.google.android.gms.location.LocationServices
-import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
@@ -95,7 +92,7 @@ class MainActivity : AppCompatActivity() {
 
         // for geofencing
         geofencingClient = LocationServices.getGeofencingClient(this)
-        createGeoFenceList()
+        addGeoFenceListener()
         GeoFenceState.getHomeState().observe(this, Observer { homeVisits ->
             binding.tvHomeGeofence.text = "Home Visits: $homeVisits"
         })
@@ -112,70 +109,10 @@ class MainActivity : AppCompatActivity() {
         PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
     }
 
-    private fun createGeoFenceList() {
-        val geoFences = mutableListOf<Geofence>()
-        geoFences.add(
-            Geofence.Builder()
-            // Set the request ID of the geofence. This is a string to identify this
-            // geofence.
-            .setRequestId(Constants.MH_HOME)
+    private fun addGeoFenceListener() {
 
-            // Set the circular region of this geofence.
-            .setCircularRegion(
-                42.27421032793396, -71.14535053229274,
-                50.0F
-            )
-
-            // Set the expiration duration of the geofence. This geofence gets automatically
-            // removed after this period of time.
-            .setExpirationDuration(TimeUnit.HOURS.toMillis(1))
-
-            // Set the transition types of interest. Alerts are only generated for these
-            // transition. We track entry and exit transitions in this sample.
-            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT or Geofence.GEOFENCE_TRANSITION_DWELL)
-            .setLoiteringDelay(10000)
-
-            // Create the geofence.
-            .build()
-        )
-
-        geoFences.add(
-            Geofence.Builder()
-            // Set the request ID of the geofence. This is a string to identify this
-            // geofence.
-            .setRequestId(Constants.LOCATION_LIBRARY)
-
-            // Set the circular region of this geofence.
-            .setCircularRegion(
-                42.2742, -71.8066,
-//                42.263677, -71.802229,
-                30.0F
-            )
-
-            // Set the expiration duration of the geofence. This geofence gets automatically
-            // removed after this period of time.
-            .setExpirationDuration(TimeUnit.HOURS.toMillis(1))
-
-            // Set the transition types of interest. Alerts are only generated for these
-            // transition. We track entry and exit transitions in this sample.
-            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT or Geofence.GEOFENCE_TRANSITION_DWELL)
-            .setLoiteringDelay(10000)
-
-            // Create the geofence.
-            .build()
-        )
-
-        // Build the geofence request
-        val geofencingRequest = GeofencingRequest.Builder()
-            // The INITIAL_TRIGGER_ENTER flag indicates that geofencing service should trigger a
-            // GEOFENCE_TRANSITION_ENTER notification when the geofence is added and if the device
-            // is already inside that geofence.
-            .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_DWELL)
-
-            // Add the geofences to be monitored by geofencing service.
-            .addGeofences(geoFences)
-            .build()
-
+        val geoFences = GeofenceUtil.createGeoFenceList()
+        val geofencingRequest = GeofenceUtil.getGeofencingRequest(geoFences)
         // First, remove any existing geofences that use our pending intent
         geofencingClient.removeGeofences(geofencePendingIntent)?.run {
             // Regardless of success/failure of the removal, add the new geofence
@@ -201,7 +138,6 @@ class MainActivity : AppCompatActivity() {
                     }
                     addOnFailureListener { exception ->
                         Log.e("GEOFENCE", "Error adding geofences: ${exception.message}")
-//                        Log.e("GEOFENCE", "FAILURE LISTENER...")
                     }
                 }
             }

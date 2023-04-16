@@ -16,8 +16,8 @@ class GeofenceUtil {
 
                 // Set the circular region of this geofence.
                 .setCircularRegion(
-                    42.27459784142134, -71.14521142996533,
-                    30.0F
+                    42.27421032793396, -71.14535053229274,
+                    50.0F
                 )
 
                 // Set the expiration duration of the geofence. This geofence gets automatically
@@ -62,7 +62,7 @@ class GeofenceUtil {
 
         fun getGeofencingRequest(geofences: List<Geofence>): GeofencingRequest {
             return GeofencingRequest.Builder()
-                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER)
+                .setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_DWELL)
                 .addGeofences(geofences)
                 .build()
         }

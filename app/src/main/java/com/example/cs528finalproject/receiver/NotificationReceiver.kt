@@ -1,4 +1,5 @@
-package com.example.cs528finalproject.services
+package com.example.cs528finalproject.receiver
+
 
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -6,7 +7,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.example.cs528finalproject.MainActivity
-import com.example.cs528finalproject.R
 
 class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
@@ -16,7 +16,7 @@ class NotificationReceiver : BroadcastReceiver() {
                 val viewIntent = Intent(context, MainActivity::class.java)
                 intent.putExtra("FRAGMENT_ID", MainActivity.FOOD_FRAGMENT)
                 viewIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                val viewPendingIntent = PendingIntent.getActivity(context, 0, viewIntent, 0)
+                val viewPendingIntent = PendingIntent.getActivity(context, 0, viewIntent, PendingIntent.FLAG_CANCEL_CURRENT)
                 viewPendingIntent.send()
             }
             "IGNORE" -> {

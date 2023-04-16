@@ -9,4 +9,17 @@ object Constants {
 
     const val MH_HOME : String = "MH_HOME_LOCATION"
     const val LOCATION_LIBRARY : String = "LOCATION_LIBRARY"
+
+    const val CALORIES: String = "calories"
+    const val CARBS: String = "carbs"
+    const val FAT: String = "fat"
+    const val FIBER: String = "fiber"
+    const val PROTEIN: String = "protein"
+    const val SUGAR: String = "sugar"
+    const val DV_CAL: Double = 2000.0
+    const val DV_CARBS: Double = 275.0
+    const val DV_FAT: Double = 78.0
+    const val DV_FIBER: Double = 28.0
+    const val DV_PROTEIN: Double = 50.0
+    const val DV_SUGAR: Double = 50.0
 }

@@ -6,15 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import com.example.cs528finalproject.R
-import com.example.cs528finalproject.databinding.ActivityMainBinding
 import com.example.cs528finalproject.databinding.FragmentFoodBinding
-import com.example.cs528finalproject.databinding.FragmentFoodPostBinding
-import com.example.cs528finalproject.databinding.FragmentProfileBinding
 import com.example.cs528finalproject.models.FoodLocation
-import com.example.cs528finalproject.services.NotificationUtils
+import com.example.cs528finalproject.utils.NotificationUtils
 
 /**
  * A simple [Fragment] subclass.

@@ -12,6 +12,18 @@ class DashboardUtils {
             return meals.sumOf { it.totalCalories }.toInt()
         }
 
+        // Calculated % daily value progress of nutrients from list of meals
+        fun getNutrientProgress(meals: ArrayList<Meal>): Map<String,Int> {
+            return mapOf(
+                Constants.CALORIES to (100 * (meals.sumOf { it.totalCalories } / Constants.DV_CAL)).toInt(),
+                Constants.CARBS to (100 * (meals.sumOf { it.carbs } / Constants.DV_CARBS)).toInt(),
+                Constants.FAT to (100 * (meals.sumOf { it.fat } / Constants.DV_FAT)).toInt(),
+                Constants.FIBER to (100 * (meals.sumOf { it.fibers } / Constants.DV_FIBER)).toInt(),
+                Constants.PROTEIN to (100 * (meals.sumOf { it.protein } / Constants.DV_PROTEIN)).toInt(),
+                Constants.SUGAR to (100 * (meals.sumOf { it.sugar } / Constants.DV_SUGAR)).toInt()
+            )
+        }
+
         // Filters list of all user meals to get ones for particular day
         fun filterMeals(meals: ArrayList<Meal>, curDate: Calendar): List<Meal> {
             return meals.filter { meal ->

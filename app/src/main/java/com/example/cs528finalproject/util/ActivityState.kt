@@ -1,3 +1,5 @@
+package com.example.cs528finalproject.util
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.location.DetectedActivity

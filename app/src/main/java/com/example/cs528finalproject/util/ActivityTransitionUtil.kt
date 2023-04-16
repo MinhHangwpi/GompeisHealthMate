@@ -1,11 +1,23 @@
 package com.example.cs528finalproject.util
 
+import android.Manifest
+import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.google.android.gms.location.ActivityTransition
 import com.google.android.gms.location.ActivityTransitionRequest
 import com.google.android.gms.location.DetectedActivity
+import pub.devrel.easypermissions.EasyPermissions
 
 
-class ActivityTransitionUtil {
+object ActivityTransitionUtil {
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    fun hasActivityTransitionPermission(context: Context) : Boolean =
+        EasyPermissions.hasPermissions(
+            context,
+            Manifest.permission.ACTIVITY_RECOGNITION
+        )
 
     private fun getTransitions(): MutableList<ActivityTransition>{
 //         build a list of transitions
@@ -66,22 +78,22 @@ class ActivityTransitionUtil {
 
     // helper function to see which state we are in.
 
-        fun toActivityString(activity: Int) : String{
-            return when(activity){
-                DetectedActivity.STILL -> "STILL"
-                DetectedActivity.WALKING -> "WALKING"
-                DetectedActivity.IN_VEHICLE -> "IN_VEHICLE"
-                DetectedActivity.RUNNING -> "RUNNING"
-                else -> "UNKNOWN"
-            }
+    fun toActivityString(activity: Int) : String{
+        return when(activity){
+            DetectedActivity.STILL -> "STILL"
+            DetectedActivity.WALKING -> "WALKING"
+            DetectedActivity.IN_VEHICLE -> "IN_VEHICLE"
+            DetectedActivity.RUNNING -> "RUNNING"
+            else -> "UNKNOWN"
         }
+    }
 
-        fun toTransitionType(transitionType: Int): String {
-            return when(transitionType){
-                ActivityTransition.ACTIVITY_TRANSITION_ENTER -> "Enter"
-                ActivityTransition.ACTIVITY_TRANSITION_EXIT -> "Exit"
-                else -> "UNKNOWN"
-            }
+    fun toTransitionType(transitionType: Int): String {
+        return when(transitionType){
+            ActivityTransition.ACTIVITY_TRANSITION_ENTER -> "Enter"
+            ActivityTransition.ACTIVITY_TRANSITION_EXIT -> "Exit"
+            else -> "UNKNOWN"
         }
+    }
 
 }

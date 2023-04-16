@@ -36,13 +36,22 @@ class DashboardUtils {
         }
 
         // TODO: // Sums calorie burned from list of execises
-        fun getCalBurned(exercises: ArrayList<Exercise>): Int {
-//            return exercises.sumOf { it.totalCalories }.toInt()
+        fun getCalBurnedByType(exercises: ArrayList<Exercise>): Map<String, Int> {
+            return exercises.groupBy { it.type }.mapValues { (_, v) -> v.sumOf { it.value } }
+        }
+
+        fun getTotalCaloriesBurned(exercises: ArrayList<Exercise>): Int{
+            return exercises.sumOf { it.value }.toInt()
         }
 
         // TODO: Filters list of exercises to get a set of exercises for a particular day
-        fun filterExercises(exercises: ArrayList<Exercise>, curDate: Calendar): List<Exercise>{
-
+        fun filterExercisesByDate(exercises: ArrayList<Exercise>, curDate: Calendar): List<Exercise>{
+            return exercises.filter { exercise ->
+                val exerciseDate = Calendar.getInstance()
+                exerciseDate.time = exercise.timestamp
+                exerciseDate.get(Calendar.YEAR) == curDate.get(Calendar.YEAR) &&
+                        exerciseDate.get(Calendar.DAY_OF_YEAR) == curDate.get(Calendar.DAY_OF_YEAR)
+            }
         }
 
         // Gets list of days from past week to use in dropdown

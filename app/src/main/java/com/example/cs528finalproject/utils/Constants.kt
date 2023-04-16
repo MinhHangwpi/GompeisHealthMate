@@ -33,7 +33,7 @@ object Constants {
     const val RUNNING: String = "running"
     const val WALKING: String = "walking"
     const val BICYCLING: String = "on-bicycle"
-    const val ONVEHICLE: String = "in-vehicle"
+    const val INVEHICLE: String = "in-vehicle"
     const val STILL: String = "still"
 
 

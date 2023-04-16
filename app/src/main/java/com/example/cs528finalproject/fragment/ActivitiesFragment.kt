@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import com.example.cs528finalproject.databinding.FragmentActivitiesBinding
+import com.example.cs528finalproject.models.Exercise
 import com.example.cs528finalproject.models.Meal
 import com.example.cs528finalproject.utils.Constants
 import com.example.cs528finalproject.utils.DashboardUtils
@@ -29,6 +30,7 @@ class ActivitiesFragment : Fragment() {
     private lateinit var binding: FragmentActivitiesBinding
     private lateinit var foodListAdapter: MealListViewAdapter
     private var meals = ArrayList<Meal>()
+    private var exercises = ArrayList<Exercise>()
     private var curDate = Calendar.getInstance()
 
     //    override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,6 +46,11 @@ class ActivitiesFragment : Fragment() {
             meals =
                 DashboardUtils.filterMeals(userViewModel.meals.value!!, curDate) as ArrayList<Meal>
         }
+        if (userViewModel.exercises.value != null) {
+            exercises =
+                DashboardUtils.filterExercisesByDate(userViewModel.exercises.value!!, curDate) as ArrayList<Exercise>
+        }
+
     }
 
     override fun onCreateView(
@@ -61,6 +68,7 @@ class ActivitiesFragment : Fragment() {
         binding.spinner.adapter = spinnerAdapter
 
         setNutrientProgress()
+        setCaloriesProgress()
         return binding.root
     }
 
@@ -91,11 +99,13 @@ class ActivitiesFragment : Fragment() {
         curDate.time = dateFormat.parse(newDate)!!
 
         meals = DashboardUtils.filterMeals(userViewModel.meals.value!!, curDate) as ArrayList<Meal>
+        exercises = DashboardUtils.filterExercisesByDate(userViewModel.exercises.value!!, curDate) as ArrayList<Exercise>
         foodListAdapter.clear()
         foodListAdapter.addAll(meals)
         foodListAdapter.notifyDataSetChanged()
 
         setNutrientProgress()
+        setCaloriesProgress()
     }
 
     // Sets progress bars and cal gained info
@@ -104,12 +114,27 @@ class ActivitiesFragment : Fragment() {
         val nutrientProgress = DashboardUtils.getNutrientProgress(meals)
         Log.d("NutrientProgress", nutrientProgress.toString())
 
-        binding.calGained.text = "$caloriesGained calories gained"
+        binding.calGained.text = "$caloriesGained cal gained"
         binding.progressBar.progress = nutrientProgress[Constants.CALORIES]!!
         binding.carbsProgress.progress = nutrientProgress[Constants.CARBS]!!
         binding.fatProgress.progress = nutrientProgress[Constants.FAT]!!
         binding.fiberProgress.progress = nutrientProgress[Constants.FIBER]!!
         binding.proteinProgress.progress = nutrientProgress[Constants.PROTEIN]!!
         binding.sugarProgress.progress = nutrientProgress[Constants.SUGAR]!!
+    }
+
+    // set the total calories burned and calories by activity
+    private fun setCaloriesProgress(){
+        val caloriesBurned = DashboardUtils.getTotalCaloriesBurned(exercises)
+        val burnProgress = DashboardUtils.getCalBurnedByType(exercises)
+
+        Log.d("burnProgress", burnProgress.toString() )
+        binding.calBurned.text = "$caloriesBurned cal burned"
+
+        // TODO: Progress bar?
+        binding.tvStill.text = "${burnProgress[Constants.STILL]?.toString() ?: "0"} calories"
+        binding.tvWalking.text = "${burnProgress[Constants.WALKING]?.toString() ?: "0"} calories"
+        binding.tvRunning.text = "${burnProgress[Constants.RUNNING]?.toString() ?: "0"} calories"
+        binding.tvBiking.text = "${burnProgress[Constants.BICYCLING]?.toString() ?: "0"} calories"
     }
 }

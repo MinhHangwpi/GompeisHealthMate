@@ -1,5 +1,6 @@
 package com.example.cs528finalproject
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,13 +8,15 @@ import com.example.cs528finalproject.databinding.ActivityMainBinding
 import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.models.User
 import com.google.firebase.auth.FirebaseAuth
+import com.example.cs528finalproject.utils.Constants.RC_LOCATION_PERM
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.cs528finalproject.fragment.*
 import com.example.cs528finalproject.viewmodels.UserViewModel
+import pub.devrel.easypermissions.EasyPermissions
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks, EasyPermissions.RationaleCallbacks {
 
     // companion object for notification viewPendingIntent
     companion object {
@@ -56,6 +59,15 @@ class MainActivity : AppCompatActivity() {
 
         replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
         retrieveFragmentIdFromNotificationIntent() // if the user clicks view when the geofence menu pops up
+
+        if(!hasLocationPermissions()){
+            // Ask for one permission
+            EasyPermissions.requestPermissions(
+                this,
+                getString(R.string.rationale_location),
+                RC_LOCATION_PERM,
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+        }
 
         FireStoreClass().getMealByUserId { meals ->
             if (meals != null) {
@@ -106,5 +118,25 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         Log.d("BottomNav", "moving to fragment $fragment")
         fragmentTransaction.commit()
+    }
+
+    private fun hasLocationPermissions():Boolean {
+        return EasyPermissions.hasPermissions(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+
+    override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
+        Log.d(TAG, "onPermissionsGranted:" + requestCode + ":" + perms.size)
+    }
+
+    override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
+        Log.d(TAG, "onRationaleAccepted:$requestCode")
+    }
+
+    override fun onRationaleAccepted(requestCode: Int) {
+        Log.d(TAG, "onRationaleAccepted:$requestCode")
+    }
+
+    override fun onRationaleDenied(requestCode: Int) {
+        Log.d(TAG, "onRationaleDenied:$requestCode")
     }
 }

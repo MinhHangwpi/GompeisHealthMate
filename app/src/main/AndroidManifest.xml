@@ -89,6 +89,8 @@
             android:value="barcode_ui"/>
 
         <receiver android:name=".services.NotificationReceiver"/>
+        <receiver android:name=".receiver.GeofenceBroadcastReceiver"/>
+
     </application>
 
 </manifest>

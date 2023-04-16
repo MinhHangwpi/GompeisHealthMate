@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import com.example.cs528finalproject.databinding.FragmentActivitiesBinding
 import com.example.cs528finalproject.models.Meal
+import com.example.cs528finalproject.utils.Constants
 import com.example.cs528finalproject.utils.DashboardUtils
 import com.example.cs528finalproject.viewmodels.UserViewModel
 import java.text.SimpleDateFormat
@@ -28,7 +29,6 @@ class ActivitiesFragment : Fragment() {
     private lateinit var binding: FragmentActivitiesBinding
     private lateinit var foodListAdapter: MealListViewAdapter
     private var meals = ArrayList<Meal>()
-    private var caloriesGained = 0
     private var curDate = Calendar.getInstance()
 
     //    override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +43,6 @@ class ActivitiesFragment : Fragment() {
         if (userViewModel.meals.value != null) {
             meals =
                 DashboardUtils.filterMeals(userViewModel.meals.value!!, curDate) as ArrayList<Meal>
-            caloriesGained = DashboardUtils.getCalGained(meals)
         }
     }
 
@@ -61,7 +60,7 @@ class ActivitiesFragment : Fragment() {
         spinnerAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
         binding.spinner.adapter = spinnerAdapter
 
-        binding.calGained.text = "$caloriesGained calories gained"
+        setNutrientProgress()
         return binding.root
     }
 
@@ -96,7 +95,21 @@ class ActivitiesFragment : Fragment() {
         foodListAdapter.addAll(meals)
         foodListAdapter.notifyDataSetChanged()
 
-        caloriesGained = DashboardUtils.getCalGained(meals)
+        setNutrientProgress()
+    }
+
+    // Sets progress bars and cal gained info
+    private fun setNutrientProgress() {
+        val caloriesGained = DashboardUtils.getCalGained(meals)
+        val nutrientProgress = DashboardUtils.getNutrientProgress(meals)
+        Log.d("NutrientProgress", nutrientProgress.toString())
+
         binding.calGained.text = "$caloriesGained calories gained"
+        binding.progressBar.progress = nutrientProgress[Constants.CALORIES]!!
+        binding.carbsProgress.progress = nutrientProgress[Constants.CARBS]!!
+        binding.fatProgress.progress = nutrientProgress[Constants.FAT]!!
+        binding.fiberProgress.progress = nutrientProgress[Constants.FIBER]!!
+        binding.proteinProgress.progress = nutrientProgress[Constants.PROTEIN]!!
+        binding.sugarProgress.progress = nutrientProgress[Constants.SUGAR]!!
     }
 }

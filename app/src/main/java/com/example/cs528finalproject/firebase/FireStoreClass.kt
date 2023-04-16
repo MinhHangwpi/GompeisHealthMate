@@ -59,7 +59,6 @@ class FireStoreClass {
                     when (activity) {
                         is SignInActivity -> activity.signInSuccess(loggedInUser)
                         is MainActivity -> activity.setUserDataInUI(loggedInUser)
-                        is MockExerciseActivity -> activity.setUserDataInUI(loggedInUser)
                         else -> Log.w(
                             "FIRESTORE CLASS",
                             "Unhandled activity type: ${activity.javaClass.simpleName}"
@@ -111,30 +110,34 @@ class FireStoreClass {
             }
     }
 
-    fun getExerciseByUserId(){
+    fun getExerciseByUserId(callback: (ArrayList<Exercise>?) -> Unit){
         mFireStore.collection(Constants.EXERCISES)
             .whereEqualTo("userId", getCurrentUserId())
             .get()
             .addOnSuccessListener { querySnapshot ->
+                val exercises = ArrayList<Exercise>()
                 // Loop through the documents in the query snapshot to get the activity data
                 for (document in querySnapshot.documents) {
-                    val activityData = document.data
-                    // Do something with the activity data here
-                    Log.d("EXERCISE INFO", "$activityData")
+                    val exerciseData = document.toObject(Exercise::class.java)
+
+                    if (exerciseData != null) {
+                        Log.d("EXERCISE INFO", "$exerciseData")
+                        exercises.add(exerciseData)
+                    }
                 }
+                callback(exercises)
             }
     }
 
     /* function to post the activity information to the database*/
-    /* TODO: to invoke this function after you got record an activity/exercise */
+    /* TODO: to invoke this function after an activity ends (i.e. transition = exit) */
 
-    fun postAnExercise(activity: MockExerciseActivity, exerciseObj: Exercise){
+    fun postAnExercise(activity: MainActivity, exerciseObj: Exercise){
         mFireStore.collection(Constants.EXERCISES)
             .add(exerciseObj)
             .addOnSuccessListener{
                 Log.d("POST EXERCISE", "Exercise Posted Successfully!")
                 Toast.makeText(activity, "Exercise Posted Successfully!", Toast.LENGTH_SHORT).show()
-                activity.exerciseUpdateSuccess()
             }
             .addOnFailureListener{e ->
                 Log.e("POST EXERCISE", "Error posting exercise $e")

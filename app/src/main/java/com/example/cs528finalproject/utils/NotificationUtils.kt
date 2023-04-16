@@ -1,4 +1,4 @@
-package com.example.cs528finalproject.services
+package com.example.cs528finalproject.utils
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.cs528finalproject.MainActivity
 import com.example.cs528finalproject.R
+import com.example.cs528finalproject.receiver.NotificationReceiver
 
 object NotificationUtils {
     private const val CHANNEL_ID = "my_channel_id"
@@ -26,7 +27,7 @@ object NotificationUtils {
         // Create the pending intent for the "View" button
         val viewIntent = Intent(context, MainActivity::class.java)
             .apply{ action = "VIEW"}
-        val viewPendingIntent = PendingIntent.getActivity(context, 0, viewIntent, 0)
+        val viewPendingIntent = PendingIntent.getActivity(context, 0, viewIntent, PendingIntent.FLAG_CANCEL_CURRENT)
 
         // Create the pending intent for the "Ignore" button
         val ignoreIntent = Intent(context, NotificationReceiver::class.java)
@@ -42,6 +43,7 @@ object NotificationUtils {
             .setPriority(NotificationCompat.PRIORITY_HIGH)
             .addAction(R.drawable.ic_baseline_check_24, "View", viewPendingIntent)
             .addAction(R.drawable.ic_baseline_cancel_24, "Ignore", ignorePendingIntent)
+            .setTimeoutAfter(60000)
             .setAutoCancel(true)
 
         // show the notification

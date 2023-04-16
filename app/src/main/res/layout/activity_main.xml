@@ -6,6 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_home_geofence"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Home Visits: 0"/>
+    <TextView
+        android:id="@+id/tv_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Steps: 0"/>
+
+    <TextView
+        android:id="@+id/tv_calories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calories: 0"/>
+
 
     <FrameLayout
         android:id="@+id/frame_layout"

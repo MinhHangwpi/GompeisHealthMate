@@ -107,7 +107,8 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                 this,
                 getString(R.string.rationale_location),
                 RC_LOCATION_PERM,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
             )
         }
 

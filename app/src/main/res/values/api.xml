@@ -2,4 +2,5 @@
 <resources>
     <string name="nutritionX_APP_ID">3aea3103</string>
     <string name="nutritionX_API_KEY">f48d86e44424e6daab641914319ef4e9</string>
+    <string name="maps_API_KEY">AIzaSyBlGx0TcbNXI63XomHhYfpN600-5LH2JgA</string>
 </resources>

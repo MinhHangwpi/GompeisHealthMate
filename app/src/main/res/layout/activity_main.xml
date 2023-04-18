@@ -6,6 +6,42 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/tv_home_geofence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home Visits: 0"
+            android:layout_marginRight="3dp"/>
+        <TextView
+            android:id="@+id/tv_steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Steps: 0"
+            android:layout_marginRight="3dp"/>
+
+        <TextView
+            android:id="@+id/tv_calories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calories: 0"
+            android:layout_marginRight="3dp"/>
+        <TextView
+            android:id="@+id/tv_detected_transition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DetectedTransition: ..."/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_detected_activity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DetectedActivity: ..."/>
 
     <FrameLayout
         android:id="@+id/frame_layout"

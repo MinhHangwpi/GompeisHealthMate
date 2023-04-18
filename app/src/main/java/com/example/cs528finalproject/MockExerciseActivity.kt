@@ -27,22 +27,22 @@ class MockExerciseActivity : AppCompatActivity() {
         }
 
         binding.btnPost.setOnClickListener {
-            updateExerciseInfo()
+//            updateExerciseInfo()
         }
 
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun updateExerciseInfo() {
-        val exerciseObj = Exercise(
-            id = UUID.randomUUID().toString(),
-            timestamp = Date(System.currentTimeMillis()),
-            userId = mUserDetails.id,
-            type = binding.etType.text.toString(),
-            value = binding.etValue.text.toString().toDouble()
-        )
-        FireStoreClass().postAnExercise(this, exerciseObj)
-    }
+//    private fun updateExerciseInfo() {
+//        val exerciseObj = Exercise(
+//            id = UUID.randomUUID().toString(),
+//            timestamp = Date(System.currentTimeMillis()),
+//            userId = mUserDetails.id,
+//            type = binding.etType.text.toString(),
+//            value = binding.etValue.text.toString().toInt()
+//        )
+//        FireStoreClass().postAnExercise(this, exerciseObj)
+//    }
 
     fun setUserDataInUI(user: User) {
         mUserDetails = user

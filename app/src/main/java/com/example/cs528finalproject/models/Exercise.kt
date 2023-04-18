@@ -12,7 +12,7 @@ data class Exercise @RequiresApi(Build.VERSION_CODES.O) constructor(
     val timestamp: Date = Date(),
     val type: String = "",
     val duration: Long = 0,
-    val value: Double = 0.0
+    val value: Int = 0 // value represents calories for activity detected by Activity Transition API, but it represents the number of steps if the type is "steps"
 ) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.O)
     constructor(parcel: Parcel) : this(
@@ -21,7 +21,7 @@ data class Exercise @RequiresApi(Build.VERSION_CODES.O) constructor(
         Date(parcel.readLong()),
         parcel.readString()!!,
         parcel.readLong(),
-        parcel.readDouble()
+        parcel.readInt()
     )
 
     override fun describeContents() = 0
@@ -32,7 +32,7 @@ data class Exercise @RequiresApi(Build.VERSION_CODES.O) constructor(
         writeLong(timestamp.time)
         writeString(type)
         writeLong(duration)
-        writeDouble(value)
+        writeInt(value)
     }
 
     companion object CREATOR : Parcelable.Creator<Exercise> {

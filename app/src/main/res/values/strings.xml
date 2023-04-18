@@ -23,10 +23,24 @@
     <string name="email">Email</string>
     <!-- END -->
 
+    <!-- FOR PERMISSIONS -->
+    <!-- START -->
+    <string name="rationale_location">This app needs access to your location to know where you are.</string>
+    <!-- END -->
+
     <!--    FOR SIGN IN ACTIVITY-->
     <!--START-->
     <string name="sign_in_description_text">Enter your name, email id and password, to register with us.</string>
     <!--    END-->
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--    FOR ACTIVITY RECOGNITION -->
+    <!--START-->
+    <string name="still">You are Still</string>
+    <string name="walking">You are Walking</string>
+    <string name="running">You are Running</string>
+    <string name="in_vehicle">You are in Vehicle</string>
+    <string name="on_bicycle">You are on bicycle</string>
+    <!--    END-->
+
+
 </resources>

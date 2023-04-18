@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".fragment.ActivitiesFragment">
 
     <LinearLayout
@@ -13,13 +14,11 @@
 
         <ProgressBar
             android:id="@+id/progress_bar"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:indeterminateOnly="false"
-            android:progressDrawable="@drawable/circle"
-            tools:progress="40"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
             android:layout_gravity="center_horizontal"
-            android:layout_margin="30dp"/>
+            android:indeterminateOnly="false"
+            android:progressDrawable="@drawable/circle" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -31,96 +30,117 @@
             app:layout_constraintTop_toTopOf="@+id/progress_bar">
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/calGained"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="60 calories gained"
-                android:textStyle="bold"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+                android:text="0 cal gained"
+                android:textStyle="bold" />
+            <!--                android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
+
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/calBurned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="70 calories burned"
-                android:textStyle="bold"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
+                android:text="70 cal burned"
+                android:textStyle="bold" />
+            <!--                android:textAppearance="@style/TextAppearance.AppCompat.Large"-->
 
         </LinearLayout>
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1.5"
             app:cardCornerRadius="4dp"
             app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Activities" />
+                    android:text="Activities"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="2dp"
-                    android:background="#c0c0c0"/>
+                    android:background="#c0c0c0" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <GridLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="35 calories" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="390 steps" />
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="128 calories" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="980 calories" />
-                    </LinearLayout>
-                </LinearLayout>
+                    android:columnCount="2"
+                    android:rowCount="2"
+                    android:useDefaultMargins="true">
 
+                        <TextView
+                            android:id="@+id/tv_still"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="35 calories"
+                            android:drawableLeft="@drawable/still"/>
+
+                        <TextView
+                            android:id="@+id/tv_walking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="390 calories"
+                            android:drawableLeft="@drawable/walking"/>
+
+                        <TextView
+                            android:id="@+id/tv_running"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="128 calories"
+                            android:drawableLeft="@drawable/running"/>
+
+                        <TextView
+                            android:id="@+id/tv_biking"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="980 calories"
+                            android:drawableLeft="@drawable/on_bicycle"/>
+
+                        <TextView
+                            android:id="@+id/tv_steps"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_columnWeight="1"
+                            android:text="230 steps"
+                            android:drawableLeft="@drawable/ic_foot_steps"/>
+
+                </GridLayout>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/card_view1"
+            android:id="@+id/food_card_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_gravity="center"
-            app:cardCornerRadius="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/card_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/progress_bar">
+            android:layout_margin="10dp"
+            android:layout_weight="1.5"
+            app:cardCornerRadius="4dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -128,9 +148,48 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/food_list_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Servings/cal"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#c0c0c0" />
+
+                <ListView
+                    android:id="@+id/food_list_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="2"
+            app:cardCornerRadius="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/food_card_view"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progress_bar"
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Servings/cal" />
+                    android:text="Nutrition breakdown"
+                    android:textStyle="bold" />
 
                 <View
                     android:layout_width="match_parent"
@@ -138,78 +197,109 @@
                     android:background="#c0c0c0" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Fruit/Vegetable" />
-                        <ProgressBar
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:progress="20"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Starchy food" />
-                        <ProgressBar
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:progress="40"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
-                    </LinearLayout>
+                            android:text="Carbs"
+                            android:textSize="14sp"
+                            android:layout_marginRight="20dp"
+                            />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Dairy" />
                         <ProgressBar
-                            android:layout_width="wrap_content"
+                            android:id="@+id/carbs_progress"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="200dp"
                             android:layout_height="wrap_content"
-                            android:progress="80"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
-                    </LinearLayout>
+                            android:layout_alignParentRight="true" />
+                    </RelativeLayout>
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Protein" />
-                        <ProgressBar
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:progress="50"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
-                    </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Fat" />
+                            android:text="Fat"
+                            android:textSize="14sp"
+                            android:layout_marginRight="20dp"
+                            />
+
                         <ProgressBar
+                            android:id="@+id/fat_progress"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:progress="0" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal" />
-                    </LinearLayout>
+                            android:text="Fibers"
+                            android:textSize="14sp"
+                            android:layout_marginRight="20dp"
+                            />
+
+                        <ProgressBar
+                            android:id="@+id/fiber_progress"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Protein"
+                            android:textSize="14sp"
+                            android:layout_marginRight="20dp"
+                            />
+
+                        <ProgressBar
+                            android:id="@+id/protein_progress"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Sugar"
+                            android:textSize="14sp"
+                            android:layout_marginRight="20dp"
+                            />
+
+                        <ProgressBar
+                            android:id="@+id/sugar_progress"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="200dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"/>
+                    </RelativeLayout>
                 </LinearLayout>
 
             </LinearLayout>
@@ -217,5 +307,4 @@
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>
-
 </FrameLayout>

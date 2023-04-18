@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.fragment.app.activityViewModels
 import com.example.cs528finalproject.R
 import com.example.cs528finalproject.databinding.FragmentFoodLocationListBinding
@@ -27,10 +28,21 @@ class FoodMenuList : Fragment() {
 
     private var foodMenu : ArrayList<FoodMenu> ?= null
 
+    private var foodLocation: FoodLocation ?= null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val foodMenusViewModel: FoodMenusViewModel by activityViewModels()
-        foodMenu = foodMenusViewModel.foodLocations.value;
+        val foodLocationsViewModel: FoodLocationsViewModel by activityViewModels()
+        foodMenu = arrayListOf<FoodMenu>();
+        foodLocation = foodLocationsViewModel.selectedFoodLocation.value
+
+        foodMenusViewModel.foodLocations.observe(this) {
+            foodMenu = it
+            adapter = context?.let { FoodMenuListViewAdapter(foodMenu!!, it) }!!
+            binding.foodMenuList.adapter = adapter
+
+        }
 
     }
 
@@ -38,18 +50,10 @@ class FoodMenuList : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         binding = FragmentFoodMenuListBinding.inflate(inflater, container, false)
         adapter = context?.let { FoodMenuListViewAdapter(foodMenu!!, it) }!!
         binding.foodMenuList.adapter = adapter
-
+        binding.txtMenuListLocation.text = foodLocation?.name ?: "Menu"
         return binding.root
-//
-//
-//        adapter = context?.let { FoodMenuListViewAdapter(foodMenu!!, it) }!!
-//        binding.foodMenuList.adapter = adapter
-//
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_food_menu_list, container, false)
     }
 }

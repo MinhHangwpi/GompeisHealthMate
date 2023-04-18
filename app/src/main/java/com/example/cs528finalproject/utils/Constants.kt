@@ -9,6 +9,7 @@ object Constants {
 
 
     const val RC_LOCATION_PERM = 124
+    const val REQUEST_LOCATION_PERMISSION = 1
     const val ACTIVITY_TRANSITION_REQUEST_CODE = 143
     const val ACTIVITY_TRANSITION_REQUEST_CODE_RECEIVER = 166
 

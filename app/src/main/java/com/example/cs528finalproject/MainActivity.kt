@@ -10,38 +10,35 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.cs528finalproject.databinding.ActivityMainBinding
-import com.example.cs528finalproject.firebase.FireStoreClass
-import com.example.cs528finalproject.models.User
-import com.google.firebase.auth.FirebaseAuth
-import com.example.cs528finalproject.utils.Constants.RC_LOCATION_PERM
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.cs528finalproject.databinding.ActivityMainBinding
+import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.fragment.*
 import com.example.cs528finalproject.models.Exercise
-import com.example.cs528finalproject.models.Meal
+import com.example.cs528finalproject.models.User
 import com.example.cs528finalproject.receiver.ActivityTransitionReceiver
 import com.example.cs528finalproject.receiver.GeofenceBroadcastReceiver
 import com.example.cs528finalproject.utils.ActivityTransitionUtil
 import com.example.cs528finalproject.utils.CalorieCalculatorUtil
 import com.example.cs528finalproject.utils.Constants
 import com.example.cs528finalproject.utils.Constants.ACTIVITY_TRANSITION_REQUEST_CODE
+import com.example.cs528finalproject.utils.Constants.RC_LOCATION_PERM
 import com.example.cs528finalproject.utils.GeofenceUtil
 import com.example.cs528finalproject.viewmodels.ActivityState
 import com.example.cs528finalproject.viewmodels.GeoFenceState
 import com.example.cs528finalproject.viewmodels.UserViewModel
 import com.google.android.gms.location.*
-import pub.devrel.easypermissions.EasyPermissions
-
+import com.google.firebase.auth.FirebaseAuth
 import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 import java.util.*
 
 class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
@@ -154,10 +151,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
             requestForActivityUpdates()
         }
 
-        if (!hasLocationPermissions()) {
-            requestLocationPermission()
-        }
-
         // update calories whenever use exits an activity, i.e. transitionType == "EXIT"
         ActivityState.getTransitionType().observe(this, Observer { transitionType ->
             var myExercise = userViewModel.selectedUser.value?.let {
@@ -195,18 +188,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                }
             }
         })
-    }
-
-    private fun requestLocationPermission() {
-        // Ask for one permission
-        EasyPermissions.requestPermissions(
-            this,
-            getString(R.string.rationale_location),
-            RC_LOCATION_PERM,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-        )
     }
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
@@ -283,14 +264,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         Log.d("BottomNav", "moving to fragment $fragment")
         fragmentTransaction.commit()
-    }
-
-    private fun hasLocationPermissions(): Boolean {
-        return EasyPermissions.hasPermissions(
-            this,
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
-        )
     }
 
 
@@ -381,12 +354,17 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun requestActivityTransitionPermission() {
+        val perms = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACTIVITY_RECOGNITION
+        )
         EasyPermissions.requestPermissions(
             this,
             "You need to allow activity transition permissions",
             ACTIVITY_TRANSITION_REQUEST_CODE,
-            Manifest.permission.ACTIVITY_RECOGNITION
+            *perms
         )
     }
 
@@ -399,9 +377,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         running = true;
 
         when {
-            /*countSensor != null -> {
-                sensorManager?.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
-            }*/
             detectorSensor != null -> {
                 sensorManager?.registerListener(this, detectorSensor, SensorManager.SENSOR_DELAY_UI);
             }
@@ -421,12 +396,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         //var steps = binding.steps;
 
         if (running) {
-            /*totalSteps = event!!.values[0];
-            currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
-
-            Log.i("currentSteps", currentSteps.toString())
-            binding.tvSteps.text = "$currentSteps steps"
-            previousTotalSteps = currentSteps.toFloat()*/
             
             if (event != null) {
                 if(event.sensor.getType()==Sensor.TYPE_STEP_DETECTOR){
@@ -454,6 +423,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         requestForActivityUpdates()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         Log.d("PERMISSION", "onRationaleAccepted:$requestCode")
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
@@ -461,5 +431,13 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         } else {
             requestActivityTransitionPermission()
         }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

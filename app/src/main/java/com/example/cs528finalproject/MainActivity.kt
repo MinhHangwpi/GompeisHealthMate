@@ -421,12 +421,12 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         //var steps = binding.steps;
 
         if (running) {
-            totalSteps = event!!.values[0];
+            /*totalSteps = event!!.values[0];
             currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
 
             Log.i("currentSteps", currentSteps.toString())
             binding.tvSteps.text = "$currentSteps steps"
-            previousTotalSteps = currentSteps.toFloat()
+            previousTotalSteps = currentSteps.toFloat()*/
             
             if (event != null) {
                 if(event.sensor.getType()==Sensor.TYPE_STEP_DETECTOR){

@@ -136,5 +136,7 @@ class ActivitiesFragment : Fragment() {
         binding.tvWalking.text = "${burnProgress[Constants.WALKING]?.toString() ?: "0"} calories"
         binding.tvRunning.text = "${burnProgress[Constants.RUNNING]?.toString() ?: "0"} calories"
         binding.tvBiking.text = "${burnProgress[Constants.BICYCLING]?.toString() ?: "0"} calories"
+        binding.tvSteps.text = "${burnProgress[Constants.STEPS]?.toString() ?: "0"} steps"
+
     }
 }

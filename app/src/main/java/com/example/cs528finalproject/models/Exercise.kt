@@ -12,7 +12,7 @@ data class Exercise @RequiresApi(Build.VERSION_CODES.O) constructor(
     val timestamp: Date = Date(),
     val type: String = "",
     val duration: Long = 0,
-    val value: Int = 0
+    val value: Int = 0 // value represents calories for activity detected by Activity Transition API, but it represents the number of steps if the type is "steps"
 ) : Parcelable {
     @RequiresApi(Build.VERSION_CODES.O)
     constructor(parcel: Parcel) : this(

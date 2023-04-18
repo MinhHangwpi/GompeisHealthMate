@@ -181,9 +181,19 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
            when(transitionType) {
 
                 "EXIT" -> {
+
+                    Log.d("ACTIVITY TRANSITION", "Transity type: $transitionType")
                     if (myExercise != null) {
                         FireStoreClass().postAnExercise(this, myExercise)
-                        binding.tvCalories.text = myExercise.value.toString()
+                        //binding.tvCalories.text = myExercise.value.toString()
+
+                        if (myExercise.type == Constants.WALKING || myExercise.type == Constants.RUNNING){
+                            Log.i("steps", currentSteps.toString())
+                            val mySteps = myExercise.copy(type = Constants.STEPS, value = currentSteps)
+
+                            // Post the mySteps object to Firebase
+                            FireStoreClass().postAnExercise(this, mySteps)
+                        }
                     }
                 }
                 "ENTER" -> {

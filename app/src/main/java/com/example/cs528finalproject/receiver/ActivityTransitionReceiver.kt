@@ -42,26 +42,27 @@ class ActivityTransitionReceiver: BroadcastReceiver() {
                         val durationMin = duration / 60
                         val durationSec = duration % 60
 
-                        // TODO: to remove met from here
-                        met = when(activityType){
-                            "STILL" -> 1.0F
-                            "IN_VEHICLE" -> 1.0F
-                            "WALKING" -> 2.5F
-                            "RUNNING" -> 9.0F
-                            "ON_BICYCLE" -> 6.0F
-                            else -> 1F
-                        }
+//                        // TODO: to remove met from here
+//                        met = when(activityType){
+//                            "STILL" -> 1.0F
+//                            "IN_VEHICLE" -> 1.0F
+//                            "WALKING" -> 2.5F
+//                            "RUNNING" -> 9.0F
+//                            "ON_BICYCLE" -> 6.0F
+//                            else -> 1F
+//                        }
+//
+//                        caloriesBurned += ((met * 82 * 3.5 * durationMin)/200).toInt();
+////                        caloriesBurned += CalorieCalculatorUtil().getCalories()
+//
 
-                        caloriesBurned += ((met * 82 * 3.5 * durationMin)/200).toInt();
-//                        caloriesBurned += CalorieCalculatorUtil().getCalories()
-
-
-                        val info = "You were $activityType for ${durationMin}m, ${durationSec}s and burned $caloriesBurned calories"
+                        val info = "You were $activityType for ${durationMin}m, ${durationSec}s"
 
                         // TODO: to convert durationSec into float, but currently just use min for now
                         ActivityState.updateDuration(durationMin)
                         ActivityState.updateTransitionType("EXIT")
                         Toast.makeText(context, info, Toast.LENGTH_LONG).show()
+                        Log.d("ACTIVITY TRANSITION", info)
                     }
                     // Update UI with new activity
                     else if(event.transitionType == ActivityTransition.ACTIVITY_TRANSITION_ENTER){

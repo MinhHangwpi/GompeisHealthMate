@@ -44,4 +44,16 @@ object Constants {
     const val MET_RUNNING: Float = 9.0F
     const val MET_ON_BICYCLE: Float = 6.0F
     const val MET_OTHER: Float = 1F
+
+    fun getMetValue(activityType: String): Float {
+        return when (activityType) {
+            STILL -> MET_STILL
+            RUNNING -> MET_RUNNING
+            WALKING -> MET_WALKING
+            BICYCLING -> MET_ON_BICYCLE
+            INVEHICLE -> MET_IN_VEHICLE
+            // add other cases for other activity types
+            else -> MET_OTHER  // default to still
+        }
+    }
 }

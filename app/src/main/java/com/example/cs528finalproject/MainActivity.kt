@@ -114,7 +114,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         FireStoreClass().getMealByUserId { meals ->
             if (meals != null) {
                 userViewModel.setMeals(meals)
-                Log.d("MainActivity setMeals", meals.toString())
                 // Show ActivitiesFragment by default
                 replaceFragment(ActivitiesFragment())
             }
@@ -123,7 +122,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         FireStoreClass().getExerciseByUserId { exercises ->
             if (exercises != null) {
                 userViewModel.setExercises(exercises)
-                Log.d("MainActivity setMeals", exercises.toString())
                 // Show ActivitiesFragment by default
                 replaceFragment(ActivitiesFragment())
             }
@@ -175,16 +173,23 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                     timestamp = Date(System.currentTimeMillis()),
                     type = ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!),
                     duration = ActivityState.getDuration(),
-                    value = CalorieCalculatorUtil().getCalories(it.weight, Constants.MET_STILL, ActivityState.getDuration())
+                    value = CalorieCalculatorUtil().getCalories(
+                                                    it.weight,
+                                                    Constants.getMetValue(ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!)),
+                                                    ActivityState.getDuration())
                 )
             }
+            // For debugging
+            binding.tvDetectedTransition.text = "DetectedTransition: ${ActivityTransitionUtil.toTransitionType(transitionType)}"
+
            when(transitionType) {
 
-                "EXIT" -> {
+                ActivityTransition.ACTIVITY_TRANSITION_EXIT -> {
 
-                    Log.d("ACTIVITY TRANSITION", "Transity type: $transitionType")
+                    Log.d("ACTIVITY TRANSITION", "Transition type: $transitionType")
                     if (myExercise != null) {
                         FireStoreClass().postAnExercise(this, myExercise)
+                        userViewModel.addExercise(myExercise)
                         //binding.tvCalories.text = myExercise.value.toString()
 
                         if (myExercise.type == Constants.WALKING || myExercise.type == Constants.RUNNING){
@@ -193,16 +198,25 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
 
                             // Post the mySteps object to Firebase
                             FireStoreClass().postAnExercise(this, mySteps)
+                            userViewModel.addExercise(mySteps)
                         }
                     }
+                    Log.d("ACTIVITY TRANSITION", "The user has exited an activity")
                 }
-                "ENTER" -> {
-                    Log.d("ACTIVITY TRANSITION", "The user has entered an activity ${ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!)}")
+                ActivityTransition.ACTIVITY_TRANSITION_ENTER -> {
+                    Log.d("ACTIVITY TRANSITION", "The user has entered an activity")
                 }
                else -> {
                    //do nothing
                }
             }
+        })
+
+
+        // update UI on transition
+        // For debugging
+        ActivityState.getState().observe(this, Observer { activity ->
+            binding.tvDetectedActivity.text = "DetectedActivity: ${ActivityTransitionUtil.toActivityString(activity)}"
         })
     }
 

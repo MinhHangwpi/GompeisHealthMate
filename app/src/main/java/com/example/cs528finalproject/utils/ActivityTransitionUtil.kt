@@ -92,11 +92,12 @@ object ActivityTransitionUtil {
 
     fun toActivityString(activity: Int): String {
         return when (activity) {
-            DetectedActivity.STILL -> "STILL"
-            DetectedActivity.WALKING -> "WALKING"
-            DetectedActivity.IN_VEHICLE -> "IN_VEHICLE"
-            DetectedActivity.RUNNING -> "RUNNING"
-            else -> "UNKNOWN"
+            DetectedActivity.STILL -> Constants.STILL
+            DetectedActivity.WALKING -> Constants.WALKING
+            DetectedActivity.IN_VEHICLE -> Constants.INVEHICLE
+            DetectedActivity.ON_BICYCLE -> Constants.BICYCLING
+            DetectedActivity.RUNNING -> Constants.RUNNING
+            else -> "steps"
         }
     }
 

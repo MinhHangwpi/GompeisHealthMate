@@ -40,7 +40,7 @@ class UserViewModel : ViewModel() {
     fun setExercises(exercises: ArrayList<Exercise>){
         mutableExercises.value = exercises
     }
-    fun addExercises(exercise: Exercise){
+    fun addExercise(exercise: Exercise){
         mutableExercises.value?.add(exercise)
     }
 }

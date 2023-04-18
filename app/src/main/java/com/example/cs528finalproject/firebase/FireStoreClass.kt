@@ -144,6 +144,8 @@ class FireStoreClass {
             }
     }
 
+
+
     /* fetch the list of foods from a location, on a specific day within a certain caloric limit */
     //TODO: To invoke this once the user enters a Geofence zone
     fun fetchFoodMenus(activity: MainActivity){

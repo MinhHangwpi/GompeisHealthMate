@@ -20,10 +20,6 @@ import java.util.*
 
 class ActivityTransitionReceiver: BroadcastReceiver() {
 
-    private var met: Float = 0f;  // metabolic value
-    private var caloriesBurned: Int = 0;
-
-
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onReceive(context: Context?, intent: Intent) {
 
@@ -34,7 +30,7 @@ class ActivityTransitionReceiver: BroadcastReceiver() {
 
                     val activityType = ActivityTransitionUtil.toActivityString(event.activityType)
                     val transitionType = ActivityTransitionUtil.toTransitionType(event.transitionType)
-                    Log.d("TAG", "Transition: $activityType - $transitionType")
+                    Log.d("ACTIVITY TRANSITION", "Transition: $activityType - $transitionType")
 
                     // Display toast with old activity
                     if(event.transitionType == ActivityTransition.ACTIVITY_TRANSITION_EXIT){
@@ -42,25 +38,11 @@ class ActivityTransitionReceiver: BroadcastReceiver() {
                         val durationMin = duration / 60
                         val durationSec = duration % 60
 
-//                        // TODO: to remove met from here
-//                        met = when(activityType){
-//                            "STILL" -> 1.0F
-//                            "IN_VEHICLE" -> 1.0F
-//                            "WALKING" -> 2.5F
-//                            "RUNNING" -> 9.0F
-//                            "ON_BICYCLE" -> 6.0F
-//                            else -> 1F
-//                        }
-//
-//                        caloriesBurned += ((met * 82 * 3.5 * durationMin)/200).toInt();
-////                        caloriesBurned += CalorieCalculatorUtil().getCalories()
-//
-
                         val info = "You were $activityType for ${durationMin}m, ${durationSec}s"
 
                         // TODO: to convert durationSec into float, but currently just use min for now
                         ActivityState.updateDuration(durationMin)
-                        ActivityState.updateTransitionType("EXIT")
+                        ActivityState.updateTransitionType(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
                         Toast.makeText(context, info, Toast.LENGTH_LONG).show()
                         Log.d("ACTIVITY TRANSITION", info)
                     }
@@ -68,7 +50,8 @@ class ActivityTransitionReceiver: BroadcastReceiver() {
                     else if(event.transitionType == ActivityTransition.ACTIVITY_TRANSITION_ENTER){
                         ActivityState.startActivityTimer()
                         ActivityState.updateState(event.activityType)
-                        ActivityState.updateTransitionType("ENTER")
+                        Log.d("ACTIVITY TRANSITION", "Event object: $event")
+                        ActivityState.updateTransitionType(ActivityTransition.ACTIVITY_TRANSITION_ENTER)
                     }
                 }
             }

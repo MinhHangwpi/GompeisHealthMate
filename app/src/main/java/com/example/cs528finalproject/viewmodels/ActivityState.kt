@@ -2,6 +2,7 @@ package com.example.cs528finalproject.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.location.ActivityTransition
 import com.google.android.gms.location.DetectedActivity
 
 object ActivityState {
@@ -9,7 +10,8 @@ object ActivityState {
     private var startTime: Long = 0
     private var duration: Long = 0
     private var calories: Long = 0
-    private val transitionType = MutableLiveData<String>("ENTER")
+    private val transitionType = MutableLiveData<Int>(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
+    private val steps = MutableLiveData<Int>(0)
 
 
     fun updateState(newState: Int) {
@@ -44,11 +46,20 @@ object ActivityState {
         return calories
     }
 
-    fun updateTransitionType(newType: String) {
+    fun updateTransitionType(newType: Int) {
         transitionType.value = newType
     }
 
-    fun getTransitionType(): LiveData<String> {
+    fun getTransitionType(): LiveData<Int> {
         return transitionType
+    }
+
+
+    fun incrementStep() {
+        steps.value = steps.value?.plus(1)
+    }
+
+    fun getSteps() :  LiveData<Int> {
+        return steps
     }
 }

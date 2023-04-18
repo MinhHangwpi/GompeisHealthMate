@@ -7,9 +7,9 @@ import com.example.cs528finalproject.models.FoodLocation
 
 class FoodLocationsViewModel: ViewModel() {
     private val mutableFoodLocations = MutableLiveData<ArrayList<FoodLocation>>()
-    private val mutableSelectedFoodLocation = MutableLiveData<FoodLocation>()
+    private val mutableSelectedFoodLocation = MutableLiveData<FoodLocation?>()
 
-    val selectedFoodLocation: LiveData<FoodLocation> get() = mutableSelectedFoodLocation
+    val selectedFoodLocation: LiveData<FoodLocation?> get() = mutableSelectedFoodLocation
     val foodLocations: LiveData<ArrayList<FoodLocation>> get() = mutableFoodLocations
 
     fun setFoodLocations(foodLocations: ArrayList<FoodLocation>) {
@@ -19,4 +19,9 @@ class FoodLocationsViewModel: ViewModel() {
     fun addFoodLocation(foodLocation: FoodLocation) {
         mutableFoodLocations.value?.add(foodLocation)
     }
+
+    fun setSelectedFoodLocation(foodLocation: FoodLocation?) {
+        mutableSelectedFoodLocation.value = foodLocation
+    }
+
 }

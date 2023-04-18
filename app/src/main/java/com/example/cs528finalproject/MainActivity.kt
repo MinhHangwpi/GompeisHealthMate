@@ -9,6 +9,7 @@ import com.example.cs528finalproject.models.User
 import com.google.firebase.auth.FirebaseAuth
 import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.cs528finalproject.fragment.*
 import com.example.cs528finalproject.models.FoodLocation
@@ -16,6 +17,7 @@ import com.example.cs528finalproject.models.FoodMenu
 import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
 import com.example.cs528finalproject.viewmodels.FoodMenusViewModel
 import com.example.cs528finalproject.viewmodels.UserViewModel
+import java.util.Date
 
 class MainActivity : AppCompatActivity() {
 
@@ -34,13 +36,18 @@ class MainActivity : AppCompatActivity() {
         val foodMenusViewModel = ViewModelProvider(this)[FoodMenusViewModel::class.java]
 
         val foodLocations = ArrayList<FoodLocation>()
+        foodLocations.add(FoodLocation("starbucks", "Starbucks", 0.0, 20.0))
+        foodLocations.add(FoodLocation("goats-head-kitchen", "Goats Head Kitchen", 0.0, 20.0))
+        foodLocations.add(FoodLocation("halal-shack", "Halal Shack", 0.0, 20.0))
+        foodLocations.add(FoodLocation("morgan-dining-hall", "Morgan Dining Hall", 0.0, 20.0))
+        foodLocations.add(FoodLocation("campus-center", "Campus Center", 0.0, 20.0))
         foodLocations.add(FoodLocation("dunkin", "Dunkin", 0.0, 20.0))
-        foodLocations.add(FoodLocation("dunkin2", "Dunkin2", 0.0, 20.0))
+        foodLocations.add(FoodLocation("fuller-dining-hall", "Fuller Dining Hall", 0.0, 20.0))
+        foodLocations.add(FoodLocation("library-marketplace", "Library Marketplace", 0.0, 20.0))
         foodLocationsViewModel.setFoodLocations(foodLocations)
 
+
         val foodMenus = ArrayList<FoodMenu>()
-        foodMenus.add(FoodMenu("food1", "food1", "dunkin", 20.0))
-        foodMenus.add(FoodMenu("food2", "food2", "dunkin", 20.0))
         foodMenusViewModel.setFoodMenus(foodMenus)
 
 
@@ -63,12 +70,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val today = Date()
+        /* Calling the FirestoreClass signInUser function to get the user data from database */
+        FireStoreClass().fetchFoodMenus(this@MainActivity, "halal-shack", today){ foodMenus ->
+            if (foodMenus != null) {
+                foodMenusViewModel.setFoodMenus(foodMenus)
+            }
+        }
+
         replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId){
                 R.id.activities -> replaceFragment(ActivitiesFragment())
-                R.id.food -> replaceFragment(FoodFragment())
+                R.id.food -> navigateToFoodFragment(FoodFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.scan -> replaceFragment(ScanFragment())
                 else ->{
@@ -93,5 +108,12 @@ class MainActivity : AppCompatActivity() {
         fragmentTransaction.replace(R.id.frame_layout, fragment)
         Log.d("BottomNav", "moving to fragment $fragment")
         fragmentTransaction.commit()
+    }
+
+    private fun navigateToFoodFragment(fragment:Fragment) {
+        val foodLocationsViewModel = ViewModelProvider(this)[FoodLocationsViewModel::class.java]
+        foodLocationsViewModel.setSelectedFoodLocation(null)
+
+        replaceFragment(fragment)
     }
 }

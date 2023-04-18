@@ -8,9 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import com.example.cs528finalproject.MainActivity
 import com.example.cs528finalproject.databinding.FragmentFoodBinding
+import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.models.FoodLocation
 import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
+import com.example.cs528finalproject.viewmodels.FoodMenusViewModel
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -28,7 +34,27 @@ class FoodFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         val foodLocationsViewModel: FoodLocationsViewModel by activityViewModels()
+        val foodMenusViewModel: FoodMenusViewModel by activityViewModels()
         foodLocations = foodLocationsViewModel.foodLocations.value;
+
+        foodLocationsViewModel.selectedFoodLocation.observe(this, Observer {
+            if (it == null) {
+                addFragmentToFragment(FoodLocationList())
+                currentView = "FOOD_LOCATION"
+            } else {
+                val today = Date()
+
+                FireStoreClass().fetchFoodMenus(activity as MainActivity, it.id, today){ foodMenus ->
+                    Log.i("FOOD", "food loaded");
+                    if (foodMenus != null) {
+                        foodMenusViewModel.setFoodMenus(foodMenus)
+                    }
+                }
+
+                addFragmentToFragment(FoodMenuList())
+                currentView = "FOOD_MENU"
+            }
+        })
     }
 
     override fun onCreateView(
@@ -46,7 +72,7 @@ class FoodFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        addFragmentToFragment(FoodLocationList())
+//        addFragmentToFragment(FoodLocationList())
     }
 
     private fun addFragmentToFragment(fragment: Fragment){

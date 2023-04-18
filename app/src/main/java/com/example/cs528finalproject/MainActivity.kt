@@ -399,9 +399,9 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         running = true;
 
         when {
-            countSensor != null -> {
+            /*countSensor != null -> {
                 sensorManager?.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
-            }
+            }*/
             detectorSensor != null -> {
                 sensorManager?.registerListener(this, detectorSensor, SensorManager.SENSOR_DELAY_UI);
             }
@@ -427,6 +427,15 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
             Log.i("currentSteps", currentSteps.toString())
             binding.tvSteps.text = "$currentSteps steps"
             previousTotalSteps = currentSteps.toFloat()
+            
+            if (event != null) {
+                if(event.sensor.getType()==Sensor.TYPE_STEP_DETECTOR){
+                    currentSteps++;
+
+                    Log.i("currentSteps", currentSteps.toString())
+                    binding.tvSteps.text = "$currentSteps steps";
+                }
+            }
         }
     }
 

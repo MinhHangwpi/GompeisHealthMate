@@ -40,6 +40,11 @@ import com.example.cs528finalproject.viewmodels.GeoFenceState
 import com.example.cs528finalproject.viewmodels.UserViewModel
 import com.google.android.gms.location.*
 import pub.devrel.easypermissions.EasyPermissions
+import com.example.cs528finalproject.models.FoodLocation
+import com.example.cs528finalproject.models.FoodMenu
+import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
+import com.example.cs528finalproject.viewmodels.FoodMenusViewModel
+import java.util.Date
 
 import pub.devrel.easypermissions.AppSettingsDialog
 import java.util.*
@@ -78,6 +83,24 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
 
         // share the User object with ViewModel
         val userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        val foodLocationsViewModel = ViewModelProvider(this)[FoodLocationsViewModel::class.java]
+        val foodMenusViewModel = ViewModelProvider(this)[FoodMenusViewModel::class.java]
+
+        val foodLocations = ArrayList<FoodLocation>()
+        foodLocations.add(FoodLocation("starbucks", "Starbucks", 0.0, 20.0))
+        foodLocations.add(FoodLocation("goats-head-kitchen", "Goats Head Kitchen", 0.0, 20.0))
+        foodLocations.add(FoodLocation("halal-shack", "Halal Shack", 0.0, 20.0))
+        foodLocations.add(FoodLocation("morgan-dining-hall", "Morgan Dining Hall", 0.0, 20.0))
+        foodLocations.add(FoodLocation("campus-center", "Campus Center", 0.0, 20.0))
+        foodLocations.add(FoodLocation("dunkin", "Dunkin", 0.0, 20.0))
+        foodLocations.add(FoodLocation("fuller-dining-hall", "Fuller Dining Hall", 0.0, 20.0))
+        foodLocations.add(FoodLocation("library-marketplace", "Library Marketplace", 0.0, 20.0))
+        foodLocationsViewModel.setFoodLocations(foodLocations)
+
+
+        val foodMenus = ArrayList<FoodMenu>()
+        foodMenusViewModel.setFoodMenus(foodMenus)
+
 
         // To log out
         userViewModel.isLoggedIn.observe(this) { logginStatus ->
@@ -98,6 +121,14 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
             }
         }
 
+        val today = Date()
+        /* Calling the FirestoreClass signInUser function to get the user data from database */
+        FireStoreClass().fetchFoodMenus(this@MainActivity, "halal-shack", today){ foodMenus ->
+            if (foodMenus != null) {
+                foodMenusViewModel.setFoodMenus(foodMenus)
+            }
+        }
+
         replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
         retrieveFragmentIdFromNotificationIntent() // if the user clicks view when the geofence menu pops up
 
@@ -107,7 +138,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                 this,
                 getString(R.string.rationale_location),
                 RC_LOCATION_PERM,
-                android.Manifest.permission.ACCESS_FINE_LOCATION
+                Manifest.permission.ACCESS_FINE_LOCATION
             )
         }
 
@@ -131,7 +162,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.activities -> replaceFragment(ActivitiesFragment())
-                R.id.food -> replaceFragment(FoodFragment())
+                R.id.food -> navigateToFoodFragment(FoodFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.scan -> replaceFragment(ScanFragment())
                 else -> {
@@ -149,7 +180,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
 
         // for activity recognition and sensor
 
-        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         activityClient = ActivityRecognition.getClient(this)
 
         // Run activity recognition once the app starts
@@ -299,7 +330,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
     private fun hasLocationPermissions(): Boolean {
         return EasyPermissions.hasPermissions(
             this,
-            android.Manifest.permission.ACCESS_FINE_LOCATION
+            Manifest.permission.ACCESS_FINE_LOCATION
         )
     }
 
@@ -442,5 +473,11 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         } else {
             requestActivityTransitionPermission()
         }
+    }
+    private fun navigateToFoodFragment(fragment:Fragment) {
+        val foodLocationsViewModel = ViewModelProvider(this)[FoodLocationsViewModel::class.java]
+        foodLocationsViewModel.setSelectedFoodLocation(null)
+
+        replaceFragment(fragment)
     }
 }

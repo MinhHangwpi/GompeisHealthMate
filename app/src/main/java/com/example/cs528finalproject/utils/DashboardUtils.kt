@@ -35,13 +35,26 @@ class DashboardUtils {
             }
         }
 
+        fun getHighestSteps(exercises: List<Exercise>): Int {
+            val stepsExercises = exercises.filter { it.type == "steps" }
+            return if (stepsExercises.isNotEmpty()) {
+                stepsExercises.maxByOrNull { it.value }!!.value
+            } else {
+                0
+            }
+        }
+
         // TODO: // Sums calorie burned from list of execises
+
         fun getCalBurnedByType(exercises: ArrayList<Exercise>): Map<String, Int> {
-            return exercises.groupBy { it.type }.mapValues { (_, v) -> v.sumOf { it.value } }
+            return exercises
+                .filterNot { it.type == "steps" }
+                .groupBy { it.type }
+                .mapValues { (_, v) -> v.sumOf { it.value } }
         }
 
         fun getTotalCaloriesBurned(exercises: ArrayList<Exercise>): Int{
-            return exercises.sumOf { it.value }.toInt()
+            return exercises.filterNot{ it.type == Constants.STEPS }.sumOf { it.value }.toInt()
         }
 
         // TODO: Filters list of exercises to get a set of exercises for a particular day

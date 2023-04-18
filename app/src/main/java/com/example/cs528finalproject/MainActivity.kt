@@ -96,8 +96,10 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
             }
         }
 
+
         replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
-        retrieveFragmentIdFromNotificationIntent() // if the user clicks view when the geofence menu pops up
+        retrieveFragmentIdFromNotificationIntent() // TODO: if the user clicks view when the geofence menu pops up
+
 
         FireStoreClass().getMealByUserId { meals ->
             if (meals != null) {
@@ -459,7 +461,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                 if (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
                     currentSteps++;
 
-                    Log.i("currentSteps", currentSteps.toString())
+//                    Log.i("currentSteps", currentSteps.toString())
                     binding.tvSteps.text = "$currentSteps steps";
                 }
             }

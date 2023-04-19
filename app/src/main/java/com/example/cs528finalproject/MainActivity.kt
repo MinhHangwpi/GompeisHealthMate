@@ -167,7 +167,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                         id = UUID.randomUUID().toString(),
                 userId = it.id,
                 timestamp = Date(System.currentTimeMillis()),
-                type = ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!),
+                type = ActivityTransitionUtil.toActivityString(ActivityState.getPrevState().value!!),
                 duration = ActivityState.getDuration(),
                 value = CalorieCalculatorUtil().getCalories(
                     it.weight,
@@ -199,6 +199,8 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                             // Post the mySteps object to Firebase
                             FireStoreClass().postAnExercise(this, mySteps)
                             userViewModel.addExercise(mySteps)
+                            // need to reset this or will be double counting?
+                            currentSteps = 0
                         }
                     }
                     Log.d("ACTIVITY TRANSITION", "The user has exited an activity")

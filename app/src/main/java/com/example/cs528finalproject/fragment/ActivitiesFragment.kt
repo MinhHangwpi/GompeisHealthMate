@@ -134,7 +134,7 @@ class ActivitiesFragment : Fragment() {
     private fun setCaloriesProgress(){
         val caloriesBurned = DashboardUtils.getTotalCaloriesBurned(exercises)
         val burnProgress = DashboardUtils.getCalBurnedByType(exercises)
-        val currentSteps = DashboardUtils.getHighestSteps(exercises)
+        val currentSteps = DashboardUtils.getTotalSteps(exercises)
 
         Log.d("burnProgress", burnProgress.toString() )
         binding.calBurned.text = "$caloriesBurned calories burned"

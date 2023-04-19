@@ -35,13 +35,9 @@ class DashboardUtils {
             }
         }
 
-        fun getHighestSteps(exercises: List<Exercise>): Int {
+        fun getTotalSteps(exercises: List<Exercise>): Int {
             val stepsExercises = exercises.filter { it.type == "steps" }
-            return if (stepsExercises.isNotEmpty()) {
-                stepsExercises.maxByOrNull { it.value }!!.value
-            } else {
-                0
-            }
+            return stepsExercises.sumOf { it.value }
         }
 
         // TODO: // Sums calorie burned from list of execises

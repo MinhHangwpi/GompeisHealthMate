@@ -7,6 +7,7 @@ import com.google.android.gms.location.DetectedActivity
 
 object ActivityState {
     private val state = MutableLiveData<Int>(DetectedActivity.STILL)
+    private val prevState = MutableLiveData<Int>(DetectedActivity.STILL)
     private var startTime: Long = 0
     private var duration: Long = 0
     private var calories: Long = 0
@@ -18,8 +19,16 @@ object ActivityState {
         state.value = newState
     }
 
+    fun updatePrevState() {
+        prevState.value = state.value
+    }
+
     fun getState(): LiveData<Int> {
         return state
+    }
+
+    fun getPrevState(): LiveData<Int> {
+        return prevState
     }
 
     fun startActivityTimer() {

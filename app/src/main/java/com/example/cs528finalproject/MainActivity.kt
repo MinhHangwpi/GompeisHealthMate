@@ -10,30 +10,27 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.cs528finalproject.databinding.ActivityMainBinding
-import com.example.cs528finalproject.firebase.FireStoreClass
-import com.example.cs528finalproject.models.User
-import com.google.firebase.auth.FirebaseAuth
-import com.example.cs528finalproject.utils.Constants.RC_LOCATION_PERM
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.cs528finalproject.databinding.ActivityMainBinding
+import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.fragment.*
 import com.example.cs528finalproject.models.Exercise
-import com.example.cs528finalproject.models.Meal
+import com.example.cs528finalproject.models.User
 import com.example.cs528finalproject.receiver.ActivityTransitionReceiver
 import com.example.cs528finalproject.receiver.GeofenceBroadcastReceiver
 import com.example.cs528finalproject.utils.ActivityTransitionUtil
 import com.example.cs528finalproject.utils.CalorieCalculatorUtil
 import com.example.cs528finalproject.utils.Constants
 import com.example.cs528finalproject.utils.Constants.ACTIVITY_TRANSITION_REQUEST_CODE
+import com.example.cs528finalproject.utils.Constants.RC_LOCATION_PERM
 import com.example.cs528finalproject.utils.GeofenceUtil
 import com.example.cs528finalproject.viewmodels.ActivityState
 import com.example.cs528finalproject.viewmodels.GeoFenceState
@@ -45,6 +42,7 @@ import com.example.cs528finalproject.models.FoodMenu
 import com.example.cs528finalproject.services.LocationService
 import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
 import com.example.cs528finalproject.viewmodels.FoodMenusViewModel
+import com.google.firebase.auth.FirebaseAuth
 import java.util.Date
 
 import pub.devrel.easypermissions.AppSettingsDialog
@@ -133,16 +131,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
         retrieveFragmentIdFromNotificationIntent() // if the user clicks view when the geofence menu pops up
 
-        if (!hasLocationPermissions()) {
-            // Ask for one permission
-            EasyPermissions.requestPermissions(
-                this,
-                getString(R.string.rationale_location),
-                RC_LOCATION_PERM,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        }
-
         FireStoreClass().getMealByUserId { meals ->
             if (meals != null) {
                 userViewModel.setMeals(meals)
@@ -172,6 +160,10 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
             true
         }
 
+        // for activity recognition and sensor
+
+        sensorManager = getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        activityClient = ActivityRecognition.getClient(this)
         // for geofencing
         geofencingClient = LocationServices.getGeofencingClient(this)
         addGeoFenceListener()
@@ -179,26 +171,20 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
             binding.tvHomeGeofence.text = "Home Visits: $homeVisits"
         })
 
-        // for activity recognition and sensor
-
-        sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
-        activityClient = ActivityRecognition.getClient(this)
-
         // Run activity recognition once the app starts
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
             && !ActivityTransitionUtil.hasActivityTransitionPermission(this)
         ) {
-            Toast.makeText(this, "No permission found. Requesting permission for Activity Recognition now...", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this, "No permission found. Requesting permission for Activity Recognition now...", Toast.LENGTH_SHORT).show()
             requestActivityTransitionPermission()
         } else {
             Toast.makeText(this, "Permission for Activity Recognition found. Start detecting now...", Toast.LENGTH_SHORT).show()
             requestForActivityUpdates()
         }
 
-
         // update calories whenever use exits an activity, i.e. transitionType == "EXIT"
         ActivityState.getTransitionType().observe(this, Observer { transitionType ->
-            val myExercise = userViewModel.selectedUser.value?.let {
+            var myExercise = userViewModel.selectedUser.value?.let {
                 Exercise(
                     id = UUID.randomUUID().toString(),
                     userId = it.id,
@@ -342,14 +328,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         fragmentTransaction.commit()
     }
 
-    private fun hasLocationPermissions(): Boolean {
-        return EasyPermissions.hasPermissions(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        )
-    }
-
-
     override fun onRationaleAccepted(requestCode: Int) {
         Log.d("PERMISSION", "onRationaleAccepted:$requestCode")
     }
@@ -437,20 +415,41 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun requestActivityTransitionPermission() {
+        val perms = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACTIVITY_RECOGNITION
+        )
         EasyPermissions.requestPermissions(
             this,
-            "You need to allow activity transition permissions in order to use this feature.",
+            "You need to allow activity transition permissions",
             ACTIVITY_TRANSITION_REQUEST_CODE,
-            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-            Manifest.permission.ACTIVITY_RECOGNITION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
+            *perms
         )
     }
 
     override fun onResume() {
         super.onResume()
+
+        val countSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        val detectorSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+
+        running = true;
+
+        when {
+            detectorSensor != null -> {
+                sensorManager?.registerListener(this, detectorSensor, SensorManager.SENSOR_DELAY_UI);
+            }
+            else -> {
+                Toast.makeText(this, "Your device is not compatible", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        //sensorManager?.unregisterListener(this);
         running = false
     }
 
@@ -458,12 +457,15 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         //var steps = binding.steps;
 
         if (running) {
-            totalSteps = event!!.values[0];
-            currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
+            
+            if (event != null) {
+                if(event.sensor.getType()==Sensor.TYPE_STEP_DETECTOR){
+                    currentSteps++;
 
-            Log.i("currentSteps", currentSteps.toString())
-            binding.tvSteps.text = "$currentSteps steps"
-            previousTotalSteps = currentSteps.toFloat()
+                    Log.i("currentSteps", currentSteps.toString())
+                    binding.tvSteps.text = "$currentSteps steps";
+                }
+            }
         }
     }
 
@@ -473,6 +475,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
 
     override fun onDestroy() {
         super.onDestroy()
+        sensorManager?.unregisterListener(this);
         deregisterForActivityUpdates()
     }
 
@@ -481,6 +484,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         requestForActivityUpdates()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         Log.d("PERMISSION", "onRationaleAccepted:$requestCode")
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
@@ -494,5 +498,13 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         foodLocationsViewModel.setSelectedFoodLocation(null)
 
         replaceFragment(fragment)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

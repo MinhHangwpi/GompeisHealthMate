@@ -166,10 +166,16 @@ class FireStoreClass {
                 for (document in result) {
                     val name = document.getString("name")
                     val calories = document.getDouble("calories")
+                    var carbs = document.getDouble("carbs")
+                    var date = document.getString("date")
+                    var fat = document.getDouble("fat")
+                    var protein = document.getDouble("protein")
+                    var sugar = document.getDouble("sugar")
+                    var fiber = document.getDouble("fiber")
                     val id = document.id
                     if (name != null && calories != null && calories != null) {
                         Log.i("FOOD", name)
-                        foodMenus.add(FoodMenu(id, name, location, calories))
+                        foodMenus.add(FoodMenu(id, name, location, calories, carbs!!, date!!, fat!!, protein!!, sugar!!, fiber!!))
                     }
                 }
                 callback(foodMenus)

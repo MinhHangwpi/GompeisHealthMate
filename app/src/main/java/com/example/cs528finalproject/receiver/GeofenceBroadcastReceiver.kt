@@ -11,7 +11,7 @@ import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofenceStatusCodes
 import com.google.android.gms.location.GeofencingEvent
 
-class GeofenceBroadcastReceiver : BroadcastReceiver() {
+class GeofenceBroadcastReceiver: BroadcastReceiver() {
     private val TAG = "GEOFENCE"
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.d(TAG, "GeofenceBroadcast Receiver received intent: ${intent}")
@@ -40,7 +40,18 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
                 }
             }
 
-            if (fenceId == Constants.MH_HOME) {
+            if (fenceId == Constants.LOCATION_WORCESTER_DOWNTOWN) {
+                Toast.makeText(
+                    context,
+                    "You have been inside the DOWNTOWN Geofence for 10 seconds, incrementing counter",
+                    Toast.LENGTH_LONG
+                ).show()
+                Log.d(
+                    TAG,
+                    "You have been inside the DOWNTOWN Geofence for 10 seconds, incrementing counter"
+                )
+                GeoFenceState.incrementHome()
+            } else if(fenceId == Constants.MH_HOME) {
                 Toast.makeText(context, "You have been inside the Home Geofence for 10 seconds, incrementing counter", Toast.LENGTH_LONG).show()
                 Log.d(TAG, "You have been inside the Home Geofence for 10 seconds, incrementing counter")
                 GeoFenceState.incrementHome()

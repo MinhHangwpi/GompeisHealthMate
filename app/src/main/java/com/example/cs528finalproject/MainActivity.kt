@@ -42,6 +42,7 @@ import com.google.android.gms.location.*
 import pub.devrel.easypermissions.EasyPermissions
 import com.example.cs528finalproject.models.FoodLocation
 import com.example.cs528finalproject.models.FoodMenu
+import com.example.cs528finalproject.services.LocationService
 import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
 import com.example.cs528finalproject.viewmodels.FoodMenusViewModel
 import java.util.Date
@@ -249,6 +250,20 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         ActivityState.getState().observe(this, Observer { activity ->
             binding.tvDetectedActivity.text = "DetectedActivity: ${ActivityTransitionUtil.toActivityString(activity)}"
         })
+
+        binding.bgStart.setOnClickListener{
+            Log.i("LOCATION","TEST CLICK")
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                startService(this)
+            }
+        }
+        binding.bgStop.setOnClickListener{
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_STOP
+                startService(this)
+            }
+        }
     }
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.

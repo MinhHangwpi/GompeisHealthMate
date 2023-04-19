@@ -27,13 +27,13 @@ object NotificationUtils {
         // Create the pending intent for the "View" button
         val viewIntent = Intent(context, MainActivity::class.java)
             .apply{ action = "VIEW"}
-        val viewPendingIntent = PendingIntent.getActivity(context, 0, viewIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+        val viewPendingIntent = PendingIntent.getActivity(context, 0, viewIntent, PendingIntent.FLAG_IMMUTABLE)
 
         // Create the pending intent for the "Ignore" button
         val ignoreIntent = Intent(context, NotificationReceiver::class.java)
             .apply { action = "IGNORE" }
         val ignorePendingIntent =
-            PendingIntent.getBroadcast(context, 0, ignoreIntent, PendingIntent.FLAG_CANCEL_CURRENT)
+            PendingIntent.getBroadcast(context, 0, ignoreIntent, PendingIntent.FLAG_IMMUTABLE)
 
 
         var builder = NotificationCompat.Builder(context, CHANNEL_ID)

@@ -12,6 +12,31 @@ class GeofenceUtil {
             geoFences.add(Geofence.Builder()
                 // Set the request ID of the geofence. This is a string to identify this
                 // geofence.
+                .setRequestId(Constants.LOCATION_WORCESTER_DOWNTOWN)
+
+                // Set the circular region of this geofence.
+                .setCircularRegion(
+//                    42.2642109, -71.8009096,
+                    42.264172, -71.800861,
+                    20.0F
+                )
+
+                // Set the expiration duration of the geofence. This geofence gets automatically
+                // removed after this period of time.
+                .setExpirationDuration(TimeUnit.HOURS.toMillis(1))
+
+                // Set the transition types of interest. Alerts are only generated for these
+                // transition. We track entry and exit transitions in this sample.
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER or Geofence.GEOFENCE_TRANSITION_EXIT or Geofence.GEOFENCE_TRANSITION_DWELL)
+                .setLoiteringDelay(3000)
+
+                // Create the geofence.
+                .build()
+            )
+
+            geoFences.add(Geofence.Builder()
+                // Set the request ID of the geofence. This is a string to identify this
+                // geofence.
                 .setRequestId(Constants.MH_HOME)
 
                 // Set the circular region of this geofence.

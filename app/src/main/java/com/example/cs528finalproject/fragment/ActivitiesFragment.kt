@@ -32,7 +32,7 @@ class ActivitiesFragment : Fragment() {
     private var meals = ArrayList<Meal>()
     private var exercises = ArrayList<Exercise>()
     private var curDate = Calendar.getInstance()
-
+    private lateinit var spinnerDate: String
     //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
 //        val userViewModel: UserViewModel by activityViewModels()
@@ -94,10 +94,8 @@ class ActivitiesFragment : Fragment() {
 
         ActivityState.getTransitionType().observe(viewLifecycleOwner, {transitionType ->
             if (transitionType == ActivityTransition.ACTIVITY_TRANSITION_EXIT){
-                val dateFormat = SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault())
-                val newDate = dateFormat.format(curDate.time)
-                Log.d("UpdateDashboardUI", "Detected Transition: Updating UI for date: $newDate")
-                updateDashboardUI("Tue, Apr 18, 2023") // TODO: Remove hardcoding values.
+                updateDashboardUI(binding.spinner.selectedItem.toString())
+                Log.d("UpdateDashboardUI", "Detected Transition: Updating UI for date: ${binding.spinner.selectedItem.toString()}")
             }
         })
     }

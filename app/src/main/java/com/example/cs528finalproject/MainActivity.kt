@@ -164,16 +164,16 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         ActivityState.getTransitionType().observe(this, Observer { transitionType ->
             var myExercise = userViewModel.selectedUser.value?.let {
                 Exercise(
-                    id = UUID.randomUUID().toString(),
-                    userId = it.id,
-                    timestamp = Date(System.currentTimeMillis()),
-                    type = ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!),
-                    duration = ActivityState.getDuration(),
-                    value = CalorieCalculatorUtil().getCalories(
-                        it.weight,
-                        Constants.getMetValue(ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!)),
-                        ActivityState.getDuration()
-                    )
+                        id = UUID.randomUUID().toString(),
+                userId = it.id,
+                timestamp = Date(System.currentTimeMillis()),
+                type = ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!),
+                duration = ActivityState.getDuration(),
+                value = CalorieCalculatorUtil().getCalories(
+                    it.weight,
+                    Constants.getMetValue(ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!)),
+                    ActivityState.getDuration()
+                )
                 )
             }
             // For debugging

@@ -41,7 +41,7 @@ class FoodLocationList : Fragment() {
         binding.foodLocationList.adapter = adapter
 
         binding.foodLocationList.setOnItemClickListener{parent, view, position, id  ->
-            foodLocations?.get(position);
+            foodLocations?.get(position)
 
             if (foodLocations != null) {
                 val foodLocationsViewModel: FoodLocationsViewModel by activityViewModels()

@@ -10,15 +10,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!--    temporary button for testing and debugging only-->
-        <Button
-            android:id="@+id/btn_noti"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="trigger notification"
-            android:layout_gravity="center_horizontal"
-            />
-
         <FrameLayout
             android:id="@+id/maps_fragment_container"
             android:layout_width="match_parent"

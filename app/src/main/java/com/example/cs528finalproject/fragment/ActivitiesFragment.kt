@@ -3,6 +3,7 @@ package com.example.cs528finalproject.fragment
 import android.R
 import android.util.Log
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +11,14 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.cs528finalproject.databinding.FragmentActivitiesBinding
 import com.example.cs528finalproject.models.Exercise
 import com.example.cs528finalproject.models.Meal
 import com.example.cs528finalproject.utils.Constants
 import com.example.cs528finalproject.utils.DashboardUtils
 import com.example.cs528finalproject.viewmodels.ActivityState
+import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
 import com.example.cs528finalproject.viewmodels.UserViewModel
 import com.google.android.gms.location.ActivityTransition
 import java.text.SimpleDateFormat
@@ -94,12 +97,15 @@ class ActivitiesFragment : Fragment() {
             }
         }
 
-        ActivityState.getTransitionType().observe(viewLifecycleOwner, {transitionType ->
-            if (transitionType == ActivityTransition.ACTIVITY_TRANSITION_EXIT){
+        ActivityState.getTransitionType().observe(viewLifecycleOwner) { transitionType ->
+            if (transitionType == ActivityTransition.ACTIVITY_TRANSITION_EXIT) {
                 updateDashboardUI(binding.spinner.selectedItem.toString())
-                Log.d("UpdateDashboardUI", "Detected Transition: Updating UI for date: ${binding.spinner.selectedItem.toString()}")
+                Log.d(
+                    "UpdateDashboardUI",
+                    "Detected Transition: Updating UI for date: ${binding.spinner.selectedItem.toString()}"
+                )
             }
-        })
+        }
     }
 
     private fun updateDashboardUI(newDate: String) {
@@ -107,14 +113,16 @@ class ActivitiesFragment : Fragment() {
         val dateFormat = SimpleDateFormat("EEE, MMM d, yyyy", Locale.getDefault())
         curDate.time = dateFormat.parse(newDate)!!
 
-        meals = DashboardUtils.filterMeals(userViewModel.meals.value!!, curDate) as ArrayList<Meal>
-        exercises = DashboardUtils.filterExercisesByDate(userViewModel.exercises.value!!, curDate) as ArrayList<Exercise>
-        foodListAdapter.clear()
-        foodListAdapter.addAll(meals)
-        foodListAdapter.notifyDataSetChanged()
+        if (userViewModel.meals.value != null) {
+            meals = DashboardUtils.filterMeals(userViewModel.meals.value!!, curDate) as ArrayList<Meal>
+            exercises = DashboardUtils.filterExercisesByDate(userViewModel.exercises.value!!, curDate) as ArrayList<Exercise>
+            foodListAdapter.clear()
+            foodListAdapter.addAll(meals)
+            foodListAdapter.notifyDataSetChanged()
 
-        setNutrientProgress()
-        setCaloriesProgress()
+            setNutrientProgress()
+            setCaloriesProgress()
+        }
     }
 
     // Sets progress bars and cal gained info

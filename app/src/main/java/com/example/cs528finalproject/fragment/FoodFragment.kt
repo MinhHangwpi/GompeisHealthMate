@@ -68,15 +68,7 @@ class FoodFragment : Fragment() {
         val mapsFragment = MapsFragment()
         childFragmentManager.beginTransaction().add(R.id.maps_fragment_container, mapsFragment).commit()
 
-        binding.btnNoti.setOnClickListener {
-            //TODO: trigger the notification here
-            NotificationUtils.showNotification(requireContext(),
-                            "geofence-food notification",
-                            "You are near WPI Campus. The following food from the WPIEats menu is recommended for you.",
-                                R.drawable.ic_food_notification,
-                                20)
-            Log.d(TAG, "notification sent")
-        }
+
         return binding.root
     }
 

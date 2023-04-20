@@ -23,29 +23,25 @@ import com.example.cs528finalproject.databinding.ActivityMainBinding
 import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.fragment.*
 import com.example.cs528finalproject.models.Exercise
+import com.example.cs528finalproject.models.FoodLocation
+import com.example.cs528finalproject.models.FoodMenu
 import com.example.cs528finalproject.models.User
 import com.example.cs528finalproject.receiver.ActivityTransitionReceiver
 import com.example.cs528finalproject.receiver.GeofenceBroadcastReceiver
+import com.example.cs528finalproject.services.LocationService
 import com.example.cs528finalproject.utils.ActivityTransitionUtil
 import com.example.cs528finalproject.utils.CalorieCalculatorUtil
 import com.example.cs528finalproject.utils.Constants
 import com.example.cs528finalproject.utils.Constants.ACTIVITY_TRANSITION_REQUEST_CODE
-import com.example.cs528finalproject.utils.Constants.RC_LOCATION_PERM
 import com.example.cs528finalproject.utils.GeofenceUtil
 import com.example.cs528finalproject.viewmodels.ActivityState
-import com.example.cs528finalproject.viewmodels.GeoFenceState
-import com.example.cs528finalproject.viewmodels.UserViewModel
-import com.google.android.gms.location.*
-import pub.devrel.easypermissions.EasyPermissions
-import com.example.cs528finalproject.models.FoodLocation
-import com.example.cs528finalproject.models.FoodMenu
-import com.example.cs528finalproject.services.LocationService
 import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
 import com.example.cs528finalproject.viewmodels.FoodMenusViewModel
+import com.example.cs528finalproject.viewmodels.UserViewModel
+import com.google.android.gms.location.*
 import com.google.firebase.auth.FirebaseAuth
-import java.util.Date
-
 import pub.devrel.easypermissions.AppSettingsDialog
+import pub.devrel.easypermissions.EasyPermissions
 import java.util.*
 
 class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
@@ -128,15 +124,24 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         }
 
 
-        replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
+//        replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
         retrieveFragmentIdFromNotificationIntent() // TODO: if the user clicks view when the geofence menu pops up
 
+//        val transaction = supportFragmentManager.beginTransaction()
+//        transaction.replace(R.id.frame_layout, ActivitiesFragment())
+//        transaction.commit()
+
+//        val fragmentManager = supportFragmentManager
+//        val fragmentTransaction = fragmentManager.beginTransaction()
+//        fragmentTransaction.replace(R.id.frame_layout, fragment)
+//        Log.d("BottomNav", "moving to fragment $fragment")
+//        fragmentTransaction.commit()
 
         FireStoreClass().getMealByUserId { meals ->
             if (meals != null) {
                 userViewModel.setMeals(meals)
                 // Show ActivitiesFragment by default
-                replaceFragment(ActivitiesFragment())
+//                replaceFragment(ActivitiesFragment())
             }
         }
 
@@ -144,7 +149,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
             if (exercises != null) {
                 userViewModel.setExercises(exercises)
                 // Show ActivitiesFragment by default
-                replaceFragment(ActivitiesFragment())
+//                replaceFragment(ActivitiesFragment())
             }
         }
 
@@ -267,6 +272,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         )
     }
 
+
     private fun addGeoFenceListener() {
 
         val geoFences = GeofenceUtil.createGeoFenceList()
@@ -316,7 +322,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
 
         Log.i("NOTIFICATION_MAIN", intent.extras.toString())
 
-        val fragmentId = intent!!.getIntExtra("FRAGMENT_ID", FOOD_FRAGMENT)
+        val fragmentId = intent!!.getIntExtra("FRAGMENT_ID", ACTIVITIES_FRAGMENT)
         val locationId = intent!!.getStringExtra("LOCATION_ID")
 
         Log.i("NOTIFICATION_MAIN", fragmentId.toString())
@@ -335,9 +341,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                     foodLocationsViewModel.setSelectedFoodLocation(foodLocation)
                 }
                 // Display the FoodFragment
-                supportFragmentManager.beginTransaction()
-                    .replace(R.id.frame_layout, FoodFragment())
-                    .commit()
+                replaceFragment(FoodFragment())
             }
             ACTIVITIES_FRAGMENT -> {
                 replaceFragment(ActivitiesFragment())

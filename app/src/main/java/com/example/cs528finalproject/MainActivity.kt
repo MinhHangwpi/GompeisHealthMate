@@ -128,8 +128,10 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
             }
         }
 
+
         replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
-        retrieveFragmentIdFromNotificationIntent() // if the user clicks view when the geofence menu pops up
+        retrieveFragmentIdFromNotificationIntent() // TODO: if the user clicks view when the geofence menu pops up
+
 
         FireStoreClass().getMealByUserId { meals ->
             if (meals != null) {
@@ -178,7 +180,11 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
             //Toast.makeText(this, "No permission found. Requesting permission for Activity Recognition now...", Toast.LENGTH_SHORT).show()
             requestActivityTransitionPermission()
         } else {
-            Toast.makeText(this, "Permission for Activity Recognition found. Start detecting now...", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                this,
+                "Permission for Activity Recognition found. Start detecting now...",
+                Toast.LENGTH_SHORT
+            ).show()
             requestForActivityUpdates()
         }
 
@@ -186,21 +192,23 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         ActivityState.getTransitionType().observe(this, Observer { transitionType ->
             var myExercise = userViewModel.selectedUser.value?.let {
                 Exercise(
-                    id = UUID.randomUUID().toString(),
-                    userId = it.id,
-                    timestamp = Date(System.currentTimeMillis()),
-                    type = ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!),
-                    duration = ActivityState.getDuration(),
-                    value = CalorieCalculatorUtil().getCalories(
-                                                    it.weight,
-                                                    Constants.getMetValue(ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!)),
-                                                    ActivityState.getDuration())
+                        id = UUID.randomUUID().toString(),
+                userId = it.id,
+                timestamp = Date(System.currentTimeMillis()),
+                type = ActivityTransitionUtil.toActivityString(ActivityState.getPrevState().value!!),
+                duration = ActivityState.getDuration(),
+                value = CalorieCalculatorUtil().getCalories(
+                    it.weight,
+                    Constants.getMetValue(ActivityTransitionUtil.toActivityString(ActivityState.getState().value!!)),
+                    ActivityState.getDuration()
+                )
                 )
             }
             // For debugging
-            binding.tvDetectedTransition.text = "DetectedTransition: ${ActivityTransitionUtil.toTransitionType(transitionType)}"
+            binding.tvDetectedTransition.text =
+                "DetectedTransition: ${ActivityTransitionUtil.toTransitionType(transitionType)}"
 
-           when(transitionType) {
+            when (transitionType) {
 
                 ActivityTransition.ACTIVITY_TRANSITION_EXIT -> {
 
@@ -208,25 +216,33 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                     if (myExercise != null) {
                         FireStoreClass().postAnExercise(this, myExercise)
                         userViewModel.addExercise(myExercise)
+
                         //binding.tvCalories.text = myExercise.value.toString()
 
-                        if (myExercise.type == Constants.WALKING || myExercise.type == Constants.RUNNING){
+                        if (myExercise.type == Constants.WALKING || myExercise.type == Constants.RUNNING) {
                             Log.i("steps", currentSteps.toString())
-                            val mySteps = myExercise.copy(type = Constants.STEPS, value = currentSteps)
+                            val mySteps =
+                                myExercise.copy(type = Constants.STEPS, value = currentSteps)
 
                             // Post the mySteps object to Firebase
                             FireStoreClass().postAnExercise(this, mySteps)
                             userViewModel.addExercise(mySteps)
+
+                            // need to reset this or will be double counting?
+                            currentSteps = 0
+
                         }
                     }
                     Log.d("ACTIVITY TRANSITION", "The user has exited an activity")
                 }
+
+
                 ActivityTransition.ACTIVITY_TRANSITION_ENTER -> {
                     Log.d("ACTIVITY TRANSITION", "The user has entered an activity")
                 }
-               else -> {
-                   //do nothing
-               }
+                else -> {
+                    //do nothing
+                }
             }
         })
 
@@ -234,8 +250,11 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         // update UI on transition
         // For debugging
         ActivityState.getState().observe(this, Observer { activity ->
-            binding.tvDetectedActivity.text = "DetectedActivity: ${ActivityTransitionUtil.toActivityString(activity)}"
+            binding.tvDetectedActivity.text =
+                "DetectedActivity: ${ActivityTransitionUtil.toActivityString(activity)}"
         })
+    }
+
 
         binding.bgStart.setOnClickListener{
             Log.i("LOCATION","TEST CLICK")
@@ -439,7 +458,11 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
 
         when {
             detectorSensor != null -> {
-                sensorManager?.registerListener(this, detectorSensor, SensorManager.SENSOR_DELAY_UI);
+                sensorManager?.registerListener(
+                    this,
+                    detectorSensor,
+                    SensorManager.SENSOR_DELAY_UI
+                );
             }
             else -> {
                 Toast.makeText(this, "Your device is not compatible", Toast.LENGTH_SHORT).show();
@@ -457,12 +480,19 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         //var steps = binding.steps;
 
         if (running) {
-            
+
+            /*totalSteps = event!!.values[0];
+            currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
+
+            Log.i("currentSteps", currentSteps.toString())
+            binding.tvSteps.text = "$currentSteps steps"
+            previousTotalSteps = currentSteps.toFloat()*/
+
             if (event != null) {
-                if(event.sensor.getType()==Sensor.TYPE_STEP_DETECTOR){
+                if (event.sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
                     currentSteps++;
 
-                    Log.i("currentSteps", currentSteps.toString())
+//                    Log.i("currentSteps", currentSteps.toString())
                     binding.tvSteps.text = "$currentSteps steps";
                 }
             }

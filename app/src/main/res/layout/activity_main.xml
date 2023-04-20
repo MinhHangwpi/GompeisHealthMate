@@ -9,6 +9,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:orientation="vertical"
         >
         <TextView
@@ -35,8 +36,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="DetectedTransition: ..."/>
+
         <Button android:id="@+id/bgStart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Start Background"/>
         <Button android:id="@+id/bgStop" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Stop Background"/>
+
     </LinearLayout>
 
     <TextView

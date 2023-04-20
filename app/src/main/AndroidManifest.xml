@@ -100,6 +100,7 @@
             android:permission="com.google.android.gms.permission.ACTIVITY_RECOGNITION">
         </receiver>
 
+
         <service android:name=".services.LocationService" android:foregroundServiceType="location" />
 
     </application>

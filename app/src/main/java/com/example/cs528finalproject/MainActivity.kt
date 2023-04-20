@@ -253,7 +253,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
             binding.tvDetectedActivity.text =
                 "DetectedActivity: ${ActivityTransitionUtil.toActivityString(activity)}"
         })
-    }
 
 
         binding.bgStart.setOnClickListener{

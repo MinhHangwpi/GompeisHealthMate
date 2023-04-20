@@ -9,8 +9,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:orientation="vertical"
         >
         <TextView
             android:id="@+id/tv_home_geofence"
@@ -36,6 +34,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="DetectedTransition: ..."/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
         <Button android:id="@+id/bgStart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Start Background"/>
         <Button android:id="@+id/bgStop" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Stop Background"/>

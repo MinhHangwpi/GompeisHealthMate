@@ -88,7 +88,7 @@ class FoodMenuList : Fragment() {
                                         selectedItem?.protein!!,
                                         selectedItem?.carbs!!,
                                         selectedItem?.fat!!,
-                                        selectedItem?.fiber!!,
+                                        selectedItem?.fibers!!,
                                         selectedItem?.sugar!!)
                     saveMealToDB(myMeal, requireActivity() as MainActivity)
                     userViewModel.addMeal(myMeal)

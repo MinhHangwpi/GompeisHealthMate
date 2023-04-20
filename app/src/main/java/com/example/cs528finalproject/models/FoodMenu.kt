@@ -10,6 +10,6 @@ data class FoodMenu internal constructor(
     var fat: Double,
     var protein: Double,
     var sugar: Double,
-    var fiber: Double
+    var fibers: Double
 ) {
 }

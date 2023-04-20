@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
@@ -41,7 +40,8 @@ class ProfileFragment : Fragment() {
         var age = binding.etAge
         var height = binding.etHeight
         var weight = binding.etWeight
-        var target = binding.etTarget
+        var targetGained = binding.etTargetGained
+        var targetBurned = binding.etTargetBurned
 
         binding.btnSave.isEnabled = false
 
@@ -69,7 +69,7 @@ class ProfileFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 // check if both fields have some value
-                if (age.text.isNotEmpty() && height.text.isNotEmpty() && weight.text.isNotEmpty() && target.text.isNotEmpty()) {
+                if (age.text.isNotEmpty() && height.text.isNotEmpty() && weight.text.isNotEmpty() && targetGained.text.isNotEmpty()) {
                     binding.btnSave.isEnabled = true // enable the button
                 } /*else {
                     button.isEnabled = false // disable the button
@@ -82,7 +82,8 @@ class ProfileFragment : Fragment() {
         age.addTextChangedListener(textWatcher)
         height.addTextChangedListener(textWatcher)
         weight.addTextChangedListener(textWatcher)
-        target.addTextChangedListener(textWatcher)
+        targetGained.addTextChangedListener(textWatcher)
+        targetBurned.addTextChangedListener(textWatcher)
 
         // run checked required fields for all fields
         /*binding.etAge.addTextChangedListener (object: TextWatcher {
@@ -109,7 +110,8 @@ class ProfileFragment : Fragment() {
         binding.btnSave.isEnabled = binding.etAge.text.toString().isNotEmpty() &&
                 binding.etHeight.text.toString().isNotEmpty() &&
                 binding.etWeight.text.toString().isNotEmpty() &&
-                binding.etTarget.text.toString().isNotEmpty()
+                binding.etTargetGained.text.toString().isNotEmpty() &&
+                binding.etTargetBurned.text.toString().isNotEmpty()
     }
 
     private fun setUserDataInUI(user: User) {
@@ -135,6 +137,8 @@ class ProfileFragment : Fragment() {
         if (user.height != 0.0) {
             binding.etHeight.hint = user.height.toString()
         }
+        binding.etTargetGained.hint = user.targetGained.toString()
+        binding.etTargetBurned.hint = user.targetBurned.toString()
     }
 
     private fun updateUserProfileData() {
@@ -159,10 +163,29 @@ class ProfileFragment : Fragment() {
             //anyChangesMade = true
         }
 
+        if (binding.etTargetGained.text.toString().toDouble() != mUserDetails?.targetGained) {
+            userHashMap["targetGained"] = binding.etTargetGained.text.toString().toDouble()
+            //anyChangesMade = true
+        }
+
+        if (binding.etTargetBurned.text.toString().toDouble() != mUserDetails?.targetBurned) {
+            userHashMap["targetBurned"] = binding.etTargetBurned.text.toString().toDouble()
+            //anyChangesMade = true
+        }
+
         //Log.i("anyChangesMade", anyChangesMade.toString())
 
         //if (anyChangesMade) {
-            FireStoreClass().updateUserProfileData(requireActivity() as MainActivity, userHashMap)
+        FireStoreClass().updateUserProfileData(requireActivity() as MainActivity, userHashMap)
+        val userViewModel: UserViewModel by activityViewModels()
+            userViewModel.setUser(
+                userViewModel.selectedUser.value!!.copy(
+                    weight = binding.etWeight.text.toString().toDouble(),
+                    height = binding.etHeight.text.toString().toDouble(),
+                    age = binding.etAge.text.toString().toInt(),
+                    targetGained = binding.etTargetGained.text.toString().toDouble(),
+                    targetBurned = binding.etTargetBurned.text.toString().toDouble()
+                ))
+        }
         //}
-    }
 }

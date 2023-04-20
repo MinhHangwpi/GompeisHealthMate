@@ -79,10 +79,21 @@
             android:text="Daily target caloric intake (kcal)"
             />
         <EditText
-            android:id="@+id/et_target"
+            android:id="@+id/et_target_gained"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter your daily target calories intake (kcal)"
+            android:inputType="numberDecimal" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Daily target calories burned (kcal)"
+            />
+        <EditText
+            android:id="@+id/et_target_burned"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your daily target calories burned (kcal)"
             android:inputType="numberDecimal" />
         <Button
             android:id="@+id/btn_save"

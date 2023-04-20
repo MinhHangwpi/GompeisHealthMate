@@ -8,20 +8,27 @@ import kotlin.collections.ArrayList
 
 class DashboardUtils {
     companion object {
-        // Sums calorie intake from list of meals
-        fun getCalGained(meals: ArrayList<Meal>): Int {
-            return meals.sumOf { it.totalCalories }.toInt()
+        // Sums values of nutrients from list of meals
+        fun getNutrientValues(meals: ArrayList<Meal>): Map<String,Int> {
+            return mapOf(
+                Constants.CALORIES to meals.sumOf { it.totalCalories }.toInt(),
+                Constants.CARBS to meals.sumOf { it.carbs }.toInt(),
+                Constants.FAT to meals.sumOf { it.fat }.toInt(),
+                Constants.FIBER to meals.sumOf { it.fibers }.toInt(),
+                Constants.PROTEIN to meals.sumOf { it.protein }.toInt(),
+                Constants.SUGAR to meals.sumOf { it.sugar }.toInt()
+            )
         }
 
         // Calculated % daily value progress of nutrients from list of meals
-        fun getNutrientProgress(meals: ArrayList<Meal>): Map<String,Int> {
+        fun getNutrientProgress(meals: ArrayList<Meal>, ratio: Double): Map<String,Int> {
             return mapOf(
-                Constants.CALORIES to (100 * (meals.sumOf { it.totalCalories } / Constants.DV_CAL)).toInt(),
-                Constants.CARBS to (100 * (meals.sumOf { it.carbs } / Constants.DV_CARBS)).toInt(),
-                Constants.FAT to (100 * (meals.sumOf { it.fat } / Constants.DV_FAT)).toInt(),
-                Constants.FIBER to (100 * (meals.sumOf { it.fibers } / Constants.DV_FIBER)).toInt(),
-                Constants.PROTEIN to (100 * (meals.sumOf { it.protein } / Constants.DV_PROTEIN)).toInt(),
-                Constants.SUGAR to (100 * (meals.sumOf { it.sugar } / Constants.DV_SUGAR)).toInt()
+                Constants.CALORIES to (100 * (meals.sumOf { it.totalCalories } / (ratio * Constants.DV_CAL))).toInt(),
+                Constants.CARBS to (100 * (meals.sumOf { it.carbs } / (ratio * Constants.DV_CARBS))).toInt(),
+                Constants.FAT to (100 * (meals.sumOf { it.fat } / (ratio * Constants.DV_FAT))).toInt(),
+                Constants.FIBER to (100 * (meals.sumOf { it.fibers } / (ratio * Constants.DV_FIBER))).toInt(),
+                Constants.PROTEIN to (100 * (meals.sumOf { it.protein } / (ratio * Constants.DV_PROTEIN))).toInt(),
+                Constants.SUGAR to (100 * (meals.sumOf { it.sugar } / (ratio * Constants.DV_SUGAR))).toInt()
             )
         }
 

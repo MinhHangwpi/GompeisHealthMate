@@ -1,8 +1,6 @@
 package com.example.cs528finalproject.fragment
 
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Geocoder
@@ -15,11 +13,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.cs528finalproject.R
 import com.example.cs528finalproject.databinding.FragmentMapsBinding
 import com.example.cs528finalproject.models.LocationModel
+import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
 import com.example.cs528finalproject.viewmodels.LocationViewModel
 import com.google.android.gms.location.*
 
@@ -89,6 +87,8 @@ class MapsFragment : Fragment() {
             .setMaxUpdateDelayMillis(1000)
             .build()
 
+        val foodLocationsViewModel: FoodLocationsViewModel by activityViewModels()
+
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
@@ -121,6 +121,8 @@ class MapsFragment : Fragment() {
                         currentLocationModel?.address = addresses[0].getAddressLine(0)
                     }
                     locationViewModel.selectItem(currentLocationModel!!)
+
+                    foodLocationsViewModel.updateDistance(currentLocation)
 
                     googleMap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation))
                 }

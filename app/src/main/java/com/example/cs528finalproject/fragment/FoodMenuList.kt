@@ -122,5 +122,6 @@ class FoodMenuList : Fragment() {
 
     private fun saveMealToDB(mealObj: Meal, activity: MainActivity) {
         FireStoreClass().postAMealData(mealObj, activity)
+        Log.d("Food Fragement", "Posting the object ${mealObj}")
     }
 }

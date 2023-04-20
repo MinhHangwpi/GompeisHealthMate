@@ -168,9 +168,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         // for geofencing
         geofencingClient = LocationServices.getGeofencingClient(this)
         addGeoFenceListener()
-        GeoFenceState.getHomeState().observe(this, Observer { homeVisits ->
-            binding.tvHomeGeofence.text = "Home Visits: $homeVisits"
-        })
 
         // Run activity recognition once the app starts
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
@@ -203,9 +200,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                 )
                 )
             }
-            // For debugging
-            binding.tvDetectedTransition.text =
-                "DetectedTransition: ${ActivityTransitionUtil.toTransitionType(transitionType)}"
 
             when (transitionType) {
 
@@ -243,14 +237,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                     //do nothing
                 }
             }
-        })
-
-
-        // update UI on transition
-        // For debugging
-        ActivityState.getState().observe(this, Observer { activity ->
-            binding.tvDetectedActivity.text =
-                "DetectedActivity: ${ActivityTransitionUtil.toActivityString(activity)}"
         })
 
 
@@ -514,7 +500,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                     currentSteps++;
 
 //                    Log.i("currentSteps", currentSteps.toString())
-                    binding.tvSteps.text = "$currentSteps steps";
+//                    binding.tvSteps.text = "$currentSteps steps";
                 }
             }
         }

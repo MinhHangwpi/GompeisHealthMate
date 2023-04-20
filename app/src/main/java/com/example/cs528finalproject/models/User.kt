@@ -12,6 +12,8 @@ data class User(
     val weight: Double = 0.0,
     val height: Double = 0.0,
     val image: String = "",
+    val targetGained: Double = 2000.0,
+    val targetBurned: Double = 2000.0,
     val fcmToken: String = "" // to indicate that a specific user is logged in
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -22,6 +24,8 @@ data class User(
         parcel.readDouble(),
         parcel.readDouble(),
         parcel.readString()!!,
+        parcel.readDouble(),
+        parcel.readDouble(),
         parcel.readString()!!
     ) {
 
@@ -37,6 +41,8 @@ data class User(
         writeDouble(weight)
         writeDouble(height)
         writeString(image)
+        writeDouble(targetGained)
+        writeDouble(targetBurned)
         writeString(fcmToken)
     }
 

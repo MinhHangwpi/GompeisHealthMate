@@ -326,13 +326,35 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
     }
 
     private fun retrieveFragmentIdFromNotificationIntent() {
-        val fragmentId = intent?.getIntExtra("FRAGMENT_ID", FOOD_FRAGMENT)
+//        replaceFragment(ActivitiesFragment())
+
+        Log.i("NOTIFICATION_MAIN", intent.extras.toString())
+
+        val fragmentId = intent!!.getIntExtra("FRAGMENT_ID", FOOD_FRAGMENT)
+        val locationId = intent!!.getStringExtra("LOCATION_ID")
+
+        Log.i("NOTIFICATION_MAIN", fragmentId.toString())
+        if (locationId != null) {
+            Log.i("NOTIFICATION_MAIN", locationId)
+        }
+
+        Log.i("NOTIFICATION_MAIN", intent.toString())
+
         when (fragmentId) {
             FOOD_FRAGMENT -> {
+                if (locationId != "") {
+                    val foodLocationsViewModel = ViewModelProvider(this)[FoodLocationsViewModel::class.java]
+                    val foodLocation = foodLocationsViewModel.foodLocations.value?.firstOrNull{it.id == locationId}
+
+                    foodLocationsViewModel.setSelectedFoodLocation(foodLocation)
+                }
                 // Display the FoodFragment
                 supportFragmentManager.beginTransaction()
                     .replace(R.id.frame_layout, FoodFragment())
                     .commit()
+            }
+            ACTIVITIES_FRAGMENT -> {
+                replaceFragment(ActivitiesFragment())
             }
         }
     }

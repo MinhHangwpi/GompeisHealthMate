@@ -1,9 +1,11 @@
 package com.example.cs528finalproject.viewmodels
 
+import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cs528finalproject.models.FoodLocation
+import com.google.android.gms.maps.model.LatLng
 
 class FoodLocationsViewModel: ViewModel() {
     private val mutableFoodLocations = MutableLiveData<ArrayList<FoodLocation>>()
@@ -24,4 +26,12 @@ class FoodLocationsViewModel: ViewModel() {
         mutableSelectedFoodLocation.value = foodLocation
     }
 
+    fun updateDistance(currentLocation: LatLng) {
+        mutableFoodLocations.value?.forEach {
+            val results = FloatArray(3)
+            Location.distanceBetween(currentLocation.latitude, currentLocation.longitude, it.latitude, it.longitude, results);
+            it.distance = results[0].toInt()
+        }
+        mutableFoodLocations.value = mutableFoodLocations.value
+    }
 }

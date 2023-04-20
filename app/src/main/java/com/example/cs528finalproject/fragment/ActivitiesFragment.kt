@@ -125,9 +125,16 @@ class ActivitiesFragment : Fragment() {
         binding.calGainedProgress.progress = nutrientProgress[Constants.CALORIES]!!
         binding.carbsProgress.progress = nutrientProgress[Constants.CARBS]!!
         binding.fatProgress.progress = nutrientProgress[Constants.FAT]!!
-        binding.fiberProgress.progress = nutrientProgress[Constants.FIBER]!!
+        binding.fibersProgress.progress = nutrientProgress[Constants.FIBER]!!
         binding.proteinProgress.progress = nutrientProgress[Constants.PROTEIN]!!
         binding.sugarProgress.progress = nutrientProgress[Constants.SUGAR]!!
+
+        // update progress text
+        binding.carbsProgressText.text = "${nutrientProgress[Constants.CARBS]}/${Constants.DV_CARBS.toInt()}" //TODO: To change the denominator to the value associated with user target
+        binding.fatProgressText.text = "${nutrientProgress[Constants.FAT]}/${Constants.DV_FAT.toInt()}"
+        binding.fibersProgressText.text = "${nutrientProgress[Constants.CARBS]}/${Constants.DV_FIBER.toInt()}"
+        binding.proteinProgressText.text = "${nutrientProgress[Constants.PROTEIN]}/${Constants.DV_PROTEIN.toInt()}"
+        binding.sugarProgressText.text = "${nutrientProgress[Constants.SUGAR]}/${Constants.DV_SUGAR.toInt()}"
     }
 
     // set the total calories burned and calories by activity

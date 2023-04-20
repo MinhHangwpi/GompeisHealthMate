@@ -225,7 +225,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nutrition breakdown"
+                    android:text="Nutrition Progress"
                     android:textStyle="bold" />
 
                 <View
@@ -249,18 +249,30 @@
                             android:text="Carbs"
                             android:textSize="14sp" />
 
-                        <ProgressBar
-                            android:id="@+id/carbs_progress"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                            android:layout_width="200dp"
+                        <RelativeLayout
+                            android:layout_width="300dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true" />
+                            android:layout_alignParentRight="true" >
+                            <ProgressBar
+                                android:id="@+id/carbs_progress"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                />
+
+                            <TextView
+                                android:id="@+id/carbs_progress_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBaseline="@id/carbs_progress"
+                                android:layout_alignParentRight="true"
+                                android:text="200/275" />
+                        </RelativeLayout>
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -268,13 +280,25 @@
                             android:text="Fat"
                             android:textSize="14sp" />
 
-                        <ProgressBar
-                            android:id="@+id/fat_progress"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                            android:layout_width="200dp"
+                        <RelativeLayout
+                            android:layout_width="300dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:progress="0" />
+                            android:layout_alignParentRight="true" >
+                            <ProgressBar
+                                android:id="@+id/fat_progress"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                />
+
+                            <TextView
+                                android:id="@+id/fat_progress_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBaseline="@id/fat_progress"
+                                android:layout_alignParentRight="true"
+                                android:text="0/75" />
+                        </RelativeLayout>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -288,12 +312,25 @@
                             android:text="Fibers"
                             android:textSize="14sp" />
 
-                        <ProgressBar
-                            android:id="@+id/fiber_progress"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                            android:layout_width="200dp"
+                        <RelativeLayout
+                            android:layout_width="300dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true" />
+                            android:layout_alignParentRight="true" >
+                            <ProgressBar
+                                android:id="@+id/fibers_progress"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                />
+
+                            <TextView
+                                android:id="@+id/fibers_progress_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBaseline="@id/fibers_progress"
+                                android:layout_alignParentRight="true"
+                                android:text="0/28" />
+                        </RelativeLayout>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -307,12 +344,25 @@
                             android:text="Protein"
                             android:textSize="14sp" />
 
-                        <ProgressBar
-                            android:id="@+id/protein_progress"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                            android:layout_width="200dp"
+                        <RelativeLayout
+                            android:layout_width="300dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true" />
+                            android:layout_alignParentRight="true" >
+                            <ProgressBar
+                                android:id="@+id/protein_progress"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                />
+
+                            <TextView
+                                android:id="@+id/protein_progress_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBaseline="@id/protein_progress"
+                                android:layout_alignParentRight="true"
+                                android:text="0/50" />
+                        </RelativeLayout>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -326,12 +376,25 @@
                             android:text="Sugar"
                             android:textSize="14sp" />
 
-                        <ProgressBar
-                            android:id="@+id/sugar_progress"
-                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                            android:layout_width="200dp"
+                        <RelativeLayout
+                            android:layout_width="300dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true" />
+                            android:layout_alignParentRight="true" >
+                            <ProgressBar
+                                android:id="@+id/sugar_progress"
+                                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                                android:layout_width="200dp"
+                                android:layout_height="wrap_content"
+                                />
+
+                            <TextView
+                                android:id="@+id/sugar_progress_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBaseline="@id/sugar_progress"
+                                android:text="0/50"
+                                android:layout_alignParentRight="true" />
+                        </RelativeLayout>
                     </RelativeLayout>
                 </LinearLayout>
 

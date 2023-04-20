@@ -437,7 +437,8 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
     private fun requestActivityTransitionPermission() {
         val perms = arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACTIVITY_RECOGNITION
+            Manifest.permission.ACTIVITY_RECOGNITION,
+            Manifest.permission.POST_NOTIFICATIONS
         )
         EasyPermissions.requestPermissions(
             this,

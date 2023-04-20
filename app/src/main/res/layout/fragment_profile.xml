@@ -26,49 +26,69 @@
             android:background="@drawable/profile_pic"
             android:layout_gravity="center_horizontal"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            />
 
         <EditText
             android:id="@+id/et_email"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint = "Email"
             android:focusableInTouchMode="false"
             android:focusable="false"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Age"
+            />
         <EditText
             android:id="@+id/et_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Age"
+            android:hint="Enter your age"
             android:inputType="number" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Height (in cm)"
+            />
         <EditText
             android:id="@+id/et_height"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Height (in cm)"
+            android:hint="Enter your height (in kg)"
             android:inputType="numberDecimal" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Weight (in kg)"
+            />
         <EditText
             android:id="@+id/et_weight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Weight (in kg)"
+            android:hint="Enter your weight (in kg)"
             android:inputType="numberDecimal" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Daily target caloric intake (kcal)"
+            />
         <EditText
             android:id="@+id/et_target"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Your daily target calories intake (kcal)"
+            android:hint="Enter your daily target calories intake (kcal)"
             android:inputType="numberDecimal" />
         <Button
             android:id="@+id/btn_save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Save Profile" />
-<!--        <Button-->
-<!--            android:id="@+id/btn_back"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="Go back To Main" />-->
 
         <Button
             android:id="@+id/btn_logout"

@@ -69,11 +69,7 @@ class ProfileFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 // check if both fields have some value
-                if (age.text.isNotEmpty() && height.text.isNotEmpty() && weight.text.isNotEmpty() && targetGained.text.isNotEmpty()) {
-                    binding.btnSave.isEnabled = true // enable the button
-                } /*else {
-                    button.isEnabled = false // disable the button
-                }*/
+                binding.btnSave.isEnabled = age.text.isNotEmpty() && height.text.isNotEmpty() && weight.text.isNotEmpty() && targetGained.text.isNotEmpty() && targetBurned.text.isNotEmpty()
             }
 
             override fun afterTextChanged(s: Editable?) {}

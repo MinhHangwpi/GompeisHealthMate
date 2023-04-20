@@ -13,6 +13,7 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.example.cs528finalproject.R
+import com.example.cs528finalproject.models.LocationModel
 import com.example.cs528finalproject.receiver.GeofenceBroadcastReceiver
 import com.example.cs528finalproject.utils.GeofenceUtil
 import com.google.android.gms.location.GeofencingClient

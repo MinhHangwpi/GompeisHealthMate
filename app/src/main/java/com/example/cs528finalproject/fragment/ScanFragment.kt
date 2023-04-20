@@ -64,6 +64,7 @@ class ScanFragment : Fragment() {
         val scanner = GmsBarcodeScanning.getClient(requireContext(), options)
 
         binding.confirmButton.setOnClickListener {
+            confirmMeal()
             saveMealToDB(myMeal, requireActivity() as MainActivity)
             resetUI()
             userViewModel.addMeal(myMeal)
@@ -161,19 +162,7 @@ class ScanFragment : Fragment() {
                 .centerInside()
                 .into(binding.foodImage)
 
-            // for firebase update
-            myMeal = Meal(
-                id = UUID.randomUUID().toString(),
-                timestamp = Date(System.currentTimeMillis()),
-                userId = mUserDetails?.id!!,
-                foodName = foodName,
-                totalCalories = nutrition["calories"]!!,
-                protein = nutrition["protein"]!!,
-                carbs = nutrition["carbs"]!!,
-                fat = nutrition["fat"]!!,
-                fibers = nutrition["fiber"]!!,
-                sugar = nutrition["sugar"]!!
-            )
+
 
         } catch (e: JSONException) {
             Log.d("BarcodeScan", "JSON Parse error: $e")
@@ -199,5 +188,23 @@ class ScanFragment : Fragment() {
 
     private fun setUserData(user: User) {
         mUserDetails = user
+    }
+
+    // creates Mymeal values based on final num servings
+    private fun confirmMeal(){
+        val servings = binding.numServings.text.toString().toDoubleOrNull() ?: 1.0
+            // for firebase update
+            myMeal = Meal(
+                id = UUID.randomUUID().toString(),
+                timestamp = Date(System.currentTimeMillis()),
+                userId = mUserDetails?.id!!,
+                foodName = binding.foodName.text.toString(),
+                totalCalories = nutrition["calories"]!! * servings,
+                protein = nutrition["protein"]!! * servings,
+                carbs = nutrition["carbs"]!! * servings,
+                fat = nutrition["fat"]!! * servings,
+                fibers = nutrition["fiber"]!! * servings,
+                sugar = nutrition["sugar"]!! * servings
+            )
     }
 }

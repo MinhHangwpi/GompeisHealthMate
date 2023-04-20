@@ -30,6 +30,12 @@ class FoodLocationList : Fragment() {
         super.onCreate(savedInstanceState)
         val foodLocationsViewModel: FoodLocationsViewModel by activityViewModels()
         foodLocations = foodLocationsViewModel.foodLocations.value;
+
+
+        foodLocationsViewModel.foodLocations.observe(this) {
+            foodLocations = foodLocationsViewModel.foodLocations.value;
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onCreateView(

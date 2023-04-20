@@ -42,7 +42,9 @@ class ActivityTransitionReceiver: BroadcastReceiver() {
 
                         // TODO: to convert durationSec into float, but currently just use min for now
                         ActivityState.updateDuration(durationMin)
+
                         ActivityState.updatePrevState()
+
                         ActivityState.updateTransitionType(ActivityTransition.ACTIVITY_TRANSITION_EXIT)
                         Toast.makeText(context, info, Toast.LENGTH_LONG).show()
                         Log.d("ACTIVITY TRANSITION", info)

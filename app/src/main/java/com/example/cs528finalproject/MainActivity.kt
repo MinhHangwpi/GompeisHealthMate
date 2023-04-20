@@ -10,34 +10,40 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.cs528finalproject.databinding.ActivityMainBinding
-import com.example.cs528finalproject.firebase.FireStoreClass
-import com.example.cs528finalproject.models.User
-import com.google.firebase.auth.FirebaseAuth
-import com.example.cs528finalproject.utils.Constants.RC_LOCATION_PERM
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.cs528finalproject.databinding.ActivityMainBinding
+import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.fragment.*
 import com.example.cs528finalproject.models.Exercise
+import com.example.cs528finalproject.models.User
 import com.example.cs528finalproject.receiver.ActivityTransitionReceiver
 import com.example.cs528finalproject.receiver.GeofenceBroadcastReceiver
 import com.example.cs528finalproject.utils.ActivityTransitionUtil
 import com.example.cs528finalproject.utils.CalorieCalculatorUtil
 import com.example.cs528finalproject.utils.Constants
 import com.example.cs528finalproject.utils.Constants.ACTIVITY_TRANSITION_REQUEST_CODE
+import com.example.cs528finalproject.utils.Constants.RC_LOCATION_PERM
 import com.example.cs528finalproject.utils.GeofenceUtil
 import com.example.cs528finalproject.viewmodels.ActivityState
 import com.example.cs528finalproject.viewmodels.GeoFenceState
 import com.example.cs528finalproject.viewmodels.UserViewModel
 import com.google.android.gms.location.*
 import pub.devrel.easypermissions.EasyPermissions
+import com.example.cs528finalproject.models.FoodLocation
+import com.example.cs528finalproject.models.FoodMenu
+import com.example.cs528finalproject.services.LocationService
+import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
+import com.example.cs528finalproject.viewmodels.FoodMenusViewModel
+import com.google.firebase.auth.FirebaseAuth
+import java.util.Date
 
 import pub.devrel.easypermissions.AppSettingsDialog
 import java.util.*
@@ -76,6 +82,24 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
 
         // share the User object with ViewModel
         val userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
+        val foodLocationsViewModel = ViewModelProvider(this)[FoodLocationsViewModel::class.java]
+        val foodMenusViewModel = ViewModelProvider(this)[FoodMenusViewModel::class.java]
+
+        val foodLocations = ArrayList<FoodLocation>()
+        foodLocations.add(FoodLocation("starbucks", "Starbucks", 0.0, 20.0))
+        foodLocations.add(FoodLocation("goats-head-kitchen", "Goats Head Kitchen", 0.0, 20.0))
+        foodLocations.add(FoodLocation("halal-shack", "Halal Shack", 0.0, 20.0))
+        foodLocations.add(FoodLocation("morgan-dining-hall", "Morgan Dining Hall", 0.0, 20.0))
+        foodLocations.add(FoodLocation("campus-center", "Campus Center", 0.0, 20.0))
+        foodLocations.add(FoodLocation("dunkin", "Dunkin", 0.0, 20.0))
+        foodLocations.add(FoodLocation("fuller-dining-hall", "Fuller Dining Hall", 0.0, 20.0))
+        foodLocations.add(FoodLocation("library-marketplace", "Library Marketplace", 0.0, 20.0))
+        foodLocationsViewModel.setFoodLocations(foodLocations)
+
+
+        val foodMenus = ArrayList<FoodMenu>()
+        foodMenusViewModel.setFoodMenus(foodMenus)
+
 
         // To log out
         userViewModel.isLoggedIn.observe(this) { logginStatus ->
@@ -93,6 +117,14 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                 userViewModel.setUser(loggedInUser)
             } else {
                 reload()
+            }
+        }
+
+        val today = Date()
+        /* Calling the FirestoreClass signInUser function to get the user data from database */
+        FireStoreClass().fetchFoodMenus(this@MainActivity, "halal-shack", today){ foodMenus ->
+            if (foodMenus != null) {
+                foodMenusViewModel.setFoodMenus(foodMenus)
             }
         }
 
@@ -121,7 +153,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         binding.bottomNavigationView.setOnItemSelectedListener {
             when (it.itemId) {
                 R.id.activities -> replaceFragment(ActivitiesFragment())
-                R.id.food -> replaceFragment(FoodFragment())
+                R.id.food -> navigateToFoodFragment(FoodFragment())
                 R.id.profile -> replaceFragment(ProfileFragment())
                 R.id.scan -> replaceFragment(ScanFragment())
                 else -> {
@@ -154,10 +186,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                 Toast.LENGTH_SHORT
             ).show()
             requestForActivityUpdates()
-        }
-
-        if (!hasLocationPermissions()) {
-            requestLocationPermission()
         }
 
         // update calories whenever use exits an activity, i.e. transitionType == "EXIT"
@@ -199,12 +227,15 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                             // Post the mySteps object to Firebase
                             FireStoreClass().postAnExercise(this, mySteps)
                             userViewModel.addExercise(mySteps)
+
                             // need to reset this or will be double counting?
                             currentSteps = 0
+
                         }
                     }
                     Log.d("ACTIVITY TRANSITION", "The user has exited an activity")
                 }
+
 
                 ActivityTransition.ACTIVITY_TRANSITION_ENTER -> {
                     Log.d("ACTIVITY TRANSITION", "The user has entered an activity")
@@ -224,16 +255,20 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         })
     }
 
-    private fun requestLocationPermission() {
-        // Ask for one permission
-        EasyPermissions.requestPermissions(
-            this,
-            getString(R.string.rationale_location),
-            RC_LOCATION_PERM,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-        )
+
+        binding.bgStart.setOnClickListener{
+            Log.i("LOCATION","TEST CLICK")
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                startService(this)
+            }
+        }
+        binding.bgStop.setOnClickListener{
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_STOP
+                startService(this)
+            }
+        }
     }
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
@@ -311,15 +346,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         Log.d("BottomNav", "moving to fragment $fragment")
         fragmentTransaction.commit()
     }
-
-    private fun hasLocationPermissions(): Boolean {
-        return EasyPermissions.hasPermissions(
-            this,
-            android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
-        )
-    }
-
 
     override fun onRationaleAccepted(requestCode: Int) {
         Log.d("PERMISSION", "onRationaleAccepted:$requestCode")
@@ -408,12 +434,17 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         )
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     private fun requestActivityTransitionPermission() {
+        val perms = arrayOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACTIVITY_RECOGNITION
+        )
         EasyPermissions.requestPermissions(
             this,
             "You need to allow activity transition permissions",
             ACTIVITY_TRANSITION_REQUEST_CODE,
-            Manifest.permission.ACTIVITY_RECOGNITION
+            *perms
         )
     }
 
@@ -426,9 +457,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         running = true;
 
         when {
-            /*countSensor != null -> {
-                sensorManager?.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
-            }*/
             detectorSensor != null -> {
                 sensorManager?.registerListener(
                     this,
@@ -452,6 +480,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         //var steps = binding.steps;
 
         if (running) {
+
             /*totalSteps = event!!.values[0];
             currentSteps = totalSteps.toInt() - previousTotalSteps.toInt()
 
@@ -485,6 +514,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         requestForActivityUpdates()
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
         Log.d("PERMISSION", "onRationaleAccepted:$requestCode")
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
@@ -492,5 +522,19 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         } else {
             requestActivityTransitionPermission()
         }
+    }
+    private fun navigateToFoodFragment(fragment:Fragment) {
+        val foodLocationsViewModel = ViewModelProvider(this)[FoodLocationsViewModel::class.java]
+        foodLocationsViewModel.setSelectedFoodLocation(null)
+
+        replaceFragment(fragment)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 }

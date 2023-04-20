@@ -7,6 +7,7 @@ import com.example.cs528finalproject.*
 import com.example.cs528finalproject.fragment.ProfileFragment
 import com.example.cs528finalproject.fragment.ScanFragment
 import com.example.cs528finalproject.models.Exercise
+import com.example.cs528finalproject.models.FoodMenu
 import com.example.cs528finalproject.models.Meal
 import com.example.cs528finalproject.models.User
 import com.example.cs528finalproject.utils.Constants
@@ -14,6 +15,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import java.security.AccessController.getContext
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class FireStoreClass {
     /* Fire store related code */
@@ -148,18 +151,34 @@ class FireStoreClass {
 
     /* fetch the list of foods from a location, on a specific day within a certain caloric limit */
     //TODO: To invoke this once the user enters a Geofence zone
-    fun fetchFoodMenus(activity: MainActivity){
+    fun fetchFoodMenus(activity: MainActivity, location: String, date: Date, callback: (ArrayList<FoodMenu>?) -> Unit){
+        val foodMenus = ArrayList<FoodMenu>()
+
+        val dateFormat = SimpleDateFormat("yyyy-M-d")
+        val dateString = dateFormat.format(date)
+
         mFireStore.collection(Constants.MENUS)
-            .whereEqualTo("location", "campus-center")
-            .whereEqualTo("date", "2023-4-1")
-            .whereLessThanOrEqualTo("calories", 500)
+            .whereEqualTo("location", location)
+            .whereEqualTo("date", dateString)
+//            .whereLessThanOrEqualTo("calories", 500)
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
                     val name = document.getString("name")
                     val calories = document.getDouble("calories")
-                    // Do something with the name and calories
+                    var carbs = document.getDouble("carbs")
+                    var date = document.getString("date")
+                    var fat = document.getDouble("fat")
+                    var protein = document.getDouble("protein")
+                    var sugar = document.getDouble("sugar")
+                    var fiber = document.getDouble("fiber")
+                    val id = document.id
+                    if (name != null && calories != null && calories != null) {
+                        Log.i("FOOD", name)
+                        foodMenus.add(FoodMenu(id, name, location, calories, carbs!!, date!!, fat!!, protein!!, sugar!!, fiber!!))
+                    }
                 }
+                callback(foodMenus)
             }
             .addOnFailureListener { e ->
                 Log.d("FIRESTORE", "Error fetching menu items $e")

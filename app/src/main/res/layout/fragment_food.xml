@@ -27,22 +27,11 @@
             android:layout_weight="1"
             android:text="Placeholder for map fragment" />
 
-
-        <androidx.core.widget.NestedScrollView
+        <FrameLayout
+            android:id="@+id/frame_food_and_menu_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:fillViewport="true"
-            android:layout_weight="1"
-            >
-
-            <ListView
-                android:id="@+id/foodLocationList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:nestedScrollingEnabled="true"
-                />
-
-        </androidx.core.widget.NestedScrollView>
+            android:layout_weight="1" />
 
     </LinearLayout>
 

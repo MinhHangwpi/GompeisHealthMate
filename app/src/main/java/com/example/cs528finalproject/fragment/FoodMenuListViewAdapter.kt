@@ -7,21 +7,22 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import com.example.cs528finalproject.R
-import com.example.cs528finalproject.models.FoodLocation
+import com.example.cs528finalproject.models.FoodMenu
 
-class FoodLocationListViewAdapter (private val dataset: ArrayList<*>, mContext: Context):
+class FoodMenuListViewAdapter (private val dataset: ArrayList<*>, mContext: Context):
     ArrayAdapter<Any?>(mContext, R.layout.list_item_food, dataset) {
+
     private class ViewHolder {
         lateinit var txtName: TextView
-        lateinit var txtDistance: TextView
+        lateinit var txtCalories: TextView
     }
 
     override fun getCount(): Int {
         return dataset.size
     }
 
-    override fun getItem(position: Int): FoodLocation {
-        return dataset[position] as FoodLocation
+    override fun getItem(position: Int): FoodMenu {
+        return dataset[position] as FoodMenu
     }
 
     override fun getView(
@@ -38,7 +39,7 @@ class FoodLocationListViewAdapter (private val dataset: ArrayList<*>, mContext: 
                 LayoutInflater.from(parent.context).inflate(R.layout.list_item_food, parent, false)
             viewHolder.txtName =
                 convertView.findViewById(R.id.list_item_name)
-            viewHolder.txtDistance =
+            viewHolder.txtCalories =
                 convertView.findViewById(R.id.list_item_value)
             result = convertView
             convertView.tag = viewHolder
@@ -47,10 +48,10 @@ class FoodLocationListViewAdapter (private val dataset: ArrayList<*>, mContext: 
             result = convertView
         }
 
-        val item: FoodLocation = getItem(position)
+        val item: FoodMenu = getItem(position)
         viewHolder.txtName.text = item.name
 
-        viewHolder.txtDistance.text = item.getDistance().toString()
+        viewHolder.txtCalories.text = item.calories.toString()
         return result
     }
 }

@@ -3,15 +3,12 @@ package com.example.cs528finalproject.fragment
 import android.R
 import android.util.Log
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.core.os.HandlerCompat.postDelayed
 import androidx.fragment.app.activityViewModels
 import com.example.cs528finalproject.databinding.FragmentActivitiesBinding
 import com.example.cs528finalproject.models.Exercise
@@ -33,6 +30,8 @@ class ActivitiesFragment : Fragment() {
     private var exercises = ArrayList<Exercise>()
     private var curDate = Calendar.getInstance()
     private lateinit var spinnerDate: String
+    private var targetGainedRatio =  Constants.DV_CAL
+    private var targetBurnedRatio = Constants.DV_CAL
     //    override fun onCreate(savedInstanceState: Bundle?) {
 //        super.onCreate(savedInstanceState)
 //        val userViewModel: UserViewModel by activityViewModels()
@@ -50,7 +49,10 @@ class ActivitiesFragment : Fragment() {
             exercises =
                 DashboardUtils.filterExercisesByDate(userViewModel.exercises.value!!, curDate) as ArrayList<Exercise>
         }
-
+        if (userViewModel.selectedUser.value != null){
+            targetGainedRatio = userViewModel.selectedUser.value!!.targetGained / Constants.DV_CAL
+            targetBurnedRatio = userViewModel.selectedUser.value!!.targetBurned / Constants.DV_CAL
+        }
     }
 
     override fun onCreateView(
@@ -117,11 +119,11 @@ class ActivitiesFragment : Fragment() {
 
     // Sets progress bars and cal gained info
     private fun setNutrientProgress() {
-        val caloriesGained = DashboardUtils.getCalGained(meals)
-        val nutrientProgress = DashboardUtils.getNutrientProgress(meals)
+        val nutrientValues = DashboardUtils.getNutrientValues(meals)
+        val nutrientProgress = DashboardUtils.getNutrientProgress(meals, targetGainedRatio)
         Log.d("NutrientProgress", nutrientProgress.toString())
 
-        binding.calGained.text = "$caloriesGained calories gained"
+        binding.calGained.text = "${nutrientValues[Constants.CALORIES]} calories gained"
         binding.calGainedProgress.progress = nutrientProgress[Constants.CALORIES]!!
         binding.carbsProgress.progress = nutrientProgress[Constants.CARBS]!!
         binding.fatProgress.progress = nutrientProgress[Constants.FAT]!!
@@ -130,11 +132,11 @@ class ActivitiesFragment : Fragment() {
         binding.sugarProgress.progress = nutrientProgress[Constants.SUGAR]!!
 
         // update progress text
-        binding.carbsProgressText.text = "${nutrientProgress[Constants.CARBS]}/${Constants.DV_CARBS.toInt()}" //TODO: To change the denominator to the value associated with user target
-        binding.fatProgressText.text = "${nutrientProgress[Constants.FAT]}/${Constants.DV_FAT.toInt()}"
-        binding.fibersProgressText.text = "${nutrientProgress[Constants.CARBS]}/${Constants.DV_FIBER.toInt()}"
-        binding.proteinProgressText.text = "${nutrientProgress[Constants.PROTEIN]}/${Constants.DV_PROTEIN.toInt()}"
-        binding.sugarProgressText.text = "${nutrientProgress[Constants.SUGAR]}/${Constants.DV_SUGAR.toInt()}"
+        binding.carbsProgressText.text = "${nutrientValues[Constants.CARBS]}/${targetGainedRatio * Constants.DV_CARBS.toInt()}"
+        binding.fatProgressText.text = "${nutrientValues[Constants.FAT]}/${targetGainedRatio * Constants.DV_FAT.toInt()}"
+        binding.fibersProgressText.text = "${nutrientValues[Constants.CARBS]}/${targetGainedRatio * Constants.DV_FIBER.toInt()}"
+        binding.proteinProgressText.text = "${nutrientValues[Constants.PROTEIN]}/${targetGainedRatio * Constants.DV_PROTEIN.toInt()}"
+        binding.sugarProgressText.text = "${nutrientValues[Constants.SUGAR]}/${targetGainedRatio * Constants.DV_SUGAR.toInt()}"
     }
 
     // set the total calories burned and calories by activity
@@ -145,7 +147,7 @@ class ActivitiesFragment : Fragment() {
 
         Log.d("burnProgress", burnProgress.toString() )
         binding.calBurned.text = "$caloriesBurned calories burned"
-        binding.calBurnedProgress.progress = caloriesBurned / 2000 // hardcoded assuming the goal is to burn 2000 calories
+        binding.calBurnedProgress.progress = caloriesBurned / (targetBurnedRatio * Constants.DV_CAL).toInt() // hardcoded assuming the goal is to burn 2000 calories
         binding.tvStill.text = "${burnProgress[Constants.STILL]?.toString() ?: "0"} calories"
         binding.tvWalking.text = "${burnProgress[Constants.WALKING]?.toString() ?: "0"} calories"
         binding.tvRunning.text = "${burnProgress[Constants.RUNNING]?.toString() ?: "0"} calories"

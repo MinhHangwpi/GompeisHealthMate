@@ -106,6 +106,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Logout" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <Button android:id="@+id/bgStart" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Start Background" android:layout_marginRight="5dp"/>
+            <Button android:id="@+id/bgStop" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Stop Background" android:layout_marginLeft="5dp"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </FrameLayout>

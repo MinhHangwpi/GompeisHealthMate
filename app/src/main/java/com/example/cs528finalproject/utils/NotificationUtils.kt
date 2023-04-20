@@ -40,7 +40,7 @@ object NotificationUtils {
             Log.i("NOTIFICATION", "set location id")
             Log.i("NOTIFICATION", locationId)
         }
-        val viewPendingIntent = PendingIntent.getActivity(context, 0, viewIntent, PendingIntent.FLAG_IMMUTABLE)
+        val viewPendingIntent = PendingIntent.getActivity(context, 0, viewIntent, PendingIntent.FLAG_MUTABLE)
 
         // Create the pending intent for the "Ignore" button
         val ignoreIntent = Intent(context, NotificationReceiver::class.java)

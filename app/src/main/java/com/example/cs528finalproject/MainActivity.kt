@@ -117,11 +117,11 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
 
         val today = Date()
         /* Calling the FirestoreClass signInUser function to get the user data from database */
-        FireStoreClass().fetchFoodMenus(this@MainActivity, "halal-shack", today){ foodMenus ->
-            if (foodMenus != null) {
-                foodMenusViewModel.setFoodMenus(foodMenus)
-            }
-        }
+//        FireStoreClass().fetchFoodMenus(this@MainActivity, "halal-shack", today){ foodMenus ->
+//            if (foodMenus != null) {
+//                foodMenusViewModel.setFoodMenus(foodMenus)
+//            }
+//        }
 
 
 //        replaceFragment(ActivitiesFragment()) // Show ActivitiesFragment by default
@@ -245,19 +245,19 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         })
 
 
-        binding.bgStart.setOnClickListener{
-            Log.i("LOCATION","TEST CLICK")
-            Intent(applicationContext, LocationService::class.java).apply {
-                action = LocationService.ACTION_START
-                startService(this)
-            }
-        }
-        binding.bgStop.setOnClickListener{
-            Intent(applicationContext, LocationService::class.java).apply {
-                action = LocationService.ACTION_STOP
-                startService(this)
-            }
-        }
+//        binding.bgStart.setOnClickListener{
+//            Log.i("LOCATION","TEST CLICK")
+//            Intent(applicationContext, LocationService::class.java).apply {
+//                action = LocationService.ACTION_START
+//                startService(this)
+//            }
+//        }
+//        binding.bgStop.setOnClickListener{
+//            Intent(applicationContext, LocationService::class.java).apply {
+//                action = LocationService.ACTION_STOP
+//                startService(this)
+//            }
+//        }
     }
 
     // A PendingIntent for the Broadcast Receiver that handles geofence transitions.
@@ -318,8 +318,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
     }
 
     private fun retrieveFragmentIdFromNotificationIntent() {
-//        replaceFragment(ActivitiesFragment())
-
         Log.i("NOTIFICATION_MAIN", intent.extras.toString())
 
         val fragmentId = intent!!.getIntExtra("FRAGMENT_ID", ACTIVITIES_FRAGMENT)
@@ -337,8 +335,11 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                 if (locationId != "") {
                     val foodLocationsViewModel = ViewModelProvider(this)[FoodLocationsViewModel::class.java]
                     val foodLocation = foodLocationsViewModel.foodLocations.value?.firstOrNull{it.id == locationId}
+                    if (foodLocation != null) {
+                        foodLocationsViewModel.setSelectedFoodLocation(foodLocation)
+                        Log.i("SELECTED FOOD LOCATION", foodLocation.name)
 
-                    foodLocationsViewModel.setSelectedFoodLocation(foodLocation)
+                    }
                 }
                 // Display the FoodFragment
                 replaceFragment(FoodFragment())

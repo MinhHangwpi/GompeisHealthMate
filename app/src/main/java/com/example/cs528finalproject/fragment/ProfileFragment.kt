@@ -1,5 +1,6 @@
 package com.example.cs528finalproject.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
@@ -15,6 +17,7 @@ import com.example.cs528finalproject.R
 import com.example.cs528finalproject.databinding.FragmentProfileBinding
 import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.models.User
+import com.example.cs528finalproject.services.LocationService
 import com.example.cs528finalproject.viewmodels.UserViewModel
 
 
@@ -60,6 +63,24 @@ class ProfileFragment : Fragment() {
         binding.btnLogout.setOnClickListener {
             userViewModel.logOut()
         }
+
+
+
+        binding.bgStart.setOnClickListener{
+            Log.i("LOCATION","TEST CLICK")
+            Intent(context, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                requireActivity().startService(this)
+            }
+        }
+        binding.bgStop.setOnClickListener{
+            Intent(context, LocationService::class.java).apply {
+                action = LocationService.ACTION_STOP
+                requireActivity().startService(this)
+            }
+        }
+
+
 
 
 

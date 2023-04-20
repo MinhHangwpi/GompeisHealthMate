@@ -174,7 +174,6 @@ class FireStoreClass {
                     var fibers = document.getDouble("fibers")
                     val id = document.id
                     if (name != null && calories != null && calories != null) {
-                        Log.i("FOOD", name)
                         foodMenus.add(FoodMenu(id, name, location, calories, carbs!!, date!!, fat!!, protein!!, sugar!!, fibers!!))
                     }
                 }

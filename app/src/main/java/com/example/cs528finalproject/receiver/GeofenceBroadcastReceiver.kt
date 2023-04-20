@@ -75,15 +75,6 @@ class GeofenceBroadcastReceiver: BroadcastReceiver() {
                 }
                 Log.d(TAG, "notification sent")
 
-                Toast.makeText(
-                    context,
-                    "You have been inside the DOWNTOWN Geofence for 10 seconds, incrementing counter",
-                    Toast.LENGTH_LONG
-                ).show()
-                Log.d(
-                    TAG,
-                    "You have been inside the DOWNTOWN Geofence for 10 seconds, incrementing counter"
-                )
                 GeoFenceState.incrementHome()
             }
             Log.i("GEOFENCE", fenceId)

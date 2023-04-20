@@ -180,11 +180,11 @@ class ProfileFragment : Fragment() {
         val userViewModel: UserViewModel by activityViewModels()
             userViewModel.setUser(
                 userViewModel.selectedUser.value!!.copy(
-                    weight = userHashMap["weight"] as Double,
-                    height = userHashMap["height"] as Double,
-                    age = userHashMap["age"] as Int,
-                    targetGained = userHashMap["targetGained"] as Double,
-                    targetBurned = userHashMap["targetBurned"] as Double
+                    weight = binding.etWeight.text.toString().toDouble(),
+                    height = binding.etHeight.text.toString().toDouble(),
+                    age = binding.etAge.text.toString().toInt(),
+                    targetGained = binding.etTargetGained.text.toString().toDouble(),
+                    targetBurned = binding.etTargetBurned.text.toString().toDouble()
                 ))
         }
         //}

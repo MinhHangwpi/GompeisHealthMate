@@ -8,11 +8,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="25dp"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        >
 
         <!--        Set src dynamically based on food scanned-->
         <ImageView
@@ -29,6 +28,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="20sp"
+            android:textColor="@color/black"
             android:textStyle="bold" />
 
         <TextView
@@ -125,6 +125,7 @@
                 <TextView
                     android:id="@+id/totalCalLabel"
                     android:layout_width="0dp"
+                    android:textColor="@color/black"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Total Calories"
@@ -136,45 +137,57 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
                     android:gravity="end"
                     android:text=""
                     android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            >-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/scanButton"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_weight="2"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:scaleType="centerCrop"-->
+<!--                android:src="@drawable/barcode"-->
+<!--                android:contentDescription="scan button" />-->
+
+<!--            <View-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:layout_weight="0.75"/>-->
+
+<!--        </LinearLayout>-->
+        <View  android:layout_height="wrap_content" android:layout_width="wrap_content" android:layout_weight="1"/>
+        <Button
+            android:id="@+id/confirmButton"
+
+            android:text="Confirm Eat"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="30dp"
-            android:weightSum="4">
-
-            <ImageButton
-                android:id="@+id/scanButton"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/barcode"
-                android:contentDescription="scan button" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_weight="0.75"/>
-
-            <Button
-                android:id="@+id/confirmButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:visibility="gone"
-                android:layout_marginTop="20dp"
-                android:layout_weight="1.25"
-                android:backgroundTint="#00a000"
-                android:text="Confirm" />
-        </LinearLayout>
-
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/btn_marginStartEnd"
+            android:layout_marginTop="@dimen/intro_screen_sign_in_btn_marginTop"
+            android:layout_marginEnd="@dimen/btn_marginStartEnd"
+            android:layout_margin="16dp"
+            android:background="@drawable/shape_button_rounded"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingTop="@dimen/btn_paddingTopBottom"
+            android:paddingBottom="@dimen/btn_paddingTopBottom"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/btn_text_size"
+            />
     </LinearLayout>
 
 </FrameLayout>

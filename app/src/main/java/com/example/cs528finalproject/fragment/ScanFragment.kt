@@ -66,54 +66,93 @@ class ScanFragment : Fragment() {
         binding.confirmButton.setOnClickListener {
             confirmMeal()
             saveMealToDB(myMeal, requireActivity() as MainActivity)
-            resetUI()
             userViewModel.addMeal(myMeal)
-        }
-
-        binding.scanButton.setOnClickListener {
             resetUI()
-            // Open google code scanner
-            scanner.startScan()
-                .addOnSuccessListener { barcode ->
-                    val upc: String? = barcode.rawValue
-                    binding.upc.text = "UPC:$upc"
-                    Log.d("BarcodeScan", "Scan success, UPC: $upc")
-
-                    // Send request to NutritionX API to get nutrition info for extracted UPC
-                    val request = context?.let { it ->
-                        NutritionXRequest(
-                            Request.Method.GET,
-                            "https://trackapi.nutritionix.com/v2/search/item?upc=$upc",
-                            { response ->
-                                Log.d("BarcodeScan", "NutritionX API 200 Response: $response")
-                                updateUI(response)
-                            },
-                            { error ->
-                                Log.d("BarcodeScan", "NutritionX API error: $error")
-                                Toast.makeText(
-                                    requireContext(),
-                                    "UPC:$upc not found",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            },
-                            it.getString(R.string.nutritionX_APP_ID),
-                            it.getString(R.string.nutritionX_API_KEY)
-                        )
-                    }
-
-                    Volley.newRequestQueue(context).add(request)
-                }
-                .addOnCanceledListener {
-                    Log.d("BarcodeScan", "Scan canceled")
-                }
-                .addOnFailureListener { e ->
-                    Log.d("BarcodeScan", "Scan error: $e")
-                }
         }
+
+//        binding.scanButton.setOnClickListener {
+//            resetUI()
+//            // Open google code scanner
+//            scanner.startScan()
+//                .addOnSuccessListener { barcode ->
+//                    val upc: String? = barcode.rawValue
+//                    binding.upc.text = "UPC:$upc"
+//                    Log.d("BarcodeScan", "Scan success, UPC: $upc")
+//
+//                    // Send request to NutritionX API to get nutrition info for extracted UPC
+//                    val request = context?.let { it ->
+//                        NutritionXRequest(
+//                            Request.Method.GET,
+//                            "https://trackapi.nutritionix.com/v2/search/item?upc=$upc",
+//                            { response ->
+//                                Log.d("BarcodeScan", "NutritionX API 200 Response: $response")
+//                                updateUI(response)
+//                            },
+//                            { error ->
+//                                Log.d("BarcodeScan", "NutritionX API error: $error")
+//                                Toast.makeText(
+//                                    requireContext(),
+//                                    "UPC:$upc not found",
+//                                    Toast.LENGTH_SHORT
+//                                ).show()
+//                            },
+//                            it.getString(R.string.nutritionX_APP_ID),
+//                            it.getString(R.string.nutritionX_API_KEY)
+//                        )
+//                    }
+//
+//                    Volley.newRequestQueue(context).add(request)
+//                }
+//                .addOnCanceledListener {
+//                    Log.d("BarcodeScan", "Scan canceled")
+//                }
+//                .addOnFailureListener { e ->
+//                    Log.d("BarcodeScan", "Scan error: $e")
+//                }
+//        }
+
+        resetUI()
+        // Open google code scanner
+        scanner.startScan()
+            .addOnSuccessListener { barcode ->
+                val upc: String? = barcode.rawValue
+                binding.upc.text = "UPC:$upc"
+                Log.d("BarcodeScan", "Scan success, UPC: $upc")
+
+                // Send request to NutritionX API to get nutrition info for extracted UPC
+                val request = context?.let { it ->
+                    NutritionXRequest(
+                        Request.Method.GET,
+                        "https://trackapi.nutritionix.com/v2/search/item?upc=$upc",
+                        { response ->
+                            Log.d("BarcodeScan", "NutritionX API 200 Response: $response")
+                            updateUI(response)
+                        },
+                        { error ->
+                            Log.d("BarcodeScan", "NutritionX API error: $error")
+                            Toast.makeText(
+                                requireContext(),
+                                "UPC:$upc not found",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        },
+                        it.getString(R.string.nutritionX_APP_ID),
+                        it.getString(R.string.nutritionX_API_KEY)
+                    )
+                }
+
+                Volley.newRequestQueue(context).add(request)
+            }
+            .addOnCanceledListener {
+                Log.d("BarcodeScan", "Scan canceled")
+            }
+            .addOnFailureListener { e ->
+                Log.d("BarcodeScan", "Scan error: $e")
+            }
 
         // Update nutrition & calories
         binding.numServings.setOnKeyListener(View.OnKeyListener { _, keyCode, event ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+//            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
                 val servings = binding.numServings.text.toString().toDoubleOrNull()
                 if (servings != null && nutrition.isNotEmpty()) {
                     binding.totalCal.text = (nutrition["calories"]?.times(servings)).toString()
@@ -131,9 +170,11 @@ class ScanFragment : Fragment() {
 
                     binding.foodLayout.visibility = View.VISIBLE
                     binding.confirmButton.visibility = View.VISIBLE
+                } else {
+                    binding.confirmButton.visibility = View.GONE
                 }
-                return@OnKeyListener true
-            }
+//                return@OnKeyListener true
+//            }
             false
         })
     }

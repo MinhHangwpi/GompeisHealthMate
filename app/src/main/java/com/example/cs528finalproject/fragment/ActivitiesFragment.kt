@@ -156,7 +156,6 @@ class ActivitiesFragment : Fragment() {
         Log.d("burnProgress", burnProgress.toString() )
         binding.calBurned.text = "$caloriesBurned"
         binding.calBurnedProgress.progress = caloriesBurned / (targetBurnedRatio * Constants.DV_CAL).toInt() // hardcoded assuming the goal is to burn 2000 calories
-        binding.calBurnedProgress.progress = 74
         binding.tvStill.text = "${burnProgress[Constants.STILL]?.toString() ?: "0"} calories"
         binding.tvWalking.text = "${burnProgress[Constants.WALKING]?.toString() ?: "0"} calories"
         binding.tvRunning.text = "${burnProgress[Constants.RUNNING]?.toString() ?: "0"} calories"

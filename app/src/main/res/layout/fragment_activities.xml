@@ -261,38 +261,37 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/card_view1"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="2"
-            app:cardCornerRadius="4dp"
-            app:layout_constraintBottom_toBottomOf="@+id/food_card_view"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/progress_bar">
+            android:layout_margin="16dp"
+            app:cardCornerRadius="8dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 android:orientation="vertical">
 
                 <TextView
+                    android:paddingTop="8dp"
+                    android:paddingLeft="16dp"
+                    android:textSize="16dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/black"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Nutrition Progress"
                     android:textStyle="bold" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#c0c0c0" />
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
                     android:orientation="vertical">
 
                     <RelativeLayout
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -325,6 +324,8 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
                         <TextView
@@ -356,6 +357,8 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -388,6 +391,8 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -420,6 +425,8 @@
                     </RelativeLayout>
 
                     <RelativeLayout
+                        android:paddingTop="8dp"
+                        android:paddingBottom="8dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 

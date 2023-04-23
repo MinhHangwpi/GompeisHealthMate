@@ -18,6 +18,7 @@
             <item android:height="20dp" android:width="20dp" android:right="8dp" android:gravity="center_vertical|right">
 
                 <bitmap
+                    android:alpha=".35"
                     android:gravity="fill_vertical|fill_horizontal"
                     android:src="@drawable/dropdown_icon"/>
             </item>

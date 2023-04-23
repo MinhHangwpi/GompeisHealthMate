@@ -5,14 +5,13 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Geocoder
 import android.location.Location
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.cs528finalproject.R
 import com.example.cs528finalproject.databinding.FragmentMapsBinding
@@ -20,15 +19,11 @@ import com.example.cs528finalproject.models.LocationModel
 import com.example.cs528finalproject.viewmodels.FoodLocationsViewModel
 import com.example.cs528finalproject.viewmodels.LocationViewModel
 import com.google.android.gms.location.*
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import java.util.*
 
 class MapsFragment : Fragment() {
@@ -43,6 +38,9 @@ class MapsFragment : Fragment() {
 
     private lateinit var googleMap: GoogleMap
     private var marker: Marker? = null
+    private var centered = false
+
+    private val foodLocationsViewModel: FoodLocationsViewModel by activityViewModels()
 
     private val locationViewModel: LocationViewModel by activityViewModels()
 
@@ -61,7 +59,25 @@ class MapsFragment : Fragment() {
          * user has installed Google Play services and returned to the app.
          */
         this.googleMap = googleMap
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(18.0f))
+
+        foodLocationsViewModel.foodLocations.value?.forEach{
+            val circle: Circle = googleMap.addCircle(
+                CircleOptions()
+                    .center(LatLng(it.latitude, it.longitude))
+                    .radius(50.0)
+                    .strokeColor(0x75FF0000)
+                    .strokeWidth(3F)
+                    .fillColor(0x22000000)
+            )
+            val marker: Marker? = googleMap.addMarker(
+                MarkerOptions()
+                    .position(LatLng(it.latitude, it.longitude))
+                    .title(it.name)
+            )
+        }
+
+        val loc = LatLng(42.27485378466768, -71.80838814915141)
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18.0f))
     }
 
     override fun onCreateView(
@@ -76,10 +92,11 @@ class MapsFragment : Fragment() {
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.requireActivity())
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(callback)
 
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 500)
             .setWaitForAccurateLocation(false)
@@ -87,7 +104,7 @@ class MapsFragment : Fragment() {
             .setMaxUpdateDelayMillis(1000)
             .build()
 
-        val foodLocationsViewModel: FoodLocationsViewModel by activityViewModels()
+//        val foodLocationsViewModel: FoodLocationsViewModel by activityViewModels()
 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
@@ -124,7 +141,10 @@ class MapsFragment : Fragment() {
 
                     foodLocationsViewModel.updateDistance(currentLocation)
 
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation))
+                    if (!centered) {
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 18.0f))
+                        centered = true
+                    }
                 }
 
             }

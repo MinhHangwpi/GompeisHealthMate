@@ -59,8 +59,6 @@ class MapsFragment : Fragment() {
          * user has installed Google Play services and returned to the app.
          */
         this.googleMap = googleMap
-        
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(18.0f))
 
         foodLocationsViewModel.foodLocations.value?.forEach{
             val circle: Circle = googleMap.addCircle(
@@ -77,6 +75,9 @@ class MapsFragment : Fragment() {
                     .title(it.name)
             )
         }
+
+        val loc = LatLng(42.27485378466768, -71.80838814915141)
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 18.0f))
     }
 
     override fun onCreateView(
@@ -91,10 +92,11 @@ class MapsFragment : Fragment() {
     @SuppressLint("MissingPermission")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this.requireActivity())
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(callback)
 
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 500)
             .setWaitForAccurateLocation(false)
@@ -140,7 +142,7 @@ class MapsFragment : Fragment() {
                     foodLocationsViewModel.updateDistance(currentLocation)
 
                     if (!centered) {
-                        googleMap.animateCamera(CameraUpdateFactory.newLatLng(currentLocation))
+                        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, 18.0f))
                         centered = true
                     }
                 }

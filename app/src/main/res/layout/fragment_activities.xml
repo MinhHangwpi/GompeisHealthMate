@@ -303,7 +303,7 @@
                             android:textSize="14sp" />
 
                         <RelativeLayout
-                            android:layout_width="300dp"
+                            android:layout_width="270dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true" >
                             <ProgressBar
@@ -336,7 +336,7 @@
                             android:textSize="14sp" />
 
                         <RelativeLayout
-                            android:layout_width="300dp"
+                            android:layout_width="270dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true" >
                             <ProgressBar
@@ -370,7 +370,7 @@
                             android:textSize="14sp" />
 
                         <RelativeLayout
-                            android:layout_width="300dp"
+                            android:layout_width="270dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true" >
                             <ProgressBar
@@ -404,7 +404,7 @@
                             android:textSize="14sp" />
 
                         <RelativeLayout
-                            android:layout_width="300dp"
+                            android:layout_width="270dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true" >
                             <ProgressBar
@@ -438,7 +438,7 @@
                             android:textSize="14sp" />
 
                         <RelativeLayout
-                            android:layout_width="300dp"
+                            android:layout_width="270dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true" >
                             <ProgressBar

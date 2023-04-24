@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.findNavController
 import com.android.volley.Request
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
@@ -68,48 +70,8 @@ class ScanFragment : Fragment() {
             saveMealToDB(myMeal, requireActivity() as MainActivity)
             userViewModel.addMeal(myMeal)
             resetUI()
+            navigateToActivitiesFragment()
         }
-
-//        binding.scanButton.setOnClickListener {
-//            resetUI()
-//            // Open google code scanner
-//            scanner.startScan()
-//                .addOnSuccessListener { barcode ->
-//                    val upc: String? = barcode.rawValue
-//                    binding.upc.text = "UPC:$upc"
-//                    Log.d("BarcodeScan", "Scan success, UPC: $upc")
-//
-//                    // Send request to NutritionX API to get nutrition info for extracted UPC
-//                    val request = context?.let { it ->
-//                        NutritionXRequest(
-//                            Request.Method.GET,
-//                            "https://trackapi.nutritionix.com/v2/search/item?upc=$upc",
-//                            { response ->
-//                                Log.d("BarcodeScan", "NutritionX API 200 Response: $response")
-//                                updateUI(response)
-//                            },
-//                            { error ->
-//                                Log.d("BarcodeScan", "NutritionX API error: $error")
-//                                Toast.makeText(
-//                                    requireContext(),
-//                                    "UPC:$upc not found",
-//                                    Toast.LENGTH_SHORT
-//                                ).show()
-//                            },
-//                            it.getString(R.string.nutritionX_APP_ID),
-//                            it.getString(R.string.nutritionX_API_KEY)
-//                        )
-//                    }
-//
-//                    Volley.newRequestQueue(context).add(request)
-//                }
-//                .addOnCanceledListener {
-//                    Log.d("BarcodeScan", "Scan canceled")
-//                }
-//                .addOnFailureListener { e ->
-//                    Log.d("BarcodeScan", "Scan error: $e")
-//                }
-//        }
 
         resetUI()
         // Open google code scanner
@@ -232,6 +194,7 @@ class ScanFragment : Fragment() {
     }
 
     // creates Mymeal values based on final num servings
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun confirmMeal(){
         val servings = binding.numServings.text.toString().toDoubleOrNull() ?: 1.0
             // for firebase update
@@ -247,5 +210,13 @@ class ScanFragment : Fragment() {
                 fibers = nutrition["fiber"]!! * servings,
                 sugar = nutrition["sugar"]!! * servings
             )
+    }
+
+    private fun navigateToActivitiesFragment(){
+        val fragment = ActivitiesFragment()
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

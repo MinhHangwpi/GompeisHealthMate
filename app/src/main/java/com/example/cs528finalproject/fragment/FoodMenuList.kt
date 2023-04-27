@@ -1,14 +1,17 @@
 package com.example.cs528finalproject.fragment
 
 import android.app.AlertDialog
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import com.example.cs528finalproject.MainActivity
+import com.example.cs528finalproject.R
 import com.example.cs528finalproject.databinding.FragmentFoodMenuListBinding
 import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.models.FoodLocation
@@ -59,6 +62,7 @@ class FoodMenuList : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?){
         super.onViewCreated(view, savedInstanceState)
         // get the user info from the ViewModel
@@ -92,6 +96,8 @@ class FoodMenuList : Fragment() {
                                         selectedItem?.sugar!!)
                     saveMealToDB(myMeal, requireActivity() as MainActivity)
                     userViewModel.addMeal(myMeal)
+                    navigateToActivitiesFragment()
+
                 }
                 .setNegativeButton("No") { _, _ -> }
                 .show()
@@ -100,6 +106,7 @@ class FoodMenuList : Fragment() {
 
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createMealObj(foodName: String, totalCalories: Double, protein: Double, carbs: Double, fat: Double, fibers: Double, sugar: Double) : Meal {
         // for firebase update
         return Meal(
@@ -123,5 +130,12 @@ class FoodMenuList : Fragment() {
     private fun saveMealToDB(mealObj: Meal, activity: MainActivity) {
         FireStoreClass().postAMealData(mealObj, activity)
         Log.d("Food Fragement", "Posting the object ${mealObj}")
+    }
+    private fun navigateToActivitiesFragment(){
+        val fragment = ActivitiesFragment()
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.nav_host_fragment, fragment)
+        transaction.addToBackStack(null)
+        transaction.commit()
     }
 }

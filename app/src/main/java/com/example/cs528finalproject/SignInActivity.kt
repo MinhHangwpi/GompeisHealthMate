@@ -1,5 +1,6 @@
 package com.example.cs528finalproject
 
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ class SignInActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignInBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var mProgressDialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,12 +49,15 @@ class SignInActivity : AppCompatActivity() {
                 return@setOnClickListener // return to prevent further execution of code
             }
 
+            showProgressDialog()
+
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
 //                        // Sign in success, update UI with the signed-in user's information
                         Log.d("FIREBASE AUTH", "signInWithEmail:success")
                         Toast.makeText(this, "sign in successful...", Toast.LENGTH_SHORT).show()
+                        hideProgressDialog()
 
                         /* Calling the FirestoreClass signInUser function to get the user data from database */
                         FireStoreClass().loadUserData(this@SignInActivity){ loggedInUser ->
@@ -110,5 +115,17 @@ class SignInActivity : AppCompatActivity() {
     private fun reload(){
         startActivity(Intent(this, MainActivity::class.java))
         finish()
+    }
+
+    private fun showProgressDialog() {
+        mProgressDialog = Dialog(this)
+
+        /* set the screen content from a layout resource*/
+        mProgressDialog.setContentView(R.layout.custom_dialog)
+        mProgressDialog.show()
+    }
+
+    private fun hideProgressDialog(){
+        mProgressDialog.dismiss()
     }
 }

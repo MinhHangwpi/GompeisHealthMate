@@ -1,6 +1,7 @@
 package com.example.cs528finalproject
 
 import android.Manifest
+import android.app.Dialog
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
@@ -19,6 +20,9 @@ import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.cs528finalproject.databinding.ActivityMainBinding
 import com.example.cs528finalproject.firebase.FireStoreClass
 import com.example.cs528finalproject.fragment.*
@@ -68,6 +72,8 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
     var caloriesBurned = ""
     private var sensorManager: SensorManager? = null
 
+    private lateinit var mProgressDialog: Dialog
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +81,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         // share the User object with ViewModel
         val userViewModel = ViewModelProvider(this)[UserViewModel::class.java]
@@ -140,16 +147,12 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         FireStoreClass().getMealByUserId { meals ->
             if (meals != null) {
                 userViewModel.setMeals(meals)
-                // Show ActivitiesFragment by default
-//                replaceFragment(ActivitiesFragment())
             }
         }
 
         FireStoreClass().getExerciseByUserId { exercises ->
             if (exercises != null) {
                 userViewModel.setExercises(exercises)
-                // Show ActivitiesFragment by default
-//                replaceFragment(ActivitiesFragment())
             }
         }
 
@@ -245,6 +248,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         })
 
 
+
 //        binding.bgStart.setOnClickListener{
 //            Log.i("LOCATION","TEST CLICK")
 //            Intent(applicationContext, LocationService::class.java).apply {
@@ -338,7 +342,6 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                     if (foodLocation != null) {
                         foodLocationsViewModel.setSelectedFoodLocation(foodLocation)
                         Log.i("SELECTED FOOD LOCATION", foodLocation.name)
-
                     }
                 }
                 // Display the FoodFragment
@@ -353,7 +356,7 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
     private fun replaceFragment(fragment: Fragment) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.replace(R.id.frame_layout, fragment)
+        fragmentTransaction.replace(R.id.nav_host_fragment, fragment)
         Log.d("BottomNav", "moving to fragment $fragment")
         fragmentTransaction.commit()
     }
@@ -548,5 +551,18 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    //
+    private fun showProgressDialog() {
+        mProgressDialog = Dialog(this)
+
+        /* set the screen content from a layout resource*/
+        mProgressDialog.setContentView(R.layout.custom_dialog)
+        mProgressDialog.show()
+    }
+
+    private fun hideProgressDialog(){
+        mProgressDialog.dismiss()
     }
 }

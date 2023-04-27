@@ -3,8 +3,11 @@ package com.example.cs528finalproject
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.WindowManager
 import com.example.cs528finalproject.databinding.ActivityIntroBinding
+import com.example.cs528finalproject.firebase.FireStoreClass
 
 class IntroActivity : AppCompatActivity() {
 
@@ -28,6 +31,22 @@ class IntroActivity : AppCompatActivity() {
         /* To move from IntroActivity to SignIn Activity */
         binding.btnSignInIntro.setOnClickListener {
             startActivity(Intent(this, SignInActivity::class.java))
+        }
+
+        Looper.myLooper()?.let {
+            Handler(it).postDelayed({
+
+                /* autologin feature*/
+                // <- START ->
+                var currentUserID = FireStoreClass().getCurrentUserId()
+
+                if (currentUserID.isNotEmpty()){
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
+                finish()
+                // <- END ->
+
+            }, 2500)
         }
     }
 }

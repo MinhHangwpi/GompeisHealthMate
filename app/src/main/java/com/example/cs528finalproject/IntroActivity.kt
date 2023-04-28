@@ -33,20 +33,20 @@ class IntroActivity : AppCompatActivity() {
             startActivity(Intent(this, SignInActivity::class.java))
         }
 
-        Looper.myLooper()?.let {
-            Handler(it).postDelayed({
-
-                /* autologin feature*/
-                // <- START ->
-                var currentUserID = FireStoreClass().getCurrentUserId()
-
-                if (currentUserID.isNotEmpty()){
-                    startActivity(Intent(this, MainActivity::class.java))
-                }
-                finish()
-                // <- END ->
-
-            }, 2500)
-        }
+//        Looper.myLooper()?.let {
+//            Handler(it).postDelayed({
+//
+//                /* autologin feature*/
+//                // <- START ->
+//                var currentUserID = FireStoreClass().getCurrentUserId()
+//
+//                if (currentUserID.isNotEmpty()){
+//                    startActivity(Intent(this, MainActivity::class.java))
+//                }
+//                finish()
+//                // <- END ->
+//
+//            }, 2500)
+//        }
     }
 }

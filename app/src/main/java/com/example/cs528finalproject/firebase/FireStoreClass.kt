@@ -90,7 +90,7 @@ class FireStoreClass {
                 for (document in querySnapshot.documents) {
                     val mealData = document.toObject(Meal::class.java)
                     if (mealData != null) {
-                        Log.d("MEAL INFO", "$mealData")
+//                        Log.d("MEAL INFO", "$mealData")
                         meals.add(mealData)
                     }
                 }

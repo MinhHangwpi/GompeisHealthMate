@@ -391,11 +391,11 @@ class MainActivity : AppCompatActivity(), EasyPermissions.PermissionCallbacks,
                 getPendingIntent()
             )
             .addOnSuccessListener {
-                Log.d("TAG", "Success - Request Updates")
+                Log.d("ACTIVITY TRANSITION", "Success - Request Updates")
                 ActivityState.startActivityTimer()
             }
             .addOnFailureListener {
-                Log.d("TAG", "Failure - Request Updates")
+                Log.d("ACTIVITY TRANSITION", "Failure - Request Updates")
                 Toast.makeText(this, "Failure - Request Updates", Toast.LENGTH_SHORT).show()
             }
     }
